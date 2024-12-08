@@ -1,0 +1,113 @@
+MIERNE | Windhelm Pre-Alpha Version 0.2.0 241207.PA2 (07 December 24) - "GEM'D"
+--
+
+⚠️ - Pre-Alpha 0.1.0 saves are VERY not compatible with this version of Windhelm. Compare them, if you want.
+
+I8,        8        ,8I  88                        88  88                       88
+`8b       d8b       d8'  ""                        88  88                       88
+ "8,     ,8"8,     ,8"                             88  88                       88
+  Y8     8P Y8     8P    88  8b,dPPYba,    ,adPPYb,88  88,dPPYba,    ,adPPYba,  88  88,dPYba,,adPYba,      888
+  `8b   d8' `8b   d8'    88  88P'   `"8a  a8"    `Y88  88P'    "8a  a8P_____88  88  88P'   "88"    "8a     888
+   `8a a8'   `8a a8'     88  88       88  8b       88  88       88  8PP"""""""  88  88      88      88
+    `8a8'     `8a8'      88  88       88  "8a,   ,d88  88       88  "8b,   ,aa  88  88      88      88     888
+     `8'       `8'       88  88       88   `"8bbdP"Y8  88       88   `"Ybbd8"'  88  88      88      88     888
+
+								  ,ad8888ba,                                   d8'      88  
+								 d8"'    `"8b                                 d8'       88  
+								d8'                                          ""         88  
+								88              ,adPPYba,  88,dPYba,,adPYba,    ,adPPYb,88  
+								88      88888  a8P_____88  88P'   "88"    "8a  a8"    `Y88  
+								Y8,        88  8PP"""""""  88      88      88  8b       88  
+ 								 Y8a.    .a88  "8b,   ,aa  88      88      88  "8a,   ,d88  
+ 					 Pre-Alpha Version 0.2.0  `"Y88888P"    `"Ybbd8"'  88      88      88   `"8bbdP"Y8
+
+--
+
+About this update:
+	This one is only SLIGHTLY half-baked! I wanted it out before christmas and the new year so it would stop pestering the back of my mind.
+	This is genuinely a massive improvement even if it's not immediately noticable. The code itself is so much easier for me to work with now
+	and can be scaled much easier now. There are some missing features, such as armor not being purchasble and Combat Engine is...
+	Well, it's Combat Engine. It's likely broken because I haven't tested it. But! Vendors are finally in working order again,
+	so there's that. There's also some missing ASCII art but that's not exactly important nor my focus right now.
+
+	I took it upon myself and took several months off! But for Windhelm, I'm sure you see the massive "CHANGED" section below.
+	Windhelm is in... Well, a horrific state. There's year old code laying around, scripts which are written poorly and all around
+	some pretty questionable things were done. This update should hopefully clean most of that mess up and bring back functionality to every
+	corner of Windhelm, though some of these systems may not be connected to each other properly or work as intended.
+
+--
+
+### ADDED
+- Added level up rewards up to level 10.
+- Added four different races to choose from when creating a character.
+- Added "About" section in the Main Menu.
+- Added more error catches for Error Handler.
+- Added marker for required XP to level up.
+- Added new, simplified inventory system.
+- Added "XP" tonics the Player can consume to gain XP.
+- Added item categories.
+- Added "Charactor Information" screen to the Dashboard.
+- Added option to level up manually if the required XP was reached outside of combat.
+- Added option to change player pronouns.
+- Added option to change player name.
+
+### FIXED
+- Fixed missing damage skill stat for the Warrior class.
+- Fixed factions not being assigned properly.
+- Fixed incorrect and missing variables in Rockwinn Plaza.
+- Improved consistency of (some) UI elements.
+
+
+### CHANGED
+- Reworked the class selection menus to be more informative.
+- Druids now receive a bonus to their starting Magicka, Alteration and Restoration skills instead of Stamina.
+- Removed class gifts.
+- Updated names for Player inventory variables.
+- Removed unused variables.
+- Changed NPC variable names to match new naming scheme.
+- Updated Rockwinn Plaza's UI to remove outdated information.
+- Merged the Armorer and Blacksmith into one NPC.
+- Changed mace price to 280 from 283.
+- Changed short bow price to 125 from 122.
+- Removed the Lorekeeper.
+- Removed item weight attributes.
+- Removed player weight stat.
+- Slightly reworked variable names to be more consistent.
+- Updated variable names of all existing items.
+- Removed factions.
+- Removed spells. (these will come back later, probably)
+- Increased protection provided by the Guard Armor.
+- Decreased protection provided by the Stone Armor.
+- Removed Leather Armor.
+- Removed Silver Armor.
+- Removed Gold Armor.
+- Removed shields.
+- The options "back" and "exit" have been reassigned to the "Q" key.
+- Removed the Lorekeeper.
+- Removed the separate Lunis currency.
+- Renamed "COINS" to "LUNIS".
+- Reworked NPC vendors.
+
+--
+Extra Notes:
+	Version identifier modified to remove useless information. Yet more maintenance!
+	For future reference, "ITEM TABLES" in SLoP may be removed in the future.
+     	
+	If you have any questions, concerns or suggestions, email me! ahoy@mierne.net
+--
+Windhelm - Internal Roadmap [ Pre-Alpha 0.3.0 ]
+⚠️ - INFORMATION
+➡️ - MOVED TO NEXT UPDATE
+🔀 - UNKNOWN UPDATE
+🌑 - IN PROGRESS (~0%)
+🌒 - IN PROGRESS (~25%)
+🌓 - IN PROGRESS (~50%)
+🌔 - IN PROGRESS (~75%)
+🌕 - IN PROGRESS (~100%)
+❔ - UNDECIDED
+❌ - CANCELED
+
+➡️ Added enemy slain counter. Each enemy has a separate counter. ( Unfinished )
+❔- The "Stamina" skill has been merged with the "Athletics" skill. ( Unfinished )
+
+--
