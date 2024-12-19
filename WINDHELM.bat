@@ -1,7 +1,17 @@
 @ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION
-REM Windhelm Pre-Alpha Version 0.2.0.
-REM Extra Build Information: 241207.PA2.GU1
-REM Copyright (c) 2024 Mierne. Licnesed under GNU GPLv3
+REM Windhelm Pre-Alpha Version 0.3.0.
+REM Extra Build Information: 241219.PA3
+REM Copyright (C) 2024  Mierne <ahoy@mierne.net>
+REM    This program is free software: you can redistribute it and/or modify
+REM    it under the terms of the GNU General Public License as published by
+REM    the Free Software Foundation, either version 3 of the License, or
+REM    (at your option) any later version.
+REM    This program is distributed in the hope that it will be useful,
+REM    but WITHOUT ANY WARRANTY; without even the implied warranty of
+REM    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+REM    GNU General Public License for more details.
+REM    You should have received a copy of the GNU General Public License
+REM    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 REM Some things
 SET winLoc=%~dp0
 SET windhelm.tu=Unknown
@@ -28,7 +38,7 @@ ECHO.
 TYPE "%winLoc%\data\assets\ui\main.txt"
 ECHO.
 ECHO.
-ECHO Pre-Alpha Version 0.2.0 (241207.PA2.GU1) "Unknown"
+ECHO Pre-Alpha Version 0.3.0 (241207.PA3) "Unknown"
 ECHO ========================================================================================================================
 ECHO                   [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [Q / QUIT ]
 ECHO.
