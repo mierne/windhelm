@@ -2,17 +2,12 @@ TITLE (WINDHELM) - CHOMP Character Creator
 REM CHOMP - Character Hatching Origin Making Program
 
 REM COMPAT FOR PRONOUN CHANGE FEATURE.
+pause
 IF %player.pronouns_change_req% == 1 (
     GOTO :CHOOSE_PRONOUN
 ) ELSE (
-    GOTO :SELF_INIT
+    GOTO :CFEPD
 )
-
-REM Intializes character and game data to be modified later.
-:SELF_INIT
-SET SLOPr=INIT
-CALL "%cd%\data\functions\SLOP.bat"
-GOTO :CFEPD
 
 REM Check for existing Player data.
 :CFEPD
