@@ -1,6 +1,6 @@
 if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 @ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION
-REM Windhelm Pre-Alpha Version 0.2.1-241221
+REM Windhelm Pre-Alpha Version 0.3.0-241219
 REM Copyright (C) 2024  Mierne <ahoy@mierne.net>
 REM    This program is free software: you can redistribute it and/or modify
 REM    it under the terms of the GNU General Public License as published by
@@ -15,9 +15,9 @@ REM    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 :WIN_INIT
 SET winLoc=%~dp0
-SET windhelm.tu=HOTFIX
+SET windhelm.tu=Abyssal
 SET SLOPr=INIT
-CALL "%cd%\data\functions\SLOP.bat"
+CALL "%winLoc%\data\functions\SLOP.bat"
 
 :SETTINGS_LOADER
 (
@@ -38,7 +38,7 @@ ECHO.
 TYPE "%winLoc%\data\assets\ui\main.txt"
 ECHO.
 ECHO.
-ECHO Pre-Alpha Version 0.2.1-241221 "HOTFIX"
+ECHO Pre-Alpha Version 0.3.0-241219 "Abyssal"
 ECHO ========================================================================================================================
 ECHO                   [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [Q / QUIT ]
 ECHO.
@@ -194,7 +194,7 @@ IF ERRORLEVEL 5 GOTO :Exit_Without_Saving
 IF ERRORLEVEL 4 GOTO :Save_Game
 IF ERRORLEVEL 3 GOTO :character_view
 IF ERRORLEVEL 2 GOTO :view_inventory
-IF ERRORLEVEL 1 GOTO :EXPLORATION_HUB
+IF ERRORLEVEL 1 GOTO :system_exploration_engine
 
 :Exit_Without_Saving
 ECHO Exit now? All unsaved progress will be lost.
@@ -261,59 +261,9 @@ SET player.pronouns_change_req=1
 CALL "%winLoc%\data\functions\ciac.bat"
 GOTO :AUTOSAVE
 
-REM Main exploration tab.
-:EXPLORATION_HUB
-TITLE (WINDHELM) Exploration Engine ^| %player.name% the %player.class%
-MODE con: cols=105 lines=19
-CLS
-ECHO.
-TYPE "%cd%\data\assets\ui\exp.txt"
-ECHO.
-ECHO %displayMessage%
-ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
-ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / IRIDESCENT FOREST ] ^| [2 / RUINS ] ^| [3 / ROCKWINN PLAZA ] ^| [Q / BACK ]
-ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C 123Q /N /M ">"
-IF ERRORLEVEL 4 GOTO :AUTOSAVE
-IF ERRORLEVEL 3 GOTO :ROCKWINN_PLAZA
-IF ERRORLEVEL 2 GOTO :CHECK_RUINS_UNLOCKED
-IF ERRORLEVEL 1 GOTO :ROLL_ENEMY
-
-:ROLL_ENEMY
-SET currentEnemy=iBandit
-CALL "%cd%\data\Combat Engine\scripts\evie.bat"
-GOTO :EXPLORATION_HUB
-
-:DISABLED_TEMP
-SET /A A=%RANDOM% %%100
-IF %A% GEQ 80 (
-    SET currentEnemy=iHunter
-    CALL "%cd%\data\Combat Engine\scripts\evie.bat"
-    GOTO :EXPLORATION_HUB
-) ELSE IF %A% GEQ 60 (
-    SET currentEnemy=iJester
-    CALL "%cd%\data\Combat Engine\scripts\evie.bat"
-    GOTO :EXPLORATION_HUB
-) ELSE IF %A% GEQ 55 (
-    SET currentEnemy=iGnome
-    CALL "%cd%\data\Combat Engine\scripts\evie.bat"
-    GOTO :EXPLORATION_HUB
-) ELSE (
-    SET currentEnemy=iGoblin
-    CALL "%cd%\data\Combat Engine\scripts\evie.bat"
-    GOTO :EXPLORATION_HUB
-)
-
-REM Unfinished, do NOT allow the Player to access this menu.
-:CHECK_RUINS_UNLOCKED
-GOTO :EXPLORATION_HUB
-
-REM Enters the Rockwinn Plaza.
-:ROCKWINN_PLAZA
-CALL "%cd%\data\functions\Rockwinn Plaza.bat"
-GOTO :EXPLORATION_HUB
+:exploration_engine
+CALL "%winLoc%\data\Exploration Engine\exploration_engine.bat"
+GOTO :AUTOSAVE
 
 :AUTOSAVE
 SET SLOPr=SAVE
