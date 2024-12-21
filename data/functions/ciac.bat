@@ -2,12 +2,16 @@ TITLE (WINDHELM) - CHOMP Character Creator
 REM CHOMP - Character Hatching Origin Making Program
 
 REM COMPAT FOR PRONOUN CHANGE FEATURE.
-pause
 IF %player.pronouns_change_req% == 1 (
     GOTO :CHOOSE_PRONOUN
 ) ELSE (
     GOTO :CFEPD
 )
+
+@REM :SELF_INIT
+@REM SET SLOPr=INIT
+@REM CALL "%cd%\data\functions\SLOP.bat"
+@REM GOTO :CFEPD
 
 REM Check for existing Player data.
 :CFEPD
@@ -108,7 +112,7 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| Enter a PERSONAL pronoun. EXAMPLE: SHE/HER, HE/HIM, THEY/THEM, IT/ITS
 ECHO ^| Please enter one half of your desired set, you will be asked for the second half next.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-SET /P personal_p_1=
+SET /P player.personal_p_1=
 GOTO :CHOOSE_P_PERSONAL_2
 
 :CHOOSE_P_PERSONAL_2
@@ -121,7 +125,7 @@ ECHO Custom Pronouns / 2
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Enter a PERSONAL pronoun. EXAMPLE: SHE/HER, HE/HIM, THEY/THEM, IT/ITS
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-SET /P personal_p_2=
+SET /P player.personal_p_2=
 GOTO :CHOOSE_P_POSSESIVE
 
 :CHOOSE_P_POSSESIVE
@@ -134,8 +138,8 @@ ECHO Custom Pronouns
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Enter a POSSESIVE pronoun. EXAMPLE: HERS, HIS, THEIRS, ITS
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-SET /P possesive_1=
-GOTO :CHOOSE_P_REFLEXIVE_AND_INTENSIVE_1
+SET /P player.possesive_1=
+GOTO :CHOOSE_P_REFLEXIVE_1
 
 :CHOOSE_P_REFLEXIVE_1
 CLS
@@ -148,8 +152,8 @@ ECHO This set covers Reflexive and Intensive pronouns.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Enter a REFLEXIVE and INTENSIVE pronoun. EXAMPLE: HERSELF, HIMSELF, THEMSELF, ITSELF
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-SET /P reflexive_1=
-IF %player.pronouns_change_req% == 1 GOTO :EOF
+SET /P player.reflexive_1=
+IF %player.pronouns_change_req% EQU 1 GOTO :EOF
 GOTO :CHOOSE_RACE
 
 :CHOOSE_RACE
