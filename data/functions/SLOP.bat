@@ -1,10 +1,18 @@
 TITLE (SLoP) - Intialization
 REM A.K.A: Save, Load, order (and initialization) Program
-REM Updated 13 October 24
-
+REM Updated 21 December 24
+pause
 REM Global Player, Item, NPC and Game attributes. G-PING.
 :BASE_SET
 REM Other Variables
+REM Placeholder values
+SET player.name=windhelm
+SET player.race=windhelm
+SET player.personal_p_1=windhelm
+SET player.personal_p_2=windhelm
+SET player.possesive_1=windhelm
+SET player.reflexive_1=windhelm
+SET player.intensive_1=windhelm
 SET CE7CALL=0
 SET refunded=false
 SET refundItem=0
@@ -97,22 +105,17 @@ SET windhelm.item_tonic_xp_category=tonics
 
 :callCheck
 IF %SLOPr% == SAVE (
-    REM Save the Player's data.
     GOTO :saveData
 ) ELSE IF %SLOPr% == LOAD (
-    REM Load the Player's data.
     GOTO :loadData
 ) ELSE IF %SLOPr% == INIT (
-    REM Create a new Player.
     GOTO :PLAYER_INIT_STATS
 ) ELSE (
-    REM Uh oh, something happened! Dispense an error.
     SET errorType=checkTime
     CALL "%cd%\data\functions\errorhandling.bat"
     EXIT /B
 )
 
-REM Saves Player & Merchant data.
 :saveData
 (
 ECHO %player.name%
@@ -192,7 +195,6 @@ ECHO %vendor.alchemist.magicka_tonic_stock%
 )>"%cd%\data\player\savedata.txt"
 GOTO :EOF
 
-REM Loads Player stats.
 :loadData
 (
 SET /P player.name=
@@ -272,7 +274,6 @@ SET /P vendor.alchemist.magicka_tonic_stock=
 )<"%cd%\data\player\savedata.txt"
 GOTO :EOF
 
-REM Runs when a new game is started to generate needed variables.
 :PLAYER_INIT_STATS
 SET player.health=100
 SET player.stamina=100
@@ -290,9 +291,7 @@ SET player.health_max=100
 SET player.weapon_type=Melee
 REM Player armor value. Used to modify attack damages against the Player.
 SET player.armor_prot=0
-REM Functions like the armor variable, but for Stamina. When I have "equipped" items implemented better in the future, probably wont need this variable, but for now it is needed.
 SET player.attack_stamina_usage=1
-REM Skills and other important "social" variables.
 SET player.skill_damage=2
 SET player.skill_stamina=2
 SET player.skill_magicka=2
@@ -306,6 +305,8 @@ SET player.magicSchool_DestructionSkill=2
 SET player.magicSchool_RestorationSkill=2
 REM Location unlocks
 SET player.ruins_unlocked=0
+REM Misc
+SET player.pronouns_change_req=0
 GOTO :PLAYER_INIT_INVENTORY
 
 REM Equipment slots
@@ -359,4 +360,8 @@ REM Alchemist Item Stock.
 SET vendor.alchemist.health_tonic_stock=50
 SET vendor.alchemist.stamina_tonic_stock=50
 SET vendor.alchemist.magicka_tonic_stock=50
-GOTO :saveData
+IF %SLOPr% == INIT (
+    GOTO :EOF
+) ELSE (
+    GOTO :saveData
+)
