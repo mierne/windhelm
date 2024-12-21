@@ -1,6 +1,6 @@
+if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 @ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION
-REM Windhelm Pre-Alpha Version 0.3.0.
-REM Extra Build Information: 241219.PA3
+REM Windhelm Pre-Alpha Version 0.2.1-241221
 REM Copyright (C) 2024  Mierne <ahoy@mierne.net>
 REM    This program is free software: you can redistribute it and/or modify
 REM    it under the terms of the GNU General Public License as published by
@@ -12,24 +12,24 @@ REM    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 REM    GNU General Public License for more details.
 REM    You should have received a copy of the GNU General Public License
 REM    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-REM Some things
-SET winLoc=%~dp0
-SET windhelm.tu=Unknown
 
-REM Reads the settings.txt file.
+:WIN_INIT
+SET winLoc=%~dp0
+SET windhelm.tu=HOTFIX
+SET SLOPr=INIT
+CALL "%cd%\data\functions\SLOP.bat"
+
 :SETTINGS_LOADER
 (
 SET /P setColor=
 )<"%winLoc%\data\settings.txt"
 GOTO :setCheck
 
-REM Applies the settings from settings.txt and prevents "ECHO IS OFF..." messages.
 :setCheck
 color %setColor%
 SET displayMessage=...
 GOTO :START
 
-REM Main Menu, previously called the "Splashscreen". Used to access New Games, Existing Games or the Settings.
 :START
 TITLE (Windhelm - %windhelm.tu%) ^| Welcome to Windhelm.
 MODE con: cols=120 lines=19
@@ -38,7 +38,7 @@ ECHO.
 TYPE "%winLoc%\data\assets\ui\main.txt"
 ECHO.
 ECHO.
-ECHO Pre-Alpha Version 0.3.0 (241207.PA3) "Unknown"
+ECHO Pre-Alpha Version 0.2.1-241221 "HOTFIX"
 ECHO ========================================================================================================================
 ECHO                   [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [Q / QUIT ]
 ECHO.
@@ -49,7 +49,6 @@ IF ERRORLEVEL 3 GOTO :settings
 IF ERRORLEVEL 2 GOTO :NEW_GAME
 IF ERRORLEVEL 1 GOTO :LOAD_SAVE
 
-REM Brief description of the game, along with credits and attributions.
 :ABOUT_WINDHELM
 TITLE (Windhelm - %windhelm.tu%) ^| About Windhelm
 MODE con: cols=120 lines=19
@@ -69,7 +68,6 @@ ECHO.
 CHOICE /C E /N /M ">"
 IF ERRORLEVEL 1 GOTO :START
 
-REM Launch the settings menu.
 :settings
 TITLE (Windhelm - %windhelm.tu%) ^| Settings Menu.
 MODE con: cols=100 lines=19
@@ -84,7 +82,6 @@ CHOICE /C 1E /N /M ">"
 IF ERRORLEVEL 2 GOTO :save_choice
 IF ERRORLEVEL 1 GOTO :theme_select
 
-REM CHANGE BACKGROUND & TEXT COLOR.
 :theme_select
 MODE con: cols=105 lines=19
 CLS
@@ -157,10 +154,7 @@ GOTO :theme_select
 ECHO %setColor%
 )>"%winLoc%\data\settings.txt"
 GOTO :START
-REM CALL "%winLoc%\data\functions\Settings.bat"
-REM GOTO :START
 
-REM Launch player creator - creates stats and inventory.
 :NEW_GAME
 CALL "%winLoc%\data\functions\ciac.bat"
 IF %OSQ% EQU 1 (
@@ -169,7 +163,6 @@ IF %OSQ% EQU 1 (
     GOTO :dashboard
 )
 
-REM Check if a save exists, and if it does, load it. Otherwise, prompt the Player to create a new save.
 :LOAD_SAVE
 SET SLOPr=LOAD
 IF NOT EXIST "%winLoc%\data\player\savedata.txt" (
@@ -177,7 +170,6 @@ IF NOT EXIST "%winLoc%\data\player\savedata.txt" (
     PAUSE
     GOTO :START
 ) ELSE (
-    REM If the above check passes, call SLOP to load data.
     CALL "%winLoc%\data\functions\SLOP.bat"
     GOTO :dashboard
 )
@@ -188,7 +180,6 @@ MODE con: cols=101 lines=21
 IF %player.xp% LSS 0 SET player.xp=0
 IF %player.health% LSS 0 set player.health=0
 CLS
-REM Write the data from the text file to the CLI.
 ECHO.
 TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
@@ -205,26 +196,22 @@ IF ERRORLEVEL 3 GOTO :character_view
 IF ERRORLEVEL 2 GOTO :view_inventory
 IF ERRORLEVEL 1 GOTO :EXPLORATION_HUB
 
-REM "Exit without saving" screen.
 :Exit_Without_Saving
 ECHO Exit now? All unsaved progress will be lost.
 CHOICE /C YN
 IF ERRORLEVEL 2 GOTO :dashboard
 IF ERRORLEVEL 1 GOTO :START
 
-REM Call SLOP with a "SLOPr" of "SAVE".
 :Save_Game
 SET SLOPr=SAVE
 CALL "%winLoc%\data\functions\SLOP.bat"
 SET displayMessage=Your game was saved.
 GOTO :dashboard
 
-REM Call the Inventory Viewer script.
 :view_inventory
 CALL "%winLoc%\data\functions\Inventory Viewer.bat"
 GOTO :dashboard
 
-REM Displays a status page for the Player's character.
 :character_view
 MODE con: cols=105 lines=21
 CLS
@@ -245,12 +232,10 @@ IF ERRORLEVEL 3 GOTO :PLAYER_CHANGE_PRONOUNS
 IF ERRORLEVEL 2 GOTO :PLAYER_CHANGE_NAME
 IF ERRORLEVEL 1 GOTO :PLAYER_LEVEL_UP
 
-REM Call leveler.bat to perform level up logic.
 :PLAYER_LEVEL_UP
 CALL "%winLoc%\data\functions\leveler.bat"
 GOTO :character_view
 
-REM Allow the Player to change their name.
 :PLAYER_CHANGE_NAME
 SET player.name_old=%player.name%
 CLS
@@ -271,7 +256,6 @@ GOTO :AUTOSAVE
 SET player.name=%player.name_old%
 GOTO :character_view
 
-REM Allow the Player to change their pronouns.
 :PLAYER_CHANGE_PRONOUNS
 SET player.pronouns_change_req=1
 CALL "%winLoc%\data\functions\ciac.bat"
@@ -331,7 +315,6 @@ REM Enters the Rockwinn Plaza.
 CALL "%cd%\data\functions\Rockwinn Plaza.bat"
 GOTO :EXPLORATION_HUB
 
-REM Saves the game before returning to WINDHELM.
 :AUTOSAVE
 SET SLOPr=SAVE
 SET displayMessage=Game saved.
