@@ -30,8 +30,7 @@ Not all of the features listed above are complete or are in a perfectly stable s
 Windhelm is a story rich, text based RPG game written using Batch Script for the Windows operating system terminal version 10.
 
 ## Downloading
-Thank you for your interest in Windhelm! This repo is in active development and as such attempting to run the game from the repo directly may result in an unintended experience.
-I suggest that you go [here](https://github.com/mierne/windhelm/releases) for stable releases. As always, please report bugs if you find them!
+Thank you for your interest in Windhelm! You may download this branch as a .zip or use the releases tab.
 
 ## Contributing
 Contributions are welcome and even encouraged! Windhelm is an open source project licensed under [GPL-3.0-or-later](https://www.gnu.org/licenses/gpl-3.0-standalone.html).
