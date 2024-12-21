@@ -1,6 +1,5 @@
-if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 @ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION
-REM Windhelm Pre-Alpha Version 0.2.1-241221
+REM Windhelm Pre-Alpha Version 0.2.2-241221
 REM Copyright (C) 2024  Mierne <ahoy@mierne.net>
 REM    This program is free software: you can redistribute it and/or modify
 REM    it under the terms of the GNU General Public License as published by
@@ -15,9 +14,9 @@ REM    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 :WIN_INIT
 SET winLoc=%~dp0
-SET windhelm.tu=HOTFIX
+SET windhelm.tu=HOTFIX 2
 SET SLOPr=INIT
-CALL "%cd%\data\functions\SLOP.bat"
+CALL "%winLoc%\data\functions\SLOP.bat"
 
 :SETTINGS_LOADER
 (
@@ -38,7 +37,7 @@ ECHO.
 TYPE "%winLoc%\data\assets\ui\main.txt"
 ECHO.
 ECHO.
-ECHO Pre-Alpha Version 0.2.1-241221 "HOTFIX"
+ECHO Pre-Alpha Version 0.2.2-241221 "HOTFIX 2"
 ECHO ========================================================================================================================
 ECHO                   [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [Q / QUIT ]
 ECHO.
