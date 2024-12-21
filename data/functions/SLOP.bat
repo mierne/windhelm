@@ -1,18 +1,11 @@
 TITLE (SLoP) - Intialization
 REM A.K.A: Save, Load, order (and initialization) Program
 REM Updated 21 December 24
-pause
+
 REM Global Player, Item, NPC and Game attributes. G-PING.
 :BASE_SET
 REM Other Variables
 REM Placeholder values
-SET player.name=windhelm
-SET player.race=windhelm
-SET player.personal_p_1=windhelm
-SET player.personal_p_2=windhelm
-SET player.possesive_1=windhelm
-SET player.reflexive_1=windhelm
-SET player.intensive_1=windhelm
 SET CE7CALL=0
 SET refunded=false
 SET refundItem=0
@@ -109,7 +102,7 @@ IF %SLOPr% == SAVE (
 ) ELSE IF %SLOPr% == LOAD (
     GOTO :loadData
 ) ELSE IF %SLOPr% == INIT (
-    GOTO :PLAYER_INIT_STATS
+    GOTO :GAME_INIT
 ) ELSE (
     SET errorType=checkTime
     CALL "%cd%\data\functions\errorhandling.bat"
@@ -273,6 +266,16 @@ SET /P vendor.alchemist.stamina_tonic_stock=
 SET /P vendor.alchemist.magicka_tonic_stock=
 )<"%cd%\data\player\savedata.txt"
 GOTO :EOF
+
+:GAME_INIT
+SET player.name=windhelm
+SET player.race=windhelm
+SET player.personal_p_1=windhelm
+SET player.personal_p_2=windhelm
+SET player.possesive_1=windhelm
+SET player.reflexive_1=windhelm
+SET player.intensive_1=windhelm
+GOTO :PLAYER_INIT_STATS
 
 :PLAYER_INIT_STATS
 SET player.health=100
