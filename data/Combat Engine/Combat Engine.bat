@@ -1,32 +1,30 @@
 MODE con: cols=120 lines=28
 REM Combat Engine Pre-Alpha Version 0.8.0
-REM Extra Build Information: wce-241221.PA8.GU0 - "Abyssal"
+REM Extra Build Information: wce-241223.PA8.GU0 - "Abyssal"
 
 :EBS
 MODE con: cols=120 lines=28
+IF %enemy.health% LEQ 0 GOTO :VICTORY_STATS_TRACK
+IF %player.health% LEQ 0 GOTO :DEFEAT_SCREEN
 TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.class% vs %curEn% & SET enAT=%enATb%
 CLS
-IF %enemy.health% LEQ 0 GOTO :VICTORY_REWARDS
-IF %player.health% LEQ 0 GOTO :DEFEAT_SCREEN
 ECHO.
-TYPE "%cd%\data\assets\enemies\Iridescent Forest\%curEn%.txt"
+ECHO "%winLoc%\data\assets\enemies\Iridescent Forest\%currentEnemy%.txt"
 ECHO.
-ECHO +---------------------------------------------------------------------------------------------------------------------+
-ECHO ^|                                               HP: %enemy.health% ^| ATK: %enemy.damage%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| %currentEnemy% HP: %enemy.health% ^| ATK %enemy.damage%
 ECHO ^| %displayMessage%
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| STM: %player.stamina% ^| ATK: %player.damage% ^| AMR: %player.armor_equip% ^| MGK: %player.magicka%
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [I] ITEMS  ^| [E] END     ^| %player.message%
-ECHO ^|            ^| [R] RECOVER ^|
-ECHO ^| [A] ATTACK ^|             ^| [F] FLEE
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-CHOICE /C IAERF /N /M ">"
-IF ERRORLEVEL 5 GOTO :PLAYER_ATTEMPTS_FLEE
-IF ERRORLEVEL 4 GOTO :PLAYER_RECOVERY
-IF ERRORLEVEL 3 GOTO :PLAYER_ENDED_TURN
-IF ERRORLEVEL 2 GOTO :PLAYER_ATTACK_CALCULATIONS
-IF ERRORLEVEL 1 GOTO :PLAYER_INVENTORY
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| [A / ATTACK ] ^| [H / HEAVY ATTACK ] ^| [I / ITEMS ] ^| [R / RECOVER ] ^| [Q / FLEE ]
+ECHO +-------------------------------------------------------------------------------------------------------+
+CHOICE /C AHIRQ /N /M ">"
+IF ERRORLEVEL 5 GOTO :PLAYER_FLEE
+IF ERRORLEVEL 4 GOTO :PLAYER_RECOVER
+IF ERRORLEVEL 3 GOTO :PLAYER_ITEMS
+IF ERRORLEVEL 2 GOTO :PLAYER_HEAVY_ATTACK
+IF ERRORLEVEL 1 GOTO :PLAYER_NORMAL_ATTACK
 
 :PLAYER_ATTACK_CALCULATIONS
 IF %player.stamina% LSS %player.stamina_equip% (
@@ -82,81 +80,32 @@ IF %EAC% GTR 30 (
 )
 
 :PLAYER_INVENTORY
-ECHO disabled
-PAUSE
-GOTO :EBS
+REM REDESIGN PLAYER INVENTORY ACCESS
 
 :ERROR_HANDLER
 CALL "%cd%\data\functions\Error Handler.bat"
 EXIT
 
-:VICTORY_REWARDS
-CALL "%cd%\data\functions\leveler.bat"
-SET player.health=%player.health_max%
-SET player.stamina=%player.stamina_max%
-SET player.magicka=%player.magicka_max%
-SET /A RR=%RANDOM% %%20
-IF %RR% GEQ 15 (
-    SET goldGained=60
-    SET xpGained=25
-    GOTO :VICTORY_SCREEN
-) ELSE IF %RR% LEQ 8 (
-    SET goldGained=20
-    SET xpGained=10
-    GOTO :VICTORY_SCREEN
+:VICTORY_STATS_TRACK
+IF %currentEnemy% == "Bandit" (
+    SET /A player.bandits_slain=!player.bandits_slain! +1
+    GOTO :VICTORY_REWARDS
 ) ELSE (
-    SET goldGained=10
-    SET xpGained=5
-    GOTO :VICTORY_SCREEN
+    GOTO :VICTORY_REWARDS
 )
 
+:VICTORY_REWARDS
+REM REWORK VICTORY REWARDS
+
 :VICTORY_SCREEN
-SET /A player.coins=!player.coins! +%goldGained%
-SET /A player.xp=!player.xp! +%xpGained%
-TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.class% is victorious!
-CLS
-ECHO.
-TYPE "%cd%\data\assets\ui\victory.txt"
-ECHO.
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| %lootFound% ^| %player.levelup_notif%
-ECHO ^| You defeated the %curEn%, congratulations^! You've been rewarded with %goldGained% Gold and %xpGained% xp.
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| STM: %player.stamina% ^| ATK: %player.damage% ^| AMR: %player.armor% ^| MGK: %player.magicka%
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| ACTION 1: %q_action_1% ^| ACTION 2: %q_action_2% ^| ACTION 3: %q_action_3%
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / LOOT %curEn% ] ^| [E / EXIT ]  ^| %player.message%                                                      +
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-CHOICE /C 1E /N /M ">"
-IF ERRORLEVEL 2 GOTO :EXIT
-IF ERRORLEVEL 1 GOTO :LOOT
+REM REDESIGN VICTORY SCREEN
 
 :LOOT
-CALL "%cd%\data\Combat Engine\scripts\ceLoot.bat"
-SET enLooted=1
-GOTO :VICTORY_SCREEN
+REM REWORK ceLOOT
 
 :DEFEAT_SCREEN
-SET /A player.xp=!player.xp! +10
-SET player.health=%player.health_max%
-TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.class% is victorious!
-CLS
-ECHO.
-TYPE "%cd%\data\assets\ui\defeat.txt"
-ECHO.
-ECHO +---------------------------------------------------------------------------------------------------------------------+
-ECHO ^| %lootFound%
-ECHO ^| You were defeated ny the %curEn%! You've been rewarded with 10 xp.
-ECHO +---------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| STM: %player.stamina% ^| ATK: %player.damage% ^| AMR: %player.armor% ^| MGK: %player.magicka%
-ECHO +---------------------------------------------------------------------------------------------------------------------+
-ECHO ^| ACTION 1: %q_action_1% ^| ACTION 2: %q_action_2% ^| ACTION 3: %q_action_3%
-ECHO +---------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [E / EXIT ]  ^| %player.message%                                                                            +
-ECHO +---------------------------------------------------------------------------------------------------------------------+
-CHOICE /C E /N /M ">"
-IF ERRORLEVEL 1 GOTO :EXIT
+SET /A player.total_deaths=!player.total_deaths! +1
+REM REDESIGN DEFEAT SCREEN
 
 :EXIT
 SET player.armor_calculated=1
