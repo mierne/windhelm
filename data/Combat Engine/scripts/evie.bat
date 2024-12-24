@@ -26,7 +26,9 @@ SET abyssal_guardian.special_damage=45
 SET abyssal_guardian.parry_chance=2
 SET abyssal_guardian.riposte_modifer=4
 SET abyssal_guardian.special_name=The Dark Lurketh
+SET ce.boss_active=1
 
+:ENCOUNTER
 IF "%currentEnemy%" == "Bandit" (
     SET enemy.health=%bandit.health%
     SET enemy.stamina=%bandit.stamina%
