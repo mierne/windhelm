@@ -1,6 +1,6 @@
 if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 @ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION
-REM Windhelm Pre-Alpha Version 0.3.0-241223
+REM Windhelm Pre-Alpha Version UNSTABLE-0.3.0-241226
 REM Copyright (C) 2024  Mierne <ahoy@mierne.net>
 REM    This program is free software: you can redistribute it and/or modify
 REM    it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ ECHO.
 TYPE "%winLoc%\data\assets\ui\main.txt"
 ECHO.
 ECHO.
-ECHO Pre-Alpha Version 0.3.0-241223 "Abyssal"
+ECHO Pre-Alpha Version 0.3.0-241226 "Abyssal"
 ECHO ========================================================================================================================
 ECHO                   [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [Q / QUIT ]
 ECHO.
@@ -175,7 +175,7 @@ IF NOT EXIST "%winLoc%\data\player\savedata.txt" (
 )
 
 :dashboard
-TITLE (Windhelm - %windhelm.tu%) Castle Gate ^| %player.name% the %player.class%
+TITLE (Windhelm - %windhelm.tu%) Castle Gate ^| %player.name% the %player.race% %player.class%
 MODE con: cols=101 lines=21
 IF %player.xp% LSS 0 SET player.xp=0
 IF %player.health% LSS 0 set player.health=0
