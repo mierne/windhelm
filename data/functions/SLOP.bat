@@ -122,7 +122,8 @@ ECHO %player.intensive_1%
 ECHO %player.health%
 ECHO %player.stamina%
 ECHO %player.magicka%
-ECHO %player.damage%
+ECHO %player.damage_normal%
+ECHO %player.damage_heavy%
 ECHO %player.armor%
 ECHO %player.class%
 ECHO %player.coins%
@@ -134,7 +135,8 @@ ECHO %player.magicka_max%
 ECHO %player.health_max%
 ECHO %player.weapon_type%
 ECHO %player.armor_prot%
-ECHO %player.attack_stamina_usage%
+ECHO %player.attack_stamina_normal%
+ECHO %player.attack_stamina_heavy%
 ECHO %player.skill_damage%
 ECHO %player.skill_stamina%
 ECHO %player.skill_magicka%
@@ -203,7 +205,8 @@ SET /P player.intensive_1=
 SET /P player.health=
 SET /P player.stamina=
 SET /P player.magicka=
-SET /P player.damage=
+SET /P player.damage_normal=
+SET /P player.damage_heavy=
 SET /P player.armor=
 SET /P player.class=
 SET /P player.coins=
@@ -216,6 +219,8 @@ SET /P player.health_max=
 SET /P player.weapon_type=
 SET /P player.armor_prot=
 SET /P player.attack_stamina_usage=
+SET /P player.attack_stamina_normal=
+SET /P player.attack_stamina_heavy=
 SET /P player.skill_damage=
 SET /P player.skill_stamina=
 SET /P player.skill_magicka=
@@ -286,7 +291,8 @@ GOTO :PLAYER_INIT_STATS
 SET player.health=100
 SET player.stamina=100
 SET player.magicka=100
-SET player.damage=5
+SET player.damage_normal=5
+SET player.damage_heavy=10
 SET player.armor=0
 SET player.class=NONE
 SET player.coins=1000
@@ -299,7 +305,8 @@ SET player.health_max=100
 SET player.weapon_type=Melee
 REM Player armor value. Used to modify attack damages against the Player.
 SET player.armor_prot=0
-SET player.attack_stamina_usage=1
+SET player.attack_stamina_normal=1
+SET player.attack_stamina_heavy=5
 SET player.skill_damage=2
 SET player.skill_stamina=2
 SET player.skill_magicka=2
