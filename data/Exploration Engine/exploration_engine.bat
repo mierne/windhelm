@@ -26,7 +26,7 @@ CLS
 ECHO.
 REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
 ECHO.
-ECHO Where is it you wish to go, %player.name%?
+ECHO What is it you wish to do, %player.name%?
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -40,7 +40,7 @@ IF ERRORLEVEL 1 GOTO :IFOR_ADVENTURE
 :IFOR_ADVENTURE
 SET /A EE=%RANDOM% %%50
 IF %EE% LEQ 50 (
-    SET currentEnemy="Bandit"
+    SET currentEnemy=Bandit
     CALL "%winLoc%\data\Combat Engine\scripts\evie.bat"
 ) ELSE (
     REM In the future, random items may be discovered.
