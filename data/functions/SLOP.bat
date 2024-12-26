@@ -128,6 +128,7 @@ ECHO %player.coins%
 ECHO %player.xp%
 ECHO %player.xp_required%
 ECHO %player.level%
+ECHO %player.stamina_equip%
 ECHO %player.stamina_max%
 ECHO %player.magicka_max%
 ECHO %player.health_max%
@@ -207,6 +208,7 @@ SET /P player.coins=
 SET /P player.xp=
 SET /P player.xp_required=
 SET /P player.level=
+SET /P player.stamina_equip=
 SET /P player.stamina_max=
 SET /P player.magicka_max=
 SET /P player.health_max=
@@ -288,6 +290,7 @@ SET player.coins=1000
 SET player.xp=0
 SET player.xp_required=5000
 SET player.level=1
+SET player.stamina_equip=2
 SET player.stamina_max=100
 SET player.magicka_max=100
 SET player.health_max=100
