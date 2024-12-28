@@ -1,6 +1,6 @@
 TITLE (SLoP) - Intialization
 REM A.K.A: Save, Load, order (and initialization) Program
-REM Updated 23 December 24
+REM Updated 28 December 24
 
 REM Global Player, Item, NPC and Game attributes. G-PING.
 :BASE_SET
