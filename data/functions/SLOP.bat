@@ -1,6 +1,6 @@
 TITLE (SLoP) - Intialization
 REM A.K.A: Save, Load, order (and initialization) Program
-REM Updated 28 December 24
+REM Updated 12 January 25
 
 REM Global Player, Item, NPC and Game attributes. G-PING.
 :BASE_SET
@@ -11,6 +11,9 @@ SET refunded=false
 SET refundItem=0
 SET refundPrice=0
 SET itemStored=false
+REM Other values
+SET windhelm.ut=Abyssal
+SET windhelm.vn=UNSTABLE-0.3.0-250112
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
