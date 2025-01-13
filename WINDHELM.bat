@@ -1,6 +1,6 @@
 if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 @ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION
-REM Windhelm Pre-Alpha Version UNSTABLE-0.3.0-241226
+REM Windhelm Pre-Alpha Version UNSTABLE-0.3.0-250112
 REM Copyright (C) 2024  Mierne <ahoy@mierne.net>
 REM    This program is free software: you can redistribute it and/or modify
 REM    it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@ REM    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 :WIN_INIT
 SET winLoc=%~dp0
-SET windhelm.tu=Abyssal
 SET SLOPr=INIT
 CALL "%winLoc%\data\functions\SLOP.bat"
 
@@ -38,7 +37,7 @@ ECHO.
 TYPE "%winLoc%\data\assets\ui\main.txt"
 ECHO.
 ECHO.
-ECHO Pre-Alpha Version 0.3.0-241226 "Abyssal"
+ECHO Pre-Alpha Version %windhelm.vn% "Abyssal"
 ECHO ========================================================================================================================
 ECHO                   [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [Q / QUIT ]
 ECHO.
@@ -57,6 +56,9 @@ ECHO.
 REM TO DO: about.txt
 TYPE "%winLoc%\data\assets\ui\about.txt"
 ECHO.
+ECHO.
+ECHO Windhelm Version %windhelm.vn%
+ECHO This is an UNSTABLE build. Check the github page for more information.
 ECHO.
 ECHO Delve into the powerful, mysterious Iridescent Forest of the Kindgom of Fulkwinn and it's equally powerful castle,
 ECHO Windhelm! Discover shards of your past and rebuild your identity, or forge a new one. Your destiny is yours to control
