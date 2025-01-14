@@ -1,6 +1,5 @@
 TITLE (SLoP) - Intialization
 REM A.K.A: Save, Load, order (and initialization) Program
-REM Updated 21 December 24
 
 REM Global Player, Item, NPC and Game attributes. G-PING.
 :BASE_SET
@@ -11,13 +10,12 @@ SET refunded=false
 SET refundItem=0
 SET refundPrice=0
 SET itemStored=false
+REM Other values
+SET windhelm.ut=Abyssal
+SET windhelm.vn=UNSTABLE-0.3.0-250113
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
-SET windhelm.foe_bandit_favored_element=NONE
-SET windhelm.foe_jester_favored_element=NONE
-SET windhelm.foe_hunter_favored_element=NONE
-SET windhelm.foe_goblin_favored_element=NONE
-SET windhelm.foe_gnome_favored_element=NONE
-SET windhelm.foe_golem_favored_element=Fire
+SET windhelm.foe_bandit_favored_element=None
+SET windhelm.foe_abyssal_guardian_favored_element=None
 REM Level up skill costs base
 SET windhelm.damage_skill_base_cost_level=2
 SET windhelm.stamina_skill_base_cost_level=2
@@ -30,26 +28,31 @@ REM Item Table [ WEAPONS ]
 SET windhelm.item_long_sword_name=Long Sword
 SET windhelm.item_long_sword_damage=8
 SET windhelm.item_long_sword_stamina_usage=12
+SET windhelm.item_long_sword_stamina_usage_heavy=24
 SET windhelm.item_long_sword_type=weapon
 SET windhelm.item_long_sword_category=swords
 SET windhelm.item_short_sword_name=Short Sword
 SET windhelm.item_short_sword_damage=4
 SET windhelm.item_short_sword_stamina_usage=6
+SET windhelm.item_short_sword_stamina_usage_heavy=12
 SET windhelm.item_short_sword_type=weapon
 SET windhelm.item_short_sword_category=swords
 SET windhelm.item_great_axe_name=Great Axe
 SET windhelm.item_great_axe_damage=17
 SET windhelm.item_great_axe_stamina_usage=15
+SET windhelm.item_great_axe_stamina_usage_heavy=45
 SET windhelm.item_great_axe_type=weapon
 SET windhelm.item_great_axe_category=axes
 SET windhelm.item_mace_name=mace
 SET windhelm.item_mace_damage=12
 SET windhelm.item_mace_stamina_usage=15
+SET windhelm.item_mace_stamina_usage=30
 SET windhelm.item_mace_type=weapon
 SET windhelm.item_mace_category=maces
 SET windhelm.item_wooden_bow_name=Wooden Bow
 SET windhelm.item_wooden_bow_damage=15
 SET windhelm.item_wooden_bow_stamina_usage=25
+SET windhelm.item_wooden_bow_stamina_usage_heavy=35
 SET windhelm.item_wooden_bow_type=weapon
 SET windhelm.item_wooden_bow_category=bows
 REM Item Table [ ARMOR ]
@@ -122,19 +125,19 @@ ECHO %player.health%
 ECHO %player.stamina%
 ECHO %player.magicka%
 ECHO %player.damage%
+ECHO %player.damage_heavy%
 ECHO %player.armor%
 ECHO %player.class%
 ECHO %player.coins%
 ECHO %player.xp%
 ECHO %player.xp_required%
 ECHO %player.level%
-ECHO %player.stamina_equip%
 ECHO %player.stamina_max%
 ECHO %player.magicka_max%
 ECHO %player.health_max%
 ECHO %player.weapon_type%
 ECHO %player.armor_prot%
-ECHO %player.attack_stamina_usage%
+ECHO %player.attack_stamina%
 ECHO %player.skill_damage%
 ECHO %player.skill_stamina%
 ECHO %player.skill_magicka%
@@ -165,6 +168,8 @@ ECHO %player.item_tonic_healing_owned%
 ECHO %player.item_tonic_stamina_owned%
 ECHO %player.item_tonic_magicka_owned%
 ECHO %player.item_tonic_xp_owned%
+ECHO %player.bandits_slain%
+ECHO %player.total_deaths%
 ECHO %vendor.blacksmith_long_sword_price%
 ECHO %vendor.blacksmith_short_sword_price%
 ECHO %vendor.blacksmith_great_axe_price%
@@ -202,19 +207,20 @@ SET /P player.health=
 SET /P player.stamina=
 SET /P player.magicka=
 SET /P player.damage=
+SET /P player.damage_heavy=
 SET /P player.armor=
 SET /P player.class=
 SET /P player.coins=
 SET /P player.xp=
 SET /P player.xp_required=
 SET /P player.level=
-SET /P player.stamina_equip=
 SET /P player.stamina_max=
 SET /P player.magicka_max=
 SET /P player.health_max=
 SET /P player.weapon_type=
 SET /P player.armor_prot=
 SET /P player.attack_stamina_usage=
+SET /P player.attack_stamina=
 SET /P player.skill_damage=
 SET /P player.skill_stamina=
 SET /P player.skill_magicka=
@@ -245,6 +251,8 @@ SET /P player.item_tonic_healing_owned=
 SET /P player.item_tonic_stamina_owned=
 SET /P player.item_tonic_magicka_owned=
 SET /P player.item_tonic_xp_owned=
+SET /P player.bandits_slain=
+SET /P player.total_deaths=
 SET /P vendor.blacksmith_long_sword_price=
 SET /P vendor.blacksmith_short_sword_price=
 SET /P vendor.blacksmith_great_axe_price=
@@ -284,20 +292,20 @@ SET player.health=100
 SET player.stamina=100
 SET player.magicka=100
 SET player.damage=5
+SET player.damage_heavy=10
 SET player.armor=0
 SET player.class=NONE
 SET player.coins=1000
 SET player.xp=0
 SET player.xp_required=5000
 SET player.level=1
-SET player.stamina_equip=2
 SET player.stamina_max=100
 SET player.magicka_max=100
 SET player.health_max=100
 SET player.weapon_type=Melee
 REM Player armor value. Used to modify attack damages against the Player.
 SET player.armor_prot=0
-SET player.attack_stamina_usage=1
+SET player.attack_stamina=1
 SET player.skill_damage=2
 SET player.skill_stamina=2
 SET player.skill_magicka=2
@@ -336,6 +344,9 @@ SET player.item_tonic_healing_owned=0
 SET player.item_tonic_stamina_owned=0
 SET player.item_tonic_magicka_owned=0
 SET player.item_tonic_xp_owned=0
+REM Player statistics tracking
+SET player.bandits_slain=0
+SET player.total_deaths=0
 GOTO :INIT_MERCHANTS
 
 REM Setup Merchant inventories & Prices
