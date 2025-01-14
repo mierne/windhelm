@@ -1,6 +1,6 @@
 MODE con: cols=120 lines=28
 REM Combat Engine Pre-Alpha Version 0.8.0
-REM Extra Build Information: wce-250112.PA8.GU0 - "Abyssal"
+REM Extra Build Information: wce-250113.PA8.GU0 - "Abyssal"
 
 :EBS
 MODE con: cols=120 lines=28
@@ -17,92 +17,38 @@ ECHO ^| %displayMessage% ^| %player.message%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [A / ATTACK ] ^| [H / HEAVY ATTACK ] ^| [I / ITEMS ] ^| [R / RECOVER ] ^| [Q / FLEE ]
+ECHO ^| [A / ATTACK ] ^| [I / ITEMS ] ^| [R / RECOVER ] ^| [Q / FLEE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C AHIRQ /N /M ">"
-IF ERRORLEVEL 5 GOTO :PLAYER_FLEE
-IF ERRORLEVEL 4 GOTO :PLAYER_RECOVER
-IF ERRORLEVEL 3 GOTO :PLAYER_ITEMS
-IF ERRORLEVEL 2 GOTO :PLAYER_HEAVY_ATTACK
-IF ERRORLEVEL 1 GOTO :PLAYER_NORMAL_ATTACK
+CHOICE /C AIRQ /N /M ">"
+IF ERRORLEVEL 4 GOTO :PLAYER_FLEE
+IF ERRORLEVEL 3 GOTO :PLAYER_RECOVER
+IF ERRORLEVEL 2 GOTO :PLAYER_ITEMS
+IF ERRORLEVEL 1 GOTO :PLAYER_ATTACK_SC
 
-
-
-
-@REM :PLAYER_NORMAL_ATTACK
-@REM SET player.attack_type=normal
-@REM IF %player.stamina% LSS %player.attack_stamina_normal% (
-@REM     REM "15 WAS UNEXPECTED. Where is the number 15 even coming from? HUMAN SORCERER default attack/stamina should be 5, not 15. What is causing this?"
-@REM     pause
-@REM     SET player.message=Not enough stamina.
-@REM     GOTO :EBS
-@REM ) ELSE (
-@REM     GOTO :PLAYER_DAMAGE_CALCULATION
-@REM )
-
-@REM :PLAYER_HEAVY_ATTACK
-@REM SET player.attack_type=heavy
-@REM IF %player.stamina% LSS %player.attack_stamina_heavy% (
-@REM     SET player.message=Not enough stamina.
-@REM     GOTO :EBS
-@REM ) ELSE (
-@REM     GOTO :PLAYER_DAMAGE_CALCULATION
-@REM )
-
-:PLAYER_NORMAL_ATTACK
-SET player.attack_type=normal
-IF %player.stamina% LSS %player.attack_stamina_normal% (
+:PLAYER_ATTACK_SC
+IF %player.stamina% LSS %player.attack_stamina% (
     SET player.message=Not enough stamina^!
     GOTO :EBS
 ) ELSE (
-    SET /A PAN=%RANDOM% %%50
-    IF %player.attack_type% == normal (
-        SET /A player.stamina=!player.stamina! -!player.attack_stamina_normal!
-        IF %PAN% LEQ 15 (
-            SET player.message=Critical hit^!
-            SET /A enemy.health=!enemy.health! -%player.damage_normal%*2
-            GOTO :PLAYER_ARMOR_CALCULATION
-        ) ELSE IF %PAN% GEQ 35 (
-            SET player.message=Critical hit^!
-            SET /A enemy.health=!enemy.health! -%player.damage_normal%*2
-            GOTO :PLAYER_ARMOR_CALCULATION
-        ) ELSE IF %PAN% GEQ 20 (
-            SET player.message=PLACEHOLDER, NORMAL ATTACK
-            SET /A enemy.health=!enemy.health! -%player.damage_normal%
-            GOTO :PLAYER_ARMOR_CALCULATION
-        ) ELSE (
-            SET player.message=You missed^!
-            GOTO :PLAYER_ARMOR_CALCULATION
-        )
-    )
+    GOTO :PLAYER_ATTACK
 )
 
-:PLAYER_HEAVY_ATTACK
-SET player.attack_type=heavy
-IF %player.stamina% LSS %player.attack_stamina_heavy% (
-    SET player.message=Not enough stamina^!
-    GOTO :EBS
+:PLAYER_ATTACK
+SET /A PA=%RANDOM% %%50
+IF %PA% LEQ 15 (
+    SET player.message=Critical hit^!
+    SET /A enemy.health=!enemy.health! -%player.damage%*2
+    GOTO  :PLAYER_ARMOR_CALCULATION
+) ELSE IF %PA% GEQ 35 (
+    SET player.message=Critical hit^!
+    SET /A enemy.health=!enemy.health! -%player.damage*2
+    GOTO :PLAYER_ARMOR_CALCULATION
+) ELSE IF %PA% GEQ 20 (
+    SET player.message=Normal attack placeholder
+    SET /A enemy.health=!enemy.health! -%player.damage%
 ) ELSE (
-    SET /A PAN=%RANDOM% %%50
-    IF %player.attack_type% == normal (
-        SET /A player.stamina=!player.stamina! -!player.attack_stamina_heavy!
-        IF %PAN% LEQ 5 (
-            SET player.message=Critical hit^!
-            SET /A enemy.health=!enemy.health! -%player.attack_stamina_heavy%*2
-            GOTO :PLAYER_ARMOR_CALCULATION
-        ) ELSE IF %PAN% GEQ 45 (
-            SET player.message=Critical hit^!
-            SET /A enemy.health=!enemy.health! -%player.attack_stamina_heavy%*2
-            GOTO :PLAYER_ARMOR_CALCULATION
-        ) ELSE IF %PAN% GEQ 20 (
-            SET player.message=PLACEHOLDER, NORMAL ATTACK
-            SET /A enemy.health=!enemy.health! -%player.attack_stamina_heavy%
-            GOTO :PLAYER_ARMOR_CALCULATION
-        ) ELSE (
-            SET player.message=You missed^!
-            GOTO :PLAYER_ARMOR_CALCULATION
-        )
-    )
+    SET player.message=You missed^!
+    GOTO :PLAYER_ARMOR_CALCULATION
 )
 
 :PLAYER_ARMOR_CALCULATION
@@ -114,7 +60,7 @@ IF %player.armor_prot% LEQ 0 (
     GOTO :ENEMY_ATTACK_CALCULATION
 )
 
-:ENEMY_ATTACK_CALCULATIONS
+:ENEMY_ATTACK_CALCULATION
 REM Check if this is a boss fight.
 IF %ce.boss_active% EQU 1 (
     REM A boss fight is active, goto the boss label.
