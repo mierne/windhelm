@@ -1,6 +1,5 @@
 if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 @ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION
-REM Windhelm Pre-Alpha Version UNSTABLE-0.3.0-250112
 REM Copyright (C) 2025  Mierne <ahoy@mierne.net>
 REM    This program is free software: you can redistribute it and/or modify
 REM    it under the terms of the GNU General Public License as published by
