@@ -14,6 +14,7 @@ REM    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 :WIN_INIT
 SET winLoc=%~dp0
+SET windhelm.ut=Abyssal
 SET SLOPr=INIT
 CALL "%winLoc%\data\functions\SLOP.bat"
 
