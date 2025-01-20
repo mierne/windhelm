@@ -30,7 +30,7 @@ SET displayMessage=...
 GOTO :START
 
 :START
-TITLE (Windhelm - %windhelm.tu%) ^| Welcome to Windhelm.
+TITLE (Windhelm - %windhelm.ut%) ^| Welcome to Windhelm.
 MODE con: cols=120 lines=19
 CLS
 ECHO.
@@ -49,7 +49,7 @@ IF ERRORLEVEL 2 GOTO :NEW_GAME
 IF ERRORLEVEL 1 GOTO :LOAD_SAVE
 
 :ABOUT_WINDHELM
-TITLE (Windhelm - %windhelm.tu%) ^| About Windhelm
+TITLE (Windhelm - %windhelm.ut%) ^| About Windhelm
 MODE con: cols=120 lines=19
 CLS
 ECHO.
@@ -71,7 +71,7 @@ CHOICE /C E /N /M ">"
 IF ERRORLEVEL 1 GOTO :START
 
 :settings
-TITLE (Windhelm - %windhelm.tu%) ^| Settings Menu.
+TITLE (Windhelm - %windhelm.ut%) ^| Settings Menu.
 MODE con: cols=100 lines=19
 CLS
 ECHO.
@@ -177,7 +177,7 @@ IF NOT EXIST "%winLoc%\data\player\savedata.txt" (
 )
 
 :dashboard
-TITLE (Windhelm - %windhelm.tu%) Castle Gate ^| %player.name% the %player.race% %player.class%
+TITLE (Windhelm - %windhelm.ut%) Castle Gate ^| %player.name% the %player.race% %player.class%
 MODE con: cols=101 lines=21
 IF %player.xp% LSS 0 SET player.xp=0
 IF %player.health% LSS 0 set player.health=0
@@ -187,7 +187,7 @@ TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / EXPLORE ] ^| [2 / INVENTORY ] ^| [C / VIEW CHARACTER ] ^| [S / SAVE ] ^| [Q / EXIT ]
 ECHO +---------------------------------------------------------------------------------------------------+
@@ -222,9 +222,13 @@ TYPE "%winLoc%\data\assets\ui\character.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO ^| NAME: %player.name% ^| RACE: %player.race% ^| CLASS: %player.class% ^| PRONOUNS: %player.personal_p_1%/%player.personal_p_2%/%player.possesive_1%/%player.reflexive_1%
-ECHO ^| GOBLINS SLAIN: %player.goblins.slain% ^|
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| DAMAGE: %player.skill_damage% ^| MAGICKA: %player.skill_magicka% ^| ATHLETICS: %player.skill_athletics% ^| SPEECH: %player.skill_speech% ^| INTELLIGENCE: %player.skill_intelligence%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| GOBLINS SLAIN: %player.goblins_slain%
+ECHO ^| TOTAL DEATHS: %player.total_deaths%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / LEVEL UP ] ^| [2 / CHANGE NAME ] ^| [3 / CHANGE PRONOUNS ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -246,7 +250,7 @@ TYPE "%winLoc%\data\assets\ui\name.txt"
 ECHO.
 ECHO Enter a new name.
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| TYPE CANCEL TO CANCEL.
 ECHO +-------------------------------------------------------------------------------------------------------+
