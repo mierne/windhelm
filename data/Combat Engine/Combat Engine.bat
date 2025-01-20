@@ -1,20 +1,20 @@
-MODE con: cols=120 lines=28
-REM wce-250118.PA8.GU0 - for "Abyssal"
+REM wce-250119.PA8.GU0 - for "Abyssal"
 
 :EBS
-MODE con: cols=120 lines=28
+MODE con: cols=120 lines=29
 IF %enemy.health% LEQ 0 GOTO :VICTORY_STATS_TRACK
 IF %player.health% LEQ 0 GOTO :DEFEAT_SCREEN
-TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.class% vs %curEn% & SET enAT=%enATb%
+TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.race% %player.class% vs %curEn% & SET enAT=%enATb%
 CLS
 ECHO.
 TYPE "%winLoc%\data\assets\enemies\Iridescent Forest\%currentEnemy%.txt"
 ECHO.
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| %currentEnemy% HP: %enemy.health% ^| ATK: %enemy.damage% ^| STM: %enemy.stamina%
-ECHO ^| %displayMessage% ^| %player.message%
+ECHO ^| %displayMessage%
+ECHO ^| %player.message%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina%/%player.stamina_max% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [A / ATTACK ] ^| [I / ITEMS ] ^| [R / RECOVER ] ^| [Q / FLEE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -32,6 +32,40 @@ IF %player.stamina% LSS %player.attack_stamina_usage% (
     GOTO :PLAYER_ATTACK
 )
 
+:PLAYER_RECOVER
+SET /A RSR=%RANDOM% %%30
+IF %player.stamina% EQU %player.stamina_max% (
+    SET player.message=You do not need to rest.
+    GOTO :EBS
+) ELSE (
+    IF %RSR% GEQ 29 (
+        REM Full recovery
+        SET player.stamina=100
+        SET displayMessage=You rest for a moment, recovering your stamina
+        GOTO :OVERFLOW_CHECK
+    ) ELSE IF %RSR% GEQ 19 (
+        SET /A player.stamina=!player.stamina! +30
+        SET displayMessage=You rest for a moment, recovering some stamina
+        GOTO :OVERFLOW_CHECK
+    ) ELSE IF %RSR% GEQ 9 (
+        SET /A player.stamina=!player.stamina! +20
+        SET displayMessage=You rest for a moment, recovering some stamina
+        GOTO :OVERFLOW_CHECK
+    ) ELSE (
+        SET /A player.stamina=!player.stamina! +10
+        SET displayMessage=You rest for a moment, recovering some stamina
+        GOTO :OVERFLOW_CHECK
+    )
+)
+
+:OVERFLOW_CHECK
+IF %player.stamina% GTR %player.stamina_max% (
+    SET player.stamina=%player.stamina_max%
+    GOTO :PLAYER_ARMOR_CALCULATION
+) ELSE (
+    GOTO :PLAYER_ARMOR_CALCULATION
+)
+
 :PLAYER_ATTACK
 SET /A PA=%RANDOM% %%70
 IF %PA% LEQ 25 (
@@ -46,12 +80,12 @@ IF %PA% LEQ 25 (
         GOTO :PLAYER_ARMOR_CALCULATION
     ) ELSE (
         REM Just perform a normal attack.
-        SET player.message=You nearly trip in the process, but you manage to hit a solid blow^!
+        SET player.message=You nearly trip in the process, but you manage to hit a solid blow
         SET /A enemy.health=!enemy.health! -%player.damage%
         GOTO :PLAYER_ARMOR_CALCULATION
     )
 ) ELSE IF %PA% GEQ 25 (
-    SET player.message=Normal attack placeholder
+    SET player.message=You manage a decent hit on the %currentEnemy%
     SET /A enemy.health=!enemy.health! -%player.damage%
     SET /A player.stamina=!player.stamina! -%player.attack_stamina_usage%
     GOTO :PLAYER_ARMOR_CALCULATION
@@ -86,17 +120,17 @@ IF %enemy.stamina% LSS 10 (
 :ENEMY_ATTACK_CALCULATION
 SET /A EA=%RANDOM% %%50
 IF %EA% GEQ 45 (
-    SET displayMessage=%currentEnemy% scored a critical hit^!
+    SET displayMessage=The %currentEnemy% scored a critical hit
     SET /A player.health=!player.health! -%enemy.damage%*2
     SET /A enemy.stamina=!enemy.stamina! -13
     GOTO :EBS
 ) ELSE IF %EA% GEQ 15 (
-    SET displayMessage=%currentEnemy% scored a hit^!
+    SET displayMessage=The %currentEnemy% scored a hit
     SET /A player.health=!player.health! -%enemy.damage%
     SET /A enemy.stamina=!enemy.stamina! -13
     GOTO :EBS
 ) ELSE (
-    SET displayMessage=%currentEnemy% attempted a far too obvious attack and missed.
+    SET displayMessage=The %currentEnemy% attempted a far too obvious attack and missed.
     GOTO :EBS
 )
 
@@ -105,19 +139,19 @@ SET /A RSR=%RANDOM% %%30
 IF %RSR% GEQ 29 (
     REM Full recovery
     SET enemy.stamina=100
-    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering their stamina^!
+    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering their stamina
     GOTO :EBS
 ) ELSE IF %RSR% GEQ 19 (
     SET /A enemy.stamina=!enemy.stamina! +30
-    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering some stamina^!
+    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering some stamina
     GOTO :EBS
 ) ELSE IF %RSR% GEQ 9 (
     SET /A enemy.stamina=!enemy.stamina! +20
-    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering some stamina^!
+    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering some stamina
     GOTO :EBS
 ) ELSE (
     SET /A enemy.stamina=!enemy.stamina! +10
-    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering some stamina^!
+    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering some stamina
     GOTO :EBS
 )
 
@@ -158,10 +192,13 @@ IF %currentEnemy% == "Bandit" (
 )
 
 :VICTORY_REWARDS
-REM REWORK VICTORY REWARDS
+SET player.health=%player.health_max%
+SET player.stamina=%player.stamina_max%
+SET player.magicka=%player.magicka_max%
 
 :VICTORY_SCREEN
-REM REDESIGN VICTORY SCREEN
+CLS
+ECHO.
 
 :LOOT
 REM REWORK ceLOOT
