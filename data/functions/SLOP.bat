@@ -1,7 +1,7 @@
 TITLE (SLoP) - Intialization
 REM A.K.A: Save, Load, order (and initialization) Program
 
-REM Global Player, Item, NPC and Game attributes. G-PING.
+REM non-changing variables
 :BASE_SET
 REM Other Variables
 REM Placeholder values
@@ -10,8 +10,9 @@ SET refunded=false
 SET refundItem=0
 SET refundPrice=0
 SET itemStored=false
+SET player.message=...
 REM Other values
-SET windhelm.vn=UNSTABLE-0.3.0-250116
+SET windhelm.vn=UNSTABLE-0.3.0-250119
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
@@ -23,7 +24,7 @@ SET windhelm.intelligence_skill_base_cost_level=2
 REM Reflex scales with athletics, for future reference. That's why it's excluded here.
 SET windhelm.damage_athletics_base_cost_level=2
 SET windhelm.damage_speech_base_cost_level=2
-REM Item Table [ WEAPONS ]
+REM Weapon item data
 SET windhelm.item_long_sword_name=Long Sword
 SET windhelm.item_long_sword_damage=8
 SET windhelm.item_long_sword_stamina_usage=12
@@ -54,7 +55,7 @@ SET windhelm.item_wooden_bow_stamina_usage=25
 SET windhelm.item_wooden_bow_stamina_usage_heavy=35
 SET windhelm.item_wooden_bow_type=weapon
 SET windhelm.item_wooden_bow_category=bows
-REM Item Table [ ARMOR ]
+REM Armor item data
 SET windhelm.item_cactus_armor_name=Cactus Armor
 SET windhelm.item_cactus_armor_prot=3
 SET windhelm.item_cactus_armor_type=armor
@@ -80,7 +81,7 @@ SET windhelm.item_iron_armor_prot=8
 SET windhelm.item_iron_armor_enchantable=true
 SET windhelm.item_iron_armor_type=armor
 SET windhelm.item_iron_armor_category=heavy armor
-REM Item Table [ TONICS ]
+REM Tonic item data
 SET windhelm.item_tonic_healing_name=Health Tonic
 SET windhelm.item_tonic_healing_modifier=20
 SET windhelm.item_tonic_healing_type=consumable
@@ -142,7 +143,6 @@ ECHO %player.skill_stamina%
 ECHO %player.skill_magicka%
 ECHO %player.skill_speech%
 ECHO %player.skill_athletics%
-ECHO %player.skill_reflex%
 ECHO %player.skill_intelligence%
 ECHO %player.reputation%
 ECHO %player.magicSchool_AlterationSkill%
@@ -221,11 +221,9 @@ SET /P player.armor_prot=
 SET /P player.attack_stamina_usage=
 SET /P player.attack_stamina=
 SET /P player.skill_damage=
-SET /P player.skill_stamina=
 SET /P player.skill_magicka=
 SET /P player.skill_speech=
 SET /P player.skill_athletics=
-SET /P player.skill_reflex=
 SET /P player.skill_intelligence=
 SET /P player.reputation=
 SET /P player.magicSchool_AlterationSkill=
@@ -306,11 +304,9 @@ REM Player armor value. Used to modify attack damages against the Player.
 SET player.armor_prot=0
 SET player.attack_stamina=1
 SET player.skill_damage=2
-SET player.skill_stamina=2
 SET player.skill_magicka=2
 SET player.skill_speech=2
 SET player.skill_athletics=2
-SET player.skill_reflex=2
 SET player.skill_intelligence=2
 SET player.reputation=2
 SET player.magicSchool_AlterationSkill=2
@@ -318,6 +314,8 @@ SET player.magicSchool_DestructionSkill=2
 SET player.magicSchool_RestorationSkill=2
 REM Location unlocks
 SET player.ruins_unlocked=0
+REM STAT TRACKING
+SET player.goblins_slain=0
 REM Misc
 SET player.pronouns_change_req=0
 GOTO :PLAYER_INIT_INVENTORY
