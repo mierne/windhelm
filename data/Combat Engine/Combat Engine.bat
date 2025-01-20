@@ -11,10 +11,10 @@ ECHO.
 TYPE "%winLoc%\data\assets\enemies\Iridescent Forest\%currentEnemy%.txt"
 ECHO.
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| %currentEnemy% HP: %enemy.health% ^| ATK %enemy.damage%
+ECHO ^| %currentEnemy% HP: %enemy.health% ^| ATK: %enemy.damage% ^| STM: %enemy.stamina%
 ECHO ^| %displayMessage% ^| %player.message%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [A / ATTACK ] ^| [I / ITEMS ] ^| [R / RECOVER ] ^| [Q / FLEE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -25,26 +25,36 @@ IF ERRORLEVEL 2 GOTO :PLAYER_ITEMS
 IF ERRORLEVEL 1 GOTO :PLAYER_ATTACK_SC
 
 :PLAYER_ATTACK_SC
-IF %player.stamina% LSS %player.attack_stamina% (
-    SET player.message=Not enough stamina^!
+IF %player.stamina% LSS %player.attack_stamina_usage% (
+    SET player.message=You try to swing but find your weak noodles too exhausted.
     GOTO :EBS
 ) ELSE (
     GOTO :PLAYER_ATTACK
 )
 
 :PLAYER_ATTACK
-SET /A PA=%RANDOM% %%50
-IF %PA% LEQ 15 (
+SET /A PA=%RANDOM% %%70
+IF %PA% LEQ 25 (
     SET player.message=Critical hit^!
     SET /A enemy.health=!enemy.health! -%player.damage%*2
+    SET /A player.stamina=!player.stamina! -%player.attack_stamina_usage%
     GOTO  :PLAYER_ARMOR_CALCULATION
-) ELSE IF %PA% GEQ 35 (
-    SET player.message=Critical hit^!
-    SET /A enemy.health=!enemy.health! -%player.damage*2
-    GOTO :PLAYER_ARMOR_CALCULATION
-) ELSE IF %PA% GEQ 20 (
+) ELSE IF %PA% GEQ 50 (
+    REM Athletics check! If Player athletics is below a certain level, they will miss this attack. A proper way to scale in the future will be nice.
+    IF %player.skill_athletics% LSS 10 (
+        SET player.message=You left your laces united. You fall flat on your face, missing entirely.
+        GOTO :PLAYER_ARMOR_CALCULATION
+    ) ELSE (
+        REM Just perform a normal attack.
+        SET player.message=You nearly trip in the process, but you manage to hit a solid blow^!
+        SET /A enemy.health=!enemy.health! -%player.damage%
+        GOTO :PLAYER_ARMOR_CALCULATION
+    )
+) ELSE IF %PA% GEQ 25 (
     SET player.message=Normal attack placeholder
     SET /A enemy.health=!enemy.health! -%player.damage%
+    SET /A player.stamina=!player.stamina! -%player.attack_stamina_usage%
+    GOTO :PLAYER_ARMOR_CALCULATION
 ) ELSE (
     SET player.message=You missed^!
     GOTO :PLAYER_ARMOR_CALCULATION
@@ -63,48 +73,55 @@ IF %player.armor_prot% LEQ 0 (
 IF %ce.boss_active% EQU 1 (
     GOTO :EAC_BOSS
 ) ELSE (
+    GOTO :ENEMY_SC
+)
+
+:ENEMY_SC
+IF %enemy.stamina% LSS 10 (
+    GOTO :ENEMY_STAMINA_RECOVERY
+) ELSE (
     GOTO :ENEMY_ATTACK_CALCULATION
 )
 
 :ENEMY_ATTACK_CALCULATION
-pause
 SET /A EA=%RANDOM% %%50
-pause
-pause
-IF %EA% GTR 30 (
-    ECHO GTR 30
-    PAUSE
-) ELSE IF %EA% GTR 20 (
-    ECHO GTR 20
-    PAUSE
-) ELSE IF %EA% GTR 12 (
-    ECHO GTR 12
-    PAUSE
+IF %EA% GEQ 45 (
+    SET displayMessage=%currentEnemy% scored a critical hit^!
+    SET /A player.health=!player.health! -%enemy.damage%*2
+    SET /A enemy.stamina=!enemy.stamina! -13
+    GOTO :EBS
+) ELSE IF %EA% GEQ 15 (
+    SET displayMessage=%currentEnemy% scored a hit^!
+    SET /A player.health=!player.health! -%enemy.damage%
+    SET /A enemy.stamina=!enemy.stamina! -13
+    GOTO :EBS
 ) ELSE (
-    ECHO miss
-    PAUSE
+    SET displayMessage=%currentEnemy% attempted a far too obvious attack and missed.
+    GOTO :EBS
 )
 
+:ENEMY_STAMINA_RECOVERY
+SET /A RSR=%RANDOM% %%30
+IF %RSR% GEQ 29 (
+    REM Full recovery
+    SET enemy.stamina=100
+    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering their stamina^!
+    GOTO :EBS
+) ELSE IF %RSR% GEQ 19 (
+    SET /A enemy.stamina=!enemy.stamina! +30
+    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering some stamina^!
+    GOTO :EBS
+) ELSE IF %RSR% GEQ 9 (
+    SET /A enemy.stamina=!enemy.stamina! +20
+    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering some stamina^!
+    GOTO :EBS
+) ELSE (
+    SET /A enemy.stamina=!enemy.stamina! +10
+    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering some stamina^!
+    GOTO :EBS
+)
 
-@REM SET /A EAC=!RANDOM! %%40
-@REM IF %EAC% GTR 30 (
-@REM     SET displayMessage=The enemy got a critical hit^!
-@REM     SET /A player.health=!player.health! -%enemy.damage%*2
-@REM     GOTO :EBS
-@REM ) ELSE IF %EAC% GTR 20 (
-@REM     SET displayMessage=You were unable to dodge the %curEn%'s swift attack^!
-@REM     SET /A player.health=!player.health! -%enemy.damage%
-@REM     GOTO :EBS
-@REM ) ELSE IF %EAC% GTR 12 (
-@REM     SET displayMessage=The enemy lands a glancing blow, a weak hit^!
-@REM     SET /A player.health=!player.health! -%enemy.damage%
-@REM     SET /A player.health=!player.health! +8
-@REM     GOTO :EBS
-@REM ) ELSE (
-@REM     SET displayMessage=placeholder
-@REM     GOTO :EBS
-@REM )
-
+SET /A enemy.stamina=!enemy.stamina! +35
 
 :EAC_BOSS
 REM BOSS FIGHT MECHANICS
