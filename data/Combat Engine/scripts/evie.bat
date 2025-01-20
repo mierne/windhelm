@@ -27,17 +27,17 @@ SET abyssal_guardian.special_damage=45
 SET abyssal_guardian.parry_chance=2
 SET abyssal_guardian.riposte_modifer=4
 SET abyssal_guardian.special_name=The Dark Lurketh
-SET ce.boss_active=1
 
 :ENCOUNTER
 IF "%currentEnemy%" == "Bandit" (
     SET enemy.health=%bandit.health%
     SET enemy.stamina=%bandit.stamina%
-    SET enemy.stamina=%bandit.magicka%
+    SET enemy.magicka=%bandit.magicka%
     SET enemy.damage=%bandit.damage%
     SET enemy.damage_base=%bandit.damage%
-    SET enemy.stamina=%bandit.parry_chance%
-    SET enemy.stamina=%bandit.riposte_modifer%
+    SET enemy.parry_chance=%bandit.parry_chance%
+    SET enemy.riposte_modifer=%bandit.riposte_modifer%
+    SET ce.boss_active=0
     SET curEn=Bandit
     GOTO :combat_engine
 ) ELSE IF "%currentEnemy%" == "Abyssal Guardian" (
@@ -50,6 +50,7 @@ IF "%currentEnemy%" == "Bandit" (
     SET enemy.parry_chance==%abyssal_guardian.parry_chance%
     SET enemy.riposte_modifer==%abyssal_guardian.riposte_modifer%
     SET enemy.special_name==%abyssal_guardian.special_name%
+    SET ce.boss_active=1
     GOTO :combat_engine
 ) ELSE (
     REM Error handling.
