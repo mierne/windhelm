@@ -1,8 +1,8 @@
 @ECHO OFF
-TITLE (WINDHELM) - EXPLORATION ENGINE ^| %player.name% the %player.class%!
+TITLE (WINDHELM) - EXPLORATION ENGINE ^| %player.name% the %player.race% %player.class%!
 
 :MAIN
-MODE con: cols=105 lines=19
+MODE con: cols=105 lines=17
 CLS
 ECHO.
 TYPE "%winLoc%\data\assets\ui\exploration.txt"
@@ -20,10 +20,10 @@ IF ERRORLEVEL 2 GOTO :VENTURE_WINDHELM_EXTERIOR
 IF ERRORLEVEL 1 GOTO :VENTURE_IRIDESCENT_FOREST
 
 :VENTURE_IRIDESCENT_FOREST
-MODE con: cols=105 lines=19
+MODE con: cols=105 lines=17
 CLS
 ECHO.
-REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
+TYPE "%winLoc%\data\assets\ui\venture.txt"
 ECHO.
 ECHO What is it you wish to do, %player.name%?
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -41,11 +41,13 @@ SET /A EE=%RANDOM% %%50
 IF %EE% LEQ 50 (
     SET currentEnemy=Bandit
     CALL "%winLoc%\data\Combat Engine\scripts\evie.bat"
+    GOTO :VENTURE_IRIDESCENT_FOREST
 ) ELSE (
     REM In the future, random items may be discovered.
     SET displayMessage=You didn't find anything of interest.
     GOTO :VENTURE_IRIDESCENT_FOREST
 )
+
 :IFOR_CHALLENGE_AREA_BOSS
 IF %player.level% GEQ 20 (
     SET currentEnemy="Abyssal Guardian"

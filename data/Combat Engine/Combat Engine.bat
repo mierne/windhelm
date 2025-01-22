@@ -1,7 +1,9 @@
-REM wce-250119.PA8.GU0 - for "Abyssal"
+if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
+REM temp fix for empty variables (what's causing this?)
+SET /A CR=%RANDOM% * 17 / 32768 + 8
 
 :EBS
-MODE con: cols=120 lines=29
+MODE con: cols=120 lines=20
 IF %enemy.health% LEQ 0 GOTO :VICTORY_STATS_TRACK
 IF %player.health% LEQ 0 GOTO :DEFEAT_SCREEN
 TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.race% %player.class% vs %curEn% & SET enAT=%enATb%
@@ -184,30 +186,144 @@ CALL "%winLoc%\data\functions\SLOP.bat"
 EXIT
 
 :VICTORY_STATS_TRACK
-IF %currentEnemy% == "Bandit" (
+IF "%currentEnemy%" == "Bandit" (
     SET /A player.bandits_slain=!player.bandits_slain! +1
     GOTO :VICTORY_REWARDS
-) ELSE (
+) ELSE IF "%currentEnemy%" == "Abyssal Guardian" (
+    SET /A player.iridescent_ab_defeated=1
     GOTO :VICTORY_REWARDS
+) ELSE (
+    REM Enemy doesn't exist? How'd you get here?
+    GOTO :ERROR_HANDLER
 )
 
 :VICTORY_REWARDS
 SET player.health=%player.health_max%
 SET player.stamina=%player.stamina_max%
 SET player.magicka=%player.magicka_max%
+SET /A XPE=%RANDOM% %%80
+IF %XPE% LEQ 30 (
+    SET /A player.xp=!player.xp! +30
+    SET displayMessage=Earned 30 XP
+    GOTO :VICTORY_REWARDS_LUNIS
+) ELSE IF %XPE% LEQ 60 (
+    SET /A player.xp=!player.xp! +70
+    SET displayMessage=Earned 70 XP
+    GOTO :VICTORY_REWARDS_LUNIS
+) ELSE (
+    SET /A player.xp=!player.xp! +100
+    SET displayMessage=Earned 100 XP
+    GOTO :VICTORY_REWARDS_LUNIS
+)
+
+:VICTORY_REWARDS_LUNIS
+IF %player.level% LSS 10 (
+    SET /A player.coins=!player.coins! +5
+    SET player.message=You earned 5 LUNIS
+    GOTO :VICTORY_SCREEN
+) ELSE IF %player.level% LSS 20 (
+    SET /A player.coins=!player.coins! +10
+    SET player.message=You earned 10 LUNIS
+    GOTO :VICTORY_SCREEN
+) ELSE IF %player.level% LSS 30 (
+    SET /A player.coins=!player.coins! +20
+    SET player.message=You earned 20 LUNIS
+    GOTO :VICTORY_SCREEN
+) ELSE IF %player.level% LSS 40 (
+    SET /A player.coins=!player.coins! +30
+    SET player.message=You earned 40 LUNIS
+    GOTO :VICTORY_SCREEN
+) ELSE (
+    SET /A player.coins=!player.coins! +50
+    SET player.message=You earned 50 LUNIS
+    GOTO :VICTORY_SCREEN
+)
 
 :VICTORY_SCREEN
+MODE con: cols=105 lines=18
 CLS
 ECHO.
+TYPE "%winLoc%\data\assets\ui\victory.txt"
+ECHO.
+ECHO The %currentEnemy% was defeated. Your health, stamina and magicka has been refilled!
+ECHO %player.message% ^| %displayMessage%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina%/%player.stamina_max% ^| MG: %player.magicka%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO [1 / LOOT ] ^| [Q LEAVE ]
+ECHO +-------------------------------------------------------------------------------------------------------+
+CHOICE /C 1QR /N /M ">"
+IF ERRORLEVEL 3 GOTO :VICTORY_SCREEN
+IF ERRORLEVEL 2 GOTO :EXIT
+IF ERRORLEVEL 1 GOTO :LOOT
 
 :LOOT
-REM REWORK ceLOOT
+IF %enLooted% EQU 1 (
+    SET player.message=This enemy was looted already.
+    GOTO :VICTORY_SCREEN
+) ELSE (
+    GOTO :VICTORY_LOOT
+)
+
+:VICTORY_LOOT
+IF %player.level% LEQ 10 (
+    GOTO :PLAYER_LEVEL_10_LOWER
+) ELSE (
+    echo NOT IMPLEMENTED
+    GOTO :VICTORY_SCREEN
+)
+
+:PLAYER_LEVEL_10_LOWER
+SET /A LT=%RANDOM% %%40
+IF %LT% LEQ 10 (
+    SET enLooted=1
+    SET /A CR=%RANDOM% * 17 / 32768 + 8
+    SET /A player.coins=!player.coins! +%CR%
+    SET player.message=You found %CR% LUNIS
+    GOTO :VICTORY_SCREEN
+) ELSE IF %LT% LEQ 20 (
+    SET enLooted=1
+    SET /A CR=%RANDOM% * 32 / 32768 + 12
+    SET /A player.coins=!player.coins! +%CR%
+    SET player.message=You found %CR% LUNIS
+    GOTO :VICTORY_SCREEN
+) ELSE IF %LT% LEQ 30 (
+    SET enLooted=1
+    SET /A player.item_long_sword_owned=!player.item_long_sword_owned! +1
+    SET player.message=You found a Long Sword.
+    GOTO :VICTORY_SCREEN
+) ELSE IF %LT% LEQ 40 (
+    SET enLooted=1
+    SET /A CR=%RANDOM% * 48 / 32768 + 21
+    SET /A player.coins=!player.coins! +%CR%
+    SET /A player.item_cactus_armor_owned=!player.item_cactus_armor_owned! +1
+    SET player.message=You found %CR% LUNIS and 1 CACTUS ARMOR
+    GOTO :VICTORY_SCREEN
+)
 
 :DEFEAT_SCREEN
 SET /A player.total_deaths=!player.total_deaths! +1
-REM REDESIGN DEFEAT SCREEN
+SET /A player.health=!player.health! +25
+SET /A player.stamina=!player.stamina! +25
+SET /A player.magicka=!player.magicka! +25
+SET player.message=...
+SET displayMessage=...
+MODE con: cols=105 lines=18
+CLS
+ECHO.
+TYPE "%winLoc%\data\assets\ui\defeat.txt"
+ECHO.
+ECHO You were defeated by the %currentEnemy%. Your health, stamina and magicka has been partially refilled.
+ECHO %player.message% ^| %displayMessage%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina%/%player.stamina_max% ^| MG: %player.magicka%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| [Q LEAVE ]
+ECHO +-------------------------------------------------------------------------------------------------------+
+CHOICE /C Q /N /M ">"
+IF ERRORLEVEL 1 GOTO :EXIT
 
 :EXIT
-SET player.armor_calculated=1
-SET enemy.attack=%enemy.attack_normal%
+SET enLooted=0
+SET enemy.damage=%enemy.damage_base%
 GOTO :EOF

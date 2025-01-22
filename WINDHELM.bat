@@ -178,7 +178,7 @@ IF NOT EXIST "%winLoc%\data\player\savedata.txt" (
 
 :dashboard
 TITLE (Windhelm - %windhelm.ut%) Castle Gate ^| %player.name% the %player.race% %player.class%
-MODE con: cols=101 lines=21
+MODE con: cols=101 lines=17
 IF %player.xp% LSS 0 SET player.xp=0
 IF %player.health% LSS 0 set player.health=0
 CLS
@@ -227,7 +227,7 @@ ECHO ^| NAME: %player.name% ^| RACE: %player.race% ^| CLASS: %player.class% ^| P
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %player.skill_damage% ^| MAGICKA: %player.skill_magicka% ^| ATHLETICS: %player.skill_athletics% ^| SPEECH: %player.skill_speech% ^| INTELLIGENCE: %player.skill_intelligence%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| GOBLINS SLAIN: %player.goblins_slain%
+ECHO ^| BANDITS SLAIN: %player.bandits_slain%
 ECHO ^| TOTAL DEATHS: %player.total_deaths%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / LEVEL UP ] ^| [2 / CHANGE NAME ] ^| [3 / CHANGE PRONOUNS ] ^| [Q / BACK ]

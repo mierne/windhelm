@@ -12,7 +12,7 @@ SET refundPrice=0
 SET itemStored=false
 SET player.message=...
 REM Other values
-SET windhelm.vn=UNSTABLE-0.3.0-250119
+SET windhelm.vn=UNSTABLE-0.3.0-250121
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
@@ -138,8 +138,8 @@ ECHO %player.health_max%
 ECHO %player.weapon_type%
 ECHO %player.armor_prot%
 ECHO %player.attack_stamina%
+ECHO %player.attack_stamina_usage%
 ECHO %player.skill_damage%
-ECHO %player.skill_stamina%
 ECHO %player.skill_magicka%
 ECHO %player.skill_speech%
 ECHO %player.skill_athletics%
@@ -149,6 +149,7 @@ ECHO %player.magicSchool_AlterationSkill%
 ECHO %player.magicSchool_DestructionSkill%
 ECHO %player.magicSchool_RestorationSkill%
 ECHO %player.ruins_unlocked%
+ECHO %player.bandits_slain%
 ECHO %player.armor_equipped%
 ECHO %player.weapon_equipped%
 ECHO %player.spell_equipped%
@@ -169,6 +170,7 @@ ECHO %player.item_tonic_magicka_owned%
 ECHO %player.item_tonic_xp_owned%
 ECHO %player.bandits_slain%
 ECHO %player.total_deaths%
+ECHO %player.iridescent_ab_defeated%
 ECHO %vendor.blacksmith_long_sword_price%
 ECHO %vendor.blacksmith_short_sword_price%
 ECHO %vendor.blacksmith_great_axe_price%
@@ -218,8 +220,8 @@ SET /P player.magicka_max=
 SET /P player.health_max=
 SET /P player.weapon_type=
 SET /P player.armor_prot=
-SET /P player.attack_stamina_usage=
 SET /P player.attack_stamina=
+SET /P player.attack_stamina_usage=
 SET /P player.skill_damage=
 SET /P player.skill_magicka=
 SET /P player.skill_speech=
@@ -230,6 +232,7 @@ SET /P player.magicSchool_AlterationSkill=
 SET /P player.magicSchool_DestructionSkill=
 SET /P player.magicSchool_RestorationSkill=
 SET /P player.ruins_unlocked=
+SET /P player.bandits_slain=
 SET /P player.armor_equipped=
 SET /P player.weapon_equipped=
 SET /P player.spell_equipped=
@@ -250,6 +253,7 @@ SET /P player.item_tonic_magicka_owned=
 SET /P player.item_tonic_xp_owned=
 SET /P player.bandits_slain=
 SET /P player.total_deaths=
+SET /P player.iridescent_ab_defeated=
 SET /P vendor.blacksmith_long_sword_price=
 SET /P vendor.blacksmith_short_sword_price=
 SET /P vendor.blacksmith_great_axe_price=
@@ -303,6 +307,7 @@ SET player.weapon_type=Melee
 REM Player armor value. Used to modify attack damages against the Player.
 SET player.armor_prot=0
 SET player.attack_stamina=1
+SET player.attack_stamina_usage=1
 SET player.skill_damage=2
 SET player.skill_magicka=2
 SET player.skill_speech=2
@@ -315,7 +320,7 @@ SET player.magicSchool_RestorationSkill=2
 REM Location unlocks
 SET player.ruins_unlocked=0
 REM STAT TRACKING
-SET player.goblins_slain=0
+SET player.bandits_slain=0
 REM Misc
 SET player.pronouns_change_req=0
 GOTO :PLAYER_INIT_INVENTORY
@@ -344,6 +349,7 @@ SET player.item_tonic_xp_owned=0
 REM Player statistics tracking
 SET player.bandits_slain=0
 SET player.total_deaths=0
+SET player.iridescent_ab_defeated=0
 GOTO :INIT_MERCHANTS
 
 REM Setup Merchant inventories & Prices
