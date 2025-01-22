@@ -4,6 +4,8 @@
   ##### Originally created by Mierne
 </div>
 
+# ⚠️ PLEASE READ
+The unstable branch is currently in a more functional state than the main branch. Do not download this branch, use the releases page or switch to the unstable branch.
 
 
 # About Windhelm
