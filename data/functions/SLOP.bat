@@ -176,6 +176,12 @@ ECHO %vendor.blacksmith_short_sword_price%
 ECHO %vendor.blacksmith_great_axe_price%
 ECHO %vendor.blacksmith_mace_price%
 ECHO %vendor.blacksmith_wooden_bow_price%
+ECHO %vendor.blacksmith_cactus_armor_price%
+ECHO %vendor.blacksmith_guard_armor_price%
+ECHO %vendor.blacksmith_stone_armor_price%
+ECHO %vendor.blacksmith_steel_armor_price%
+ECHO %vendor.blacksmith_iron_armor_price%
+ECHO %vendor.blacksmith_scale_armor_price%
 ECHO %vendor.blacksmith_long_sword_sbp%
 ECHO %vendor.blacksmith_short_sword_sbp%
 ECHO %vendor.blacksmith_great_axe_sbp%
@@ -186,6 +192,12 @@ ECHO %vendor.blacksmith_short_sword_stock%
 ECHO %vendor.blacksmith_great_axe_stock%
 ECHO %vendor.blacksmith_mace_stock%
 ECHO %vendor.blacksmith_wooden_bow_stock%
+ECHO %vendor.blacksmith_cactus_armor_stock%
+ECHO %vendor.blacksmith_guard_armor_stock%
+ECHO %vendor.blacksmith_stone_armor_stock%
+ECHO %vendor.blacksmith_steel_armor_stock%
+ECHO %vendor.blacksmith_iron_armor_stock%
+ECHO %vendor.blacksmith_scale_armor_stock%
 ECHO %vendor.alchemist.health_tonic_price%
 ECHO %vendor.alchemist.stamina_tonic_price%
 ECHO %vendor.alchemist.magicka_tonic_price%
@@ -259,6 +271,12 @@ SET /P vendor.blacksmith_short_sword_price=
 SET /P vendor.blacksmith_great_axe_price=
 SET /P vendor.blacksmith_mace_price=
 SET /P vendor.blacksmith_wooden_bow_price=
+SET /P vendor.blacksmith_cactus_armor_price=
+SET /P vendor.blacksmith_guard_armor_price=
+SET /P vendor.blacksmith_stone_armor_price=
+SET /P vendor.blacksmith_steel_armor_price=
+SET /P vendor.blacksmith_iron_armor_price=
+SET /P vendor.blacksmith_scale_armor_price=
 SET /P vendor.blacksmith_long_sword_sbp=
 SET /P vendor.blacksmith_short_sword_sbp=
 SET /P vendor.blacksmith_great_axe_sbp=
@@ -269,6 +287,12 @@ SET /P vendor.blacksmith_short_sword_stock=
 SET /P vendor.blacksmith_great_axe_stock=
 SET /P vendor.blacksmith_mace_stock=
 SET /P vendor.blacksmith_wooden_bow_stock=
+SET /P vendor.blacksmith_cactus_armor_stock=
+SET /P vendor.blacksmith_guard_armor_stock=
+SET /P vendor.blacksmith_stone_armor_stock=
+SET /P vendor.blacksmith_steel_armor_stock=
+SET /P vendor.blacksmith_iron_armor_stock=
+SET /P vendor.blacksmith_scale_armor_stock=
 SET /P vendor.alchemist.health_tonic_price=
 SET /P vendor.alchemist.stamina_tonic_price=
 SET /P vendor.alchemist.magicka_tonic_price=
@@ -360,18 +384,36 @@ SET vendor.blacksmith_short_sword_price=190
 SET vendor.blacksmith_great_axe_price=700
 SET vendor.blacksmith_mace_price=280
 SET vendor.blacksmith_wooden_bow_price=125
+SET vendor.blacksmith_cactus_armor_price=89
+SET vendor.blacksmith_guard_armor_price=126
+SET vendor.blacksmith_stone_armor_price=225
+SET vendor.blacksmith_steel_armor_price=700
+SET vendor.blacksmith_iron_armor_price=422
+SET vendor.blacksmith_scale_armor_price=2000
 REM Blacksmith Sellback Prices.
 SET vendor.blacksmith_long_sword_sbp=190
 SET vendor.blacksmith_short_sword_sbp=140
 SET vendor.blacksmith_great_axe_sbp=500
 SET vendor.blacksmith_mace_sbp=215
 SET vendor.blacksmith_wooden_bow_sbp=80
+SET vendor.blacksmith_cactus_armor_sbp=60
+SET vendor.blacksmith_guard_armor_sbp=80
+SET vendor.blacksmith_stone_armor_sbp=115
+SET vendor.blacksmith_steel_armor_sbp=620
+SET vendor.blacksmith_iron_armor_sbp=318
+SET vendor.blacksmith_scale_armor_sbp=1622
 REM Blacksmith Shop Stock.
 SET vendor.blacksmith_long_sword_stock=6
 SET vendor.blacksmith_short_sword_stock=4
 SET vendor.blacksmith_great_axe_stock=5
 SET vendor.blacksmith_mace_stock=5
 SET vendor.blacksmith_wooden_bow_stock=2
+SET vendor.blacksmith_cactus_armor_stock=12
+SET vendor.blacksmith_guard_armor_stock=12
+SET vendor.blacksmith_stone_armor_stock=12
+SET vendor.blacksmith_steel_armor_stock=12
+SET vendor.blacksmith_iron_armor_stock=12
+SET vendor.blacksmith_scale_armor_stock=12
 REM Alchemist Shop Base Prices.
 SET vendor.alchemist.health_tonic_price=25
 SET vendor.alchemist.stamina_tonic_price=25
