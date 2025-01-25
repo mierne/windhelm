@@ -65,9 +65,9 @@ ECHO Windhelm! Discover shards of your past and rebuild your identity, or forge 
 ECHO alone. Take on the threats of the Iridescent Forest, defending it from those that wish it harm.
 ECHO Use soul memories to unlock special abilites and form strong bonds to other shards.
 ECHO ========================================================================================================================
-ECHO                   [E / RETURN ]
+ECHO                   [Q / RETURN ]
 ECHO.
-CHOICE /C E /N /M ">"
+CHOICE /C Q /N /M ">"
 IF ERRORLEVEL 1 GOTO :START
 
 :settings
@@ -78,10 +78,10 @@ ECHO.
 TYPE "%cd%\data\assets\ui\settings.txt"
 ECHO.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / CHANGE THEME ] ^| [E / EXIT ]                                                                +
+ECHO ^| [1 / CHANGE THEME ] ^| [Q / EXIT ]                                                                +
 ECHO +--------------------------------------------------------------------------------------------------+
-CHOICE /C 1E /N /M ">"
-IF ERRORLEVEL 2 GOTO :save_choice
+CHOICE /C 1Q /N /M ">"
+IF ERRORLEVEL 3 GOTO :save_choice
 IF ERRORLEVEL 1 GOTO :theme_select
 
 :theme_select
@@ -93,9 +93,9 @@ ECHO.
 ECHO %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / 0E DEFAULT ] ^| [2 / 1F HIGH VIS ] [3 / 09 ] ^| [4 / 0A ] ^| [5 / 0F ] ^| [C / CUSTOM ]              +
-ECHO ^| [E / EXIT ]                                                                                           +
+ECHO ^| [Q / EXIT ]                                                                                           +
 ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C 12345CE /N /M ">"
+CHOICE /C 12345CQ /N /M ">"
 IF ERRORLEVEl 7 GOTO :settings
 IF ERRORLEVEL 6 GOTO :custom_color
 IF ERRORLEVEL 5 GOTO :0F
@@ -112,13 +112,13 @@ ECHO.
 ECHO ENTER A VALID BATCH SCRIPT COLOR CODE. (SEE COLOR /?)
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [E / EXIT ]                                                                                       +
+ECHO ^| [Q / EXIT ]                                                                                       +
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P custom=^>
 COLOR %custom%
 SET setColor=%custom%
 SET displayMessage=%custom% applied - exit this script to save.
-IF /I "%custom%" == "E" GOTO :save_choice
+IF /I "%custom%" == "Q" GOTO :save_choice
 GOTO :theme_select
 
 :0E
