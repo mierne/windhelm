@@ -1,6 +1,6 @@
 if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 @ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION
-REM Copyright (C) 2025  Mierne <ahoy@mierne.net>
+REM Copyright (C) 2025 Mierne <ahoy@mierne.net>
 REM    This program is free software: you can redistribute it and/or modify
 REM    it under the terms of the GNU General Public License as published by
 REM    the Free Software Foundation, either version 3 of the License, or
@@ -33,6 +33,7 @@ GOTO :START
 TITLE (Windhelm - %windhelm.ut%) ^| Welcome to Windhelm.
 MODE con: cols=120 lines=19
 CLS
+SET RETURN=START
 ECHO.
 TYPE "%winLoc%\data\assets\ui\main.txt"
 ECHO.
@@ -41,17 +42,19 @@ ECHO Pre-Alpha Version %windhelm.vn% "Abyssal"
 ECHO ========================================================================================================================
 ECHO                   [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [Q / QUIT ]
 ECHO.
-CHOICE /C 1234Q /N /M ">"
-IF ERRORLEVEL 5 GOTO :EOF
-IF ERRORLEVEl 4 GOTO :ABOUT_WINDHELM
-IF ERRORLEVEL 3 GOTO :settings
-IF ERRORLEVEL 2 GOTO :NEW_GAME
-IF ERRORLEVEL 1 GOTO :LOAD_SAVE
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :LOAD_SAVE
+IF /I "%CH%" == "2" GOTO :NEW_GAME
+IF /I "%CH%" == "3" GOTO :SETTINGS
+IF /I "%CH%" == "4" GOTO :ABOUT
+IF /I "%CH%" == "Q" GOTO :EOF
+GOTO :INVALID_INPUT
 
-:ABOUT_WINDHELM
+:ABOUT
 TITLE (Windhelm - %windhelm.ut%) ^| About Windhelm
 MODE con: cols=120 lines=19
 CLS
+SET RETURN=ABOUT
 ECHO.
 REM TO DO: about.txt
 TYPE "%winLoc%\data\assets\ui\about.txt"
@@ -67,95 +70,87 @@ ECHO Use soul memories to unlock special abilites and form strong bonds to other
 ECHO ========================================================================================================================
 ECHO                   [Q / RETURN ]
 ECHO.
-CHOICE /C Q /N /M ">"
-IF ERRORLEVEL 1 GOTO :START
+SET /P CH=">"
+IF /I "%CH%" == "Q" GOTO :START
+GOTO :INVALID_INPUT
 
-:settings
+:SETTINGS
 TITLE (Windhelm - %windhelm.ut%) ^| Settings Menu.
-MODE con: cols=100 lines=19
+MODE con: cols=100 lines=14
 CLS
+SET RETURN=SETTINGS
 ECHO.
 TYPE "%cd%\data\assets\ui\settings.txt"
 ECHO.
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / CHANGE THEME ] ^| [Q / EXIT ]                                                                +
 ECHO +--------------------------------------------------------------------------------------------------+
-CHOICE /C 1Q /N /M ">"
-IF ERRORLEVEL 3 GOTO :save_choice
-IF ERRORLEVEL 1 GOTO :theme_select
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :theme_select
+IF /I "%CH%" == "Q" GOTO :START
+GOTO :INVALID_INPUT
 
 :theme_select
-MODE con: cols=105 lines=19
+MODE con: cols=100 lines=15
 CLS
+SET RETURN=theme_select
 ECHO.
-TYPE "%cd%\data\assets\ui\settings.txt"
+TYPE "%cd%\data\assets\ui\color.txt"
 ECHO.
 ECHO %displayMessage%
-ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / 0E DEFAULT ] ^| [2 / 1F HIGH VIS ] [3 / 09 ] ^| [4 / 0A ] ^| [5 / 0F ] ^| [C / CUSTOM ]              +
-ECHO ^| [Q / EXIT ]                                                                                           +
-ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C 12345CQ /N /M ">"
-IF ERRORLEVEl 7 GOTO :settings
-IF ERRORLEVEL 6 GOTO :custom_color
-IF ERRORLEVEL 5 GOTO :0F
-IF ERRORLEVEL 4 GOTO :0A
-IF ERRORLEVEL 3 GOTO :09
-IF ERRORLEVEL 2 GOTO :1F
-IF ERRORLEVEL 1 GOTO :0E
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / 0E DEFAULT ] ^| [2 / 1F HIGH VIS ] ^| [C / CUSTOM ] ^| [Q / EXIT ]                             +
+ECHO +--------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :0E
+IF /I "%CH%" == "2" GOTO :1F
+IF /I "%CH%" == "C" GOTO :CUSTOM_COLOR
+IF /I "%CH%" == "Q" GOTO :SETTINGS
+GOTO :INVALID_INPUT
 
-:custom_color
+:CUSTOM_COLOR
+MODE con: cols=100 lines=16
 CLS
+SET RETURN=CUSTOM_COLOR
 ECHO.
 TYPE "%cd%\data\assets\ui\color.txt"
 ECHO.
 ECHO ENTER A VALID BATCH SCRIPT COLOR CODE. (SEE COLOR /?)
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [Q / EXIT ]                                                                                       +
+ECHO ^| [1 HELP ] [Q / EXIT ]                                                                            +
 ECHO +--------------------------------------------------------------------------------------------------+
-SET /P custom=^>
-COLOR %custom%
-SET setColor=%custom%
-SET displayMessage=%custom% applied - exit this script to save.
-IF /I "%custom%" == "Q" GOTO :save_choice
-GOTO :theme_select
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :THEME_CUSTOM_HELP
+IF /I "%CH%" == "Q" GOTO :SETTINGS
+COLOR %CH%
+SET setColor=%CH%
+GOTO :THEME_SAVE
+
+:THEME_CUSTOM_HELP
+ECHO Opening CMD with command COLOR /?
+START COLOR /?
+PAUSE
+GOTO :CUSTOM_COLOR
 
 :0E
 set setColor=0E
 color 0E
-set displayMessage=Color 0E applied; exit to save this choice.
-GOTO :theme_select
-
-:0F
-set setColor=0F
-color 0F
-set displayMessage=Color 0F applied; exit to save this choice.
-GOTO :theme_select
-
-:09
-set setColor=09
-color 09
-set displayMessage=Color 09 applied; exit to save this choice.
-GOTO :theme_select
-
-:0A
-set setColor=0A
-color 0A
-set displayMessage=Color 0A applied; exit to save this choice.
-GOTO :theme_select
+set displayMessage=Color 0E applied.
+GOTO :THEME_SAVE
 
 :1F
 set setColor=1F
 COLOR 1F
-set displayMessage=Color 1F applied; exit to save this choice.
-GOTO :theme_select
+set displayMessage=Color 1F applied.
+GOTO :THEME_SAVE
 
-:save_choice
+:THEME_SAVE
 (
 ECHO %setColor%
 )>"%winLoc%\data\settings.txt"
-GOTO :START
+SET displayMessage=Color %setColor% applied.
+GOTO :%RETURN%
 
 :NEW_GAME
 CALL "%winLoc%\data\functions\ciac.bat"
@@ -182,6 +177,7 @@ MODE con: cols=101 lines=17
 IF %player.xp% LSS 0 SET player.xp=0
 IF %player.health% LSS 0 set player.health=0
 CLS
+SET RETURN=dashboard
 ECHO.
 TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
@@ -191,18 +187,20 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / EXPLORE ] ^| [2 / INVENTORY ] ^| [C / VIEW CHARACTER ] ^| [S / SAVE ] ^| [Q / EXIT ]
 ECHO +---------------------------------------------------------------------------------------------------+
-CHOICE /C 12CSQ /N /M ">"
-IF ERRORLEVEL 5 GOTO :Exit_Without_Saving
-IF ERRORLEVEL 4 GOTO :Save_Game
-IF ERRORLEVEL 3 GOTO :character_view
-IF ERRORLEVEL 2 GOTO :view_inventory
-IF ERRORLEVEL 1 GOTO :exploration_engine
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :exploration_engine
+IF /I "%CH%" == "2" GOTO :view_inventory
+IF /I "%CH%" == "C" GOTO :character_view
+IF /I "%CH%" == "S" GOTO :Save_Game
+IF /I "%CH%" == "Q" GOTO :Exit_Without_Saving
+GOTO :INVALID_INPUT
 
 :Exit_Without_Saving
 ECHO Exit now? All unsaved progress will be lost.
-CHOICE /C YN
-IF ERRORLEVEL 2 GOTO :dashboard
-IF ERRORLEVEL 1 GOTO :START
+SET /P CH="Y/N"
+IF /I "%CH%" == "Y" GOTO :START
+IF /I "%CH%" == "N" GOTO :dashboard
+GOTO :INVALID_INPUT
 
 :Save_Game
 SET SLOPr=SAVE
@@ -232,11 +230,12 @@ ECHO ^| TOTAL DEATHS: %player.total_deaths%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / LEVEL UP ] ^| [2 / CHANGE NAME ] ^| [3 / CHANGE PRONOUNS ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C 123Q /N /M ">"
-IF ERRORLEVEL 4 GOTO :dashboard
-IF ERRORLEVEL 3 GOTO :PLAYER_CHANGE_PRONOUNS
-IF ERRORLEVEL 2 GOTO :PLAYER_CHANGE_NAME
-IF ERRORLEVEL 1 GOTO :PLAYER_LEVEL_UP
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :PLAYER_LEVEL_UP
+IF /I "%CH%" == "2" GOTO :PLAYER_CHANGE_NAME
+IF /I "%CH%" == "3" GOTO :PLAYER_CHANGE_PRONOUNS
+IF /I "%CH%" == "Q" GOTO :dashboard
+GOTO :INVALID_INPUT
 
 :PLAYER_LEVEL_UP
 CALL "%winLoc%\data\functions\leveler.bat"
@@ -270,6 +269,11 @@ GOTO :AUTOSAVE
 :exploration_engine
 CALL "%winLoc%\data\Exploration Engine\exploration_engine.bat"
 GOTO :AUTOSAVE
+
+:INVALID_INPUT
+ECHO %CH% is not a valid choice.
+PAUSE
+GOTO :%RETURN%
 
 :AUTOSAVE
 SET SLOPr=SAVE
