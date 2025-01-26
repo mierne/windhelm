@@ -146,6 +146,7 @@ ECHO %player.stamina_max%
 ECHO %player.magicka_max%
 ECHO %player.health_max%
 ECHO %player.weapon_type%
+ECHO %player.weapon_damage_type%
 ECHO %player.armor_prot%
 ECHO %player.attack_stamina%
 ECHO %player.attack_stamina_usage%
@@ -241,6 +242,7 @@ SET /P player.stamina_max=
 SET /P player.magicka_max=
 SET /P player.health_max=
 SET /P player.weapon_type=
+SET /P player.weapon_damage_type=
 SET /P player.armor_prot=
 SET /P player.attack_stamina=
 SET /P player.attack_stamina_usage=
@@ -338,6 +340,7 @@ SET player.stamina_max=100
 SET player.magicka_max=100
 SET player.health_max=100
 SET player.weapon_type=Melee
+SET player.weapon_damage_type=physical
 REM Player armor value. Used to modify attack damages against the Player.
 SET player.armor_prot=0
 SET player.attack_stamina=1
