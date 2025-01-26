@@ -185,6 +185,10 @@ ECHO Inspecting the Long Sword.
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_long_sword_damage%
 ECHO ^| STAMINA USAGE: %windhelm.item_long_sword_stamina_usage%
+ECHO ^| CATEGORY: %windhelm.item_long_sword_category%
+ECHO ^| DAMAGE TYPE: %windhelm.item_long_sword_damage_type%
+ECHO ^| OWNED: %player.item_long_sword_owned%
+ECHO ^| PRICE: %vendor.blacksmith_long_sword_price%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
 ECHO +---------------------------------------------------------------------------------------------------+
@@ -226,6 +230,10 @@ ECHO Showing detailed information for the Short Sword.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_short_sword_damage%
 ECHO ^| STAMINA USAGE: %windhelm.item_short_sword_stamina_usage%
+ECHO ^| CATEGORY: %windhelm.item_short_sword_category%
+ECHO ^| DAMAGE TYPE: %windhelm.item_short_sword_damage_type%
+ECHO ^| OWNED: %player.item_short_sword_owned%
+ECHO ^| PRICE: %vendor.blacksmith_short_sword_price%
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------------+
@@ -289,6 +297,10 @@ ECHO Showing detailed information for the Great Axe.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_great_axe_damage%
 ECHO ^| STAMINA USAGE: %windhelm.item_great_axe_stamina_usage%
+ECHO ^| CATEGORY: %windhelm.item_great_axe_category%
+ECHO ^| DAMAGE TYPE: %windhelm.item_great_axe_damage_type%
+ECHO ^| OWNED: %player.item_great_axe_owned%
+ECHO ^| PRICE: %vendor.blacksmith_great_axe_price%
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------------+
@@ -352,6 +364,10 @@ ECHO Showing detailed information for the Great Axe.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_mace_damage%
 ECHO ^| STAMINA USAGE: %windhelm.item_mace_stamina_usage%
+ECHO ^| CATEGORY: %windhelm.item_mace_category%
+ECHO ^| DAMAGE TYPE: %windhelm.item_mace_damage_type%
+ECHO ^| OWNED: %player.item_mace_owned%
+ECHO ^| PRICE: %vendor.blacksmith_mace_price%
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -415,6 +431,10 @@ ECHO Showing detailed information for the Wooden Bow.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_wooden_bow_damage%
 ECHO ^| STAMINA USAGE: %windhelm.item_wooden_bow_stamina_usage%
+ECHO ^| CATEGORY: %windhelm.item_wooden_bow_category%
+ECHO ^| DAMAGE TYPE: %windhelm.item_wooden_bow_damage_type%
+ECHO ^| OWNED: %player.item_wooden_bow_owned%
+ECHO ^| PRICE: %vendor.blacksmith_wooden_bow_price%
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------------+
