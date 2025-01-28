@@ -9,6 +9,7 @@ SET ce.boss_active=0
 REM Global Variables
 SET player.armor_calculated=0
 SET enLooted=0
+SET player.damage_base=%player.damage%
 
 REM Iridescent Bandit Information
 SET bandit.health=100
