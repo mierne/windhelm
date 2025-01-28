@@ -1,4 +1,3 @@
-if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 REM temp fix for empty variables (what's causing this?)
 SET /A CR=%RANDOM% * 17 / 32768 + 8
 
@@ -31,7 +30,16 @@ IF %player.stamina% LSS %player.attack_stamina_usage% (
     SET player.message=You try to swing but find your weak noodles too exhausted.
     GOTO :EBS
 ) ELSE (
-    GOTO :PLAYER_ATTACK
+    REM Try to account for enemy damage resistance
+    SET player.damage=%player.damage_base%
+    IF "%enemy.damage_type_resistance%" == "%player.weapon_damage_type%" (
+        SET /A player.damage=!player.damage! -%enemy.damage_resisted%
+        REM Add another display message variable? player.message and displayMessage will be overwritten if done here.
+        GOTO :PLAYER_ATTACK
+    ) ELSE (
+        REM No other attack type currently working.
+        GOTO :PLAYER_ATTACK
+    )
 )
 
 :PLAYER_RECOVER
