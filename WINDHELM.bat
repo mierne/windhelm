@@ -1,7 +1,6 @@
 if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 @ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION
-REM Windhelm Pre-Alpha Version 0.2.3-241226
-REM Copyright (C) 2024  Mierne <ahoy@mierne.net>
+REM Copyright (C) 2025 Mierne <ahoy@mierne.net>
 REM    This program is free software: you can redistribute it and/or modify
 REM    it under the terms of the GNU General Public License as published by
 REM    the Free Software Foundation, either version 3 of the License, or
@@ -15,7 +14,7 @@ REM    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 :WIN_INIT
 SET winLoc=%~dp0
-SET windhelm.tu=HOTFIX 2
+SET windhelm.ut=Interim
 SET SLOPr=INIT
 CALL "%winLoc%\data\functions\SLOP.bat"
 
@@ -31,129 +30,127 @@ SET displayMessage=...
 GOTO :START
 
 :START
-TITLE (Windhelm - %windhelm.tu%) ^| Welcome to Windhelm.
+TITLE (Windhelm - %windhelm.ut%) ^| Welcome to Windhelm.
 MODE con: cols=120 lines=19
 CLS
+SET RETURN=START
 ECHO.
 TYPE "%winLoc%\data\assets\ui\main.txt"
 ECHO.
 ECHO.
-ECHO Pre-Alpha Version 0.2.3-241226 "HOTFIX 3"
+ECHO Pre-Alpha Version %windhelm.vn% "Interim"
 ECHO ========================================================================================================================
 ECHO                   [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [Q / QUIT ]
 ECHO.
-CHOICE /C 1234Q /N /M ">"
-IF ERRORLEVEL 5 GOTO :EOF
-IF ERRORLEVEl 4 GOTO :ABOUT_WINDHELM
-IF ERRORLEVEL 3 GOTO :settings
-IF ERRORLEVEL 2 GOTO :NEW_GAME
-IF ERRORLEVEL 1 GOTO :LOAD_SAVE
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :LOAD_SAVE
+IF /I "%CH%" == "2" GOTO :NEW_GAME
+IF /I "%CH%" == "3" GOTO :SETTINGS
+IF /I "%CH%" == "4" GOTO :ABOUT
+IF /I "%CH%" == "Q" GOTO :EOF
+GOTO :INVALID_INPUT
 
-:ABOUT_WINDHELM
-TITLE (Windhelm - %windhelm.tu%) ^| About Windhelm
+:ABOUT
+TITLE (Windhelm - %windhelm.ut%) ^| About Windhelm
 MODE con: cols=120 lines=19
 CLS
+SET RETURN=ABOUT
 ECHO.
 REM TO DO: about.txt
 TYPE "%winLoc%\data\assets\ui\about.txt"
 ECHO.
+ECHO.
+ECHO Windhelm Version %windhelm.vn%
+ECHO This is an UNSTABLE build. Check the github page for more information.
 ECHO.
 ECHO Delve into the powerful, mysterious Iridescent Forest of the Kindgom of Fulkwinn and it's equally powerful castle,
 ECHO Windhelm! Discover shards of your past and rebuild your identity, or forge a new one. Your destiny is yours to control
 ECHO alone. Take on the threats of the Iridescent Forest, defending it from those that wish it harm.
 ECHO Use soul memories to unlock special abilites and form strong bonds to other shards.
 ECHO ========================================================================================================================
-ECHO                   [E / RETURN ]
+ECHO                   [Q / RETURN ]
 ECHO.
-CHOICE /C E /N /M ">"
-IF ERRORLEVEL 1 GOTO :START
+SET /P CH=">"
+IF /I "%CH%" == "Q" GOTO :START
+GOTO :INVALID_INPUT
 
-:settings
-TITLE (Windhelm - %windhelm.tu%) ^| Settings Menu.
-MODE con: cols=100 lines=19
+:SETTINGS
+TITLE (Windhelm - %windhelm.ut%) ^| Settings Menu.
+MODE con: cols=100 lines=14
 CLS
+SET RETURN=SETTINGS
 ECHO.
 TYPE "%cd%\data\assets\ui\settings.txt"
 ECHO.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / CHANGE THEME ] ^| [E / EXIT ]                                                                +
+ECHO ^| [1 / CHANGE THEME ] ^| [Q / EXIT ]                                                                +
 ECHO +--------------------------------------------------------------------------------------------------+
-CHOICE /C 1E /N /M ">"
-IF ERRORLEVEL 2 GOTO :save_choice
-IF ERRORLEVEL 1 GOTO :theme_select
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :theme_select
+IF /I "%CH%" == "Q" GOTO :START
+GOTO :INVALID_INPUT
 
 :theme_select
-MODE con: cols=105 lines=19
+MODE con: cols=100 lines=15
 CLS
+SET RETURN=theme_select
 ECHO.
-TYPE "%cd%\data\assets\ui\settings.txt"
+TYPE "%cd%\data\assets\ui\color.txt"
 ECHO.
 ECHO %displayMessage%
-ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / 0E DEFAULT ] ^| [2 / 1F HIGH VIS ] [3 / 09 ] ^| [4 / 0A ] ^| [5 / 0F ] ^| [C / CUSTOM ]              +
-ECHO ^| [E / EXIT ]                                                                                           +
-ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C 12345CE /N /M ">"
-IF ERRORLEVEl 7 GOTO :settings
-IF ERRORLEVEL 6 GOTO :custom_color
-IF ERRORLEVEL 5 GOTO :0F
-IF ERRORLEVEL 4 GOTO :0A
-IF ERRORLEVEL 3 GOTO :09
-IF ERRORLEVEL 2 GOTO :1F
-IF ERRORLEVEL 1 GOTO :0E
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / 0E DEFAULT ] ^| [2 / 1F HIGH VIS ] ^| [C / CUSTOM ] ^| [Q / EXIT ]                             +
+ECHO +--------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :0E
+IF /I "%CH%" == "2" GOTO :1F
+IF /I "%CH%" == "C" GOTO :CUSTOM_COLOR
+IF /I "%CH%" == "Q" GOTO :SETTINGS
+GOTO :INVALID_INPUT
 
-:custom_color
+:CUSTOM_COLOR
+MODE con: cols=100 lines=16
 CLS
+SET RETURN=CUSTOM_COLOR
 ECHO.
 TYPE "%cd%\data\assets\ui\color.txt"
 ECHO.
 ECHO ENTER A VALID BATCH SCRIPT COLOR CODE. (SEE COLOR /?)
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [E / EXIT ]                                                                                       +
+ECHO ^| [1 HELP ] [Q / EXIT ]                                                                            +
 ECHO +--------------------------------------------------------------------------------------------------+
-SET /P custom=^>
-COLOR %custom%
-SET setColor=%custom%
-SET displayMessage=%custom% applied - exit this script to save.
-IF /I "%custom%" == "E" GOTO :save_choice
-GOTO :theme_select
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :THEME_CUSTOM_HELP
+IF /I "%CH%" == "Q" GOTO :SETTINGS
+COLOR %CH%
+SET setColor=%CH%
+GOTO :THEME_SAVE
+
+:THEME_CUSTOM_HELP
+ECHO Opening CMD with command COLOR /?
+START COLOR /?
+PAUSE
+GOTO :CUSTOM_COLOR
 
 :0E
 set setColor=0E
 color 0E
-set displayMessage=Color 0E applied; exit to save this choice.
-GOTO :theme_select
-
-:0F
-set setColor=0F
-color 0F
-set displayMessage=Color 0F applied; exit to save this choice.
-GOTO :theme_select
-
-:09
-set setColor=09
-color 09
-set displayMessage=Color 09 applied; exit to save this choice.
-GOTO :theme_select
-
-:0A
-set setColor=0A
-color 0A
-set displayMessage=Color 0A applied; exit to save this choice.
-GOTO :theme_select
+set displayMessage=Color 0E applied.
+GOTO :THEME_SAVE
 
 :1F
 set setColor=1F
 COLOR 1F
-set displayMessage=Color 1F applied; exit to save this choice.
-GOTO :theme_select
+set displayMessage=Color 1F applied.
+GOTO :THEME_SAVE
 
-:save_choice
+:THEME_SAVE
 (
 ECHO %setColor%
 )>"%winLoc%\data\settings.txt"
-GOTO :START
+SET displayMessage=Color %setColor% applied.
+GOTO :%RETURN%
 
 :NEW_GAME
 CALL "%winLoc%\data\functions\ciac.bat"
@@ -175,32 +172,35 @@ IF NOT EXIST "%winLoc%\data\player\savedata.txt" (
 )
 
 :dashboard
-TITLE (Windhelm - %windhelm.tu%) Castle Gate ^| %player.name% the %player.class%
-MODE con: cols=101 lines=21
+TITLE (Windhelm - %windhelm.ut%) Castle Gate ^| %player.name% the %player.race% %player.class%
+MODE con: cols=101 lines=17
 IF %player.xp% LSS 0 SET player.xp=0
 IF %player.health% LSS 0 set player.health=0
 CLS
+SET RETURN=dashboard
 ECHO.
 TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / EXPLORE ] ^| [2 / INVENTORY ] ^| [C / VIEW CHARACTER ] ^| [S / SAVE ] ^| [Q / EXIT ]
 ECHO +---------------------------------------------------------------------------------------------------+
-CHOICE /C 12CSQ /N /M ">"
-IF ERRORLEVEL 5 GOTO :Exit_Without_Saving
-IF ERRORLEVEL 4 GOTO :Save_Game
-IF ERRORLEVEL 3 GOTO :character_view
-IF ERRORLEVEL 2 GOTO :view_inventory
-IF ERRORLEVEL 1 GOTO :EXPLORATION_HUB
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :exploration_engine
+IF /I "%CH%" == "2" GOTO :view_inventory
+IF /I "%CH%" == "C" GOTO :character_view
+IF /I "%CH%" == "S" GOTO :Save_Game
+IF /I "%CH%" == "Q" GOTO :Exit_Without_Saving
+GOTO :INVALID_INPUT
 
 :Exit_Without_Saving
 ECHO Exit now? All unsaved progress will be lost.
-CHOICE /C YN
-IF ERRORLEVEL 2 GOTO :dashboard
-IF ERRORLEVEL 1 GOTO :START
+SET /P CH="Y/N"
+IF /I "%CH%" == "Y" GOTO :START
+IF /I "%CH%" == "N" GOTO :dashboard
+GOTO :INVALID_INPUT
 
 :Save_Game
 SET SLOPr=SAVE
@@ -220,17 +220,22 @@ TYPE "%winLoc%\data\assets\ui\character.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO ^| NAME: %player.name% ^| RACE: %player.race% ^| CLASS: %player.class% ^| PRONOUNS: %player.personal_p_1%/%player.personal_p_2%/%player.possesive_1%/%player.reflexive_1%
-ECHO ^| GOBLINS SLAIN: %player.goblins.slain% ^|
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| DAMAGE: %player.skill_damage% ^| MAGICKA: %player.skill_magicka% ^| ATHLETICS: %player.skill_athletics% ^| SPEECH: %player.skill_speech% ^| INTELLIGENCE: %player.skill_intelligence%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| BANDITS SLAIN: %player.bandits_slain%
+ECHO ^| TOTAL DEATHS: %player.total_deaths%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / LEVEL UP ] ^| [2 / CHANGE NAME ] ^| [3 / CHANGE PRONOUNS ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C 123Q /N /M ">"
-IF ERRORLEVEL 4 GOTO :dashboard
-IF ERRORLEVEL 3 GOTO :PLAYER_CHANGE_PRONOUNS
-IF ERRORLEVEL 2 GOTO :PLAYER_CHANGE_NAME
-IF ERRORLEVEL 1 GOTO :PLAYER_LEVEL_UP
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :PLAYER_LEVEL_UP
+IF /I "%CH%" == "2" GOTO :PLAYER_CHANGE_NAME
+IF /I "%CH%" == "3" GOTO :PLAYER_CHANGE_PRONOUNS
+IF /I "%CH%" == "Q" GOTO :dashboard
+GOTO :INVALID_INPUT
 
 :PLAYER_LEVEL_UP
 CALL "%winLoc%\data\functions\leveler.bat"
@@ -244,7 +249,7 @@ TYPE "%winLoc%\data\assets\ui\name.txt"
 ECHO.
 ECHO Enter a new name.
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| TYPE CANCEL TO CANCEL.
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -261,59 +266,14 @@ SET player.pronouns_change_req=1
 CALL "%winLoc%\data\functions\ciac.bat"
 GOTO :AUTOSAVE
 
-REM Main exploration tab.
-:EXPLORATION_HUB
-TITLE (WINDHELM) Exploration Engine ^| %player.name% the %player.class%
-MODE con: cols=105 lines=19
-CLS
-ECHO.
-TYPE "%cd%\data\assets\ui\exp.txt"
-ECHO.
-ECHO %displayMessage%
-ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
-ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / IRIDESCENT FOREST ] ^| [2 / RUINS ] ^| [3 / ROCKWINN PLAZA ] ^| [Q / BACK ]
-ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C 123Q /N /M ">"
-IF ERRORLEVEL 4 GOTO :AUTOSAVE
-IF ERRORLEVEL 3 GOTO :ROCKWINN_PLAZA
-IF ERRORLEVEL 2 GOTO :CHECK_RUINS_UNLOCKED
-IF ERRORLEVEL 1 GOTO :ROLL_ENEMY
+:exploration_engine
+CALL "%winLoc%\data\Exploration Engine\exploration_engine.bat"
+GOTO :AUTOSAVE
 
-:ROLL_ENEMY
-SET currentEnemy=iBandit
-CALL "%cd%\data\Combat Engine\scripts\evie.bat"
-GOTO :EXPLORATION_HUB
-
-:DISABLED_TEMP
-SET /A A=%RANDOM% %%100
-IF %A% GEQ 80 (
-    SET currentEnemy=iHunter
-    CALL "%cd%\data\Combat Engine\scripts\evie.bat"
-    GOTO :EXPLORATION_HUB
-) ELSE IF %A% GEQ 60 (
-    SET currentEnemy=iJester
-    CALL "%cd%\data\Combat Engine\scripts\evie.bat"
-    GOTO :EXPLORATION_HUB
-) ELSE IF %A% GEQ 55 (
-    SET currentEnemy=iGnome
-    CALL "%cd%\data\Combat Engine\scripts\evie.bat"
-    GOTO :EXPLORATION_HUB
-) ELSE (
-    SET currentEnemy=iGoblin
-    CALL "%cd%\data\Combat Engine\scripts\evie.bat"
-    GOTO :EXPLORATION_HUB
-)
-
-REM Unfinished, do NOT allow the Player to access this menu.
-:CHECK_RUINS_UNLOCKED
-GOTO :EXPLORATION_HUB
-
-REM Enters the Rockwinn Plaza.
-:ROCKWINN_PLAZA
-CALL "%cd%\data\functions\Rockwinn Plaza.bat"
-GOTO :EXPLORATION_HUB
+:INVALID_INPUT
+ECHO %CH% is not a valid choice.
+PAUSE
+GOTO :%RETURN%
 
 :AUTOSAVE
 SET SLOPr=SAVE

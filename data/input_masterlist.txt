@@ -1,0 +1,1 @@
+REM A list of accepted phrases and "action" words.

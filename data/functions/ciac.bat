@@ -8,11 +8,6 @@ IF %player.pronouns_change_req% == 1 (
     GOTO :CFEPD
 )
 
-@REM :SELF_INIT
-@REM SET SLOPr=INIT
-@REM CALL "%cd%\data\functions\SLOP.bat"
-@REM GOTO :CFEPD
-
 REM Check for existing Player data.
 :CFEPD
 IF EXIST "%cd%\data\player\savedata.txt" (
