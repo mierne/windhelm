@@ -4,10 +4,6 @@
   ##### Originally created by Mierne
 </div>
 
-# ⚠️ PLEASE READ
-The unstable branch is currently in a more functional state than the main branch. Do not download this branch, use the releases page or switch to the unstable branch.
-
-
 # About Windhelm
 Delve into the powerful, mysterious Iridescent Forest of the Kingdom of Fulkwinn and it's equally powerful castle - Windhelm.
 Discover shards of your past, rebuild your identity or forge a new one. Take on the threats to the Iridescent Forest, defending it from those who wish it harm.
