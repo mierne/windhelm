@@ -19,11 +19,11 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [A / ATTACK ] ^| [I / ITEMS ] ^| [R / RECOVER ] ^| [Q / FLEE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C AIRQ /N /M ">"
-IF ERRORLEVEL 4 GOTO :PLAYER_FLEE
-IF ERRORLEVEL 3 GOTO :PLAYER_RECOVER
-IF ERRORLEVEL 2 GOTO :PLAYER_ITEMS
-IF ERRORLEVEL 1 GOTO :PLAYER_ATTACK_SC
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :PLAYER_ATTACK_SC
+IF /I "%CH%" == "2" GOTO :PLAYER_ITEMS
+IF /I "%CH%" == "3" GOTO :PLAYER_RECOVER
+IF /I "%CH%" == "Q" GOTO :PLAYER_FLEE
 
 :PLAYER_ATTACK_SC
 IF %player.stamina% LSS %player.attack_stamina_usage% (
@@ -165,6 +165,7 @@ IF %RSR% GEQ 29 (
     GOTO :EBS
 )
 
+REM What is this doing here?
 SET /A enemy.stamina=!enemy.stamina! +35
 
 :EAC_BOSS
@@ -260,10 +261,9 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO [1 / LOOT ] ^| [Q LEAVE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C 1QR /N /M ">"
-IF ERRORLEVEL 3 GOTO :VICTORY_SCREEN
-IF ERRORLEVEL 2 GOTO :EXIT
-IF ERRORLEVEL 1 GOTO :LOOT
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :LOOT
+IF /I "%CH%" == "Q" GOTO :EXIT
 
 :LOOT
 IF %enLooted% EQU 1 (
@@ -328,8 +328,8 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [Q LEAVE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C Q /N /M ">"
-IF ERRORLEVEL 1 GOTO :EXIT
+SET /P CH=">"
+IF /I "%CH%" == "Q" GOTO :EXIT
 
 :EXIT
 SET enLooted=0
