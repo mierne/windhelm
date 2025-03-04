@@ -12,7 +12,7 @@ SET refundPrice=0
 SET itemStored=false
 SET player.message=...
 REM Other values
-SET windhelm.vn=UNSTABLE-0.3.0-250125
+SET windhelm.vn=UNSTABLE-0.3.0-250304
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
@@ -343,6 +343,7 @@ SET player.weapon_type=Melee
 SET player.weapon_damage_type=physical
 REM Player armor value. Used to modify attack damages against the Player.
 SET player.armor_prot=0
+SET player.armor_resistance_type=physical
 SET player.attack_stamina=1
 SET player.attack_stamina_usage=1
 SET player.skill_damage=2
