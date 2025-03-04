@@ -1,187 +1,337 @@
-MODE con: cols=120 lines=28
-REM Combat Engine Alpha Version 0.7.1.
-REM Extra Build Information: ce1-241010.AE7.GU0 - "Hard at work"
-REM This software is licensed under GPL-3.0-or-later.
+REM temp fix for empty variables (what's causing this?)
+SET /A CR=%RANDOM% * 17 / 32768 + 8
 
-REM "Enemy Battle Screen". Player and Enemy information is displayed here.
 :EBS
-MODE con: cols=120 lines=28
-TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.class% vs %curEn% & SET enAT=%enATb%
-CLS
-REM Check enemy/player health to determine victory or defeat.
-IF %enemy.health% LEQ 0 GOTO :VICTORY_REWARDS
+MODE con: cols=120 lines=20
+IF %enemy.health% LEQ 0 GOTO :VICTORY_STATS_TRACK
 IF %player.health% LEQ 0 GOTO :DEFEAT_SCREEN
-REM Write the data from the text file to the CLI.
+TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.race% %player.class% vs %curEn% & SET enAT=%enATb%
+CLS
 ECHO.
-TYPE "%cd%\data\assets\enemies\Iridescent Forest\%curEn%.txt"
+TYPE "%winLoc%\data\assets\enemies\Iridescent Forest\%currentEnemy%.txt"
 ECHO.
-ECHO +---------------------------------------------------------------------------------------------------------------------+
-ECHO ^|                                               HP: %enemy.health% ^| ATK: %enemy.damage%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| %currentEnemy% HP: %enemy.health% ^| ATK: %enemy.damage% ^| STM: %enemy.stamina%
 ECHO ^| %displayMessage%
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| STM: %player.stamina% ^| ATK: %player.damage% ^| AMR: %player.armor_equip% ^| MGK: %player.magicka%
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [I] ITEMS  ^| [E] END     ^| %player.message%
-ECHO ^|            ^| [R] RECOVER ^|
-ECHO ^| [A] ATTACK ^|             ^| [F] FLEE
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-CHOICE /C IAERF /N /M ">"
-IF ERRORLEVEL 5 GOTO :PLAYER_ATTEMPTS_FLEE
-IF ERRORLEVEL 4 GOTO :PLAYER_RECOVERY
-IF ERRORLEVEL 3 GOTO :PLAYER_ENDED_TURN
-IF ERRORLEVEL 2 GOTO :PLAYER_ATTACK_CALCULATIONS
-IF ERRORLEVEL 1 GOTO :PLAYER_INVENTORY
+ECHO ^| %player.message%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina%/%player.stamina_max% ^| MG: %player.magicka%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| [A / ATTACK ] ^| [I / ITEMS ] ^| [R / RECOVER ] ^| [Q / FLEE ]
+ECHO +-------------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :PLAYER_ATTACK_SC
+IF /I "%CH%" == "2" GOTO :PLAYER_ITEMS
+IF /I "%CH%" == "3" GOTO :PLAYER_RECOVER
+IF /I "%CH%" == "Q" GOTO :PLAYER_FLEE
 
-:PLAYER_ATTACK_CALCULATIONS
-REM Check if the Player has enough stamina to perform a normal attack.
-IF %player.stamina% LSS %player.stamina_equip% (
-    REM The Player does not have enough stamina to perform this attack with their equipped weapon.
-    SET player.message=You do not have enough stamina to attack.
+:PLAYER_ATTACK_SC
+IF %player.stamina% LSS %player.attack_stamina_usage% (
+    SET player.message=You try to swing but find your weak noodles too exhausted.
     GOTO :EBS
 ) ELSE (
-    REM The Player has enough stamina to perform this attack with their equipped weapon.
-    GOTO :PLAYER_DAMAGE_CALCULATIONS
+    REM Try to account for enemy damage resistance
+    SET player.damage=%player.damage_base%
+    IF "%enemy.damage_type_resistance%" == "%player.weapon_damage_type%" (
+        SET /A player.damage=!player.damage! -%enemy.damage_resisted%
+        REM Add another display message variable? player.message and displayMessage will be overwritten if done here.
+        GOTO :PLAYER_ATTACK
+    ) ELSE (
+        REM No other attack type currently working.
+        GOTO :PLAYER_ATTACK
+    )
 )
 
-:PLAYER_DAMAGE_CALCULATIONS
-SET /A PDC=%RANDOM% %%40
-IF %PDC% GTR 32 (
-    REM The Player is granted a critical attack.
-    SET player.message=You got a critical hit^!
+:PLAYER_RECOVER
+SET /A RSR=%RANDOM% %%30
+IF %player.stamina% EQU %player.stamina_max% (
+    SET player.message=You do not need to rest.
+    GOTO :EBS
+) ELSE (
+    IF %RSR% GEQ 29 (
+        REM Full recovery
+        SET player.stamina=100
+        SET displayMessage=You rest for a moment, recovering your stamina
+        GOTO :OVERFLOW_CHECK
+    ) ELSE IF %RSR% GEQ 19 (
+        SET /A player.stamina=!player.stamina! +30
+        SET displayMessage=You rest for a moment, recovering some stamina
+        GOTO :OVERFLOW_CHECK
+    ) ELSE IF %RSR% GEQ 9 (
+        SET /A player.stamina=!player.stamina! +20
+        SET displayMessage=You rest for a moment, recovering some stamina
+        GOTO :OVERFLOW_CHECK
+    ) ELSE (
+        SET /A player.stamina=!player.stamina! +10
+        SET displayMessage=You rest for a moment, recovering some stamina
+        GOTO :OVERFLOW_CHECK
+    )
+)
+
+:OVERFLOW_CHECK
+IF %player.stamina% GTR %player.stamina_max% (
+    SET player.stamina=%player.stamina_max%
+    GOTO :PLAYER_ARMOR_CALCULATION
+) ELSE (
+    GOTO :PLAYER_ARMOR_CALCULATION
+)
+
+:PLAYER_ATTACK
+SET /A PA=%RANDOM% %%70
+IF %PA% LEQ 25 (
+    SET player.message=Critical hit^!
     SET /A enemy.health=!enemy.health! -%player.damage%*2
-    GOTO :PLAYER_ARMOR_CALCULATIONS
-) ELSE IF %PDC% GTR 10 (
-    REM The Player is granted a normal attack.
-    SET player.message=You lunge at the %curEn%^! Striking them with your weapon.
+    SET /A player.stamina=!player.stamina! -%player.attack_stamina_usage%
+    GOTO  :PLAYER_ARMOR_CALCULATION
+) ELSE IF %PA% GEQ 50 (
+    REM Athletics check! If Player athletics is below a certain level, they will miss this attack. A proper way to scale in the future will be nice.
+    IF %player.skill_athletics% LSS 10 (
+        SET player.message=You left your laces united. You fall flat on your face, missing entirely.
+        GOTO :PLAYER_ARMOR_CALCULATION
+    ) ELSE (
+        REM Just perform a normal attack.
+        SET player.message=You nearly trip in the process, but you manage to hit a solid blow
+        SET /A enemy.health=!enemy.health! -%player.damage%
+        GOTO :PLAYER_ARMOR_CALCULATION
+    )
+) ELSE IF %PA% GEQ 25 (
+    SET player.message=You manage a decent hit on the %currentEnemy%
     SET /A enemy.health=!enemy.health! -%player.damage%
-    SET /A player.damage_dealt=%player.damage%
-    GOTO :PLAYER_ARMOR_CALCULATIONS
+    SET /A player.stamina=!player.stamina! -%player.attack_stamina_usage%
+    GOTO :PLAYER_ARMOR_CALCULATION
 ) ELSE (
-    REM The Player misses their attack.
-    SET player.message=The %curEn% leaps out of the way just in time^!
-    GOTO :PLAYER_ARMOR_CALCULATIONS
+    SET player.message=You missed^!
+    GOTO :PLAYER_ARMOR_CALCULATION
 )
 
-REM Modifies enemy attack damage based on the Player's armor value.
-:PLAYER_ARMOR_CALCULATIONS
+:PLAYER_ARMOR_CALCULATION
 SET enemy.damage=%enemy.damage_base%
-IF %player.armor_equip% LEQ 0 (
-    REM The Player does not have any armor equipped.
-    GOTO :ENEMY_ATTACK_CALCULATIONS
+IF %player.armor_prot% LEQ 0 ( 
+    GOTO :CHECK_ACTIVE_BOSS
 ) ELSE (
-    SET /A enemy.damage=!enemy.damage! -%player.armor_equip%
-    GOTO :ENEMY_ATTACK_CALCULATIONS
+    SET /A enemy.damage=!enemy.damage! -%player.armor_prot%
+    GOTO :CHECK_ACTIVE_BOSS
 )
 
-:ENEMY_ATTACK_CALCULATIONS
-SET /A EAC=%RANDOM% %%40
-IF %EAC% GTR 30 (
-    REM Enemy is granted a critical attack.
-    SET displayMessage=The enemy got a critical hit^!
+:CHECK_ACTIVE_BOSS
+IF %ce.boss_active% EQU 1 (
+    GOTO :EAC_BOSS
+) ELSE (
+    GOTO :ENEMY_SC
+)
+
+:ENEMY_SC
+IF %enemy.stamina% LSS 10 (
+    GOTO :ENEMY_STAMINA_RECOVERY
+) ELSE (
+    GOTO :ENEMY_ATTACK_CALCULATION
+)
+
+:ENEMY_ATTACK_CALCULATION
+SET /A EA=%RANDOM% %%50
+IF %EA% GEQ 45 (
+    SET displayMessage=The %currentEnemy% scored a critical hit
     SET /A player.health=!player.health! -%enemy.damage%*2
+    SET /A enemy.stamina=!enemy.stamina! -13
     GOTO :EBS
-) ELSE IF %EAC% GTR 20 (
-    REM Enemy is granted a normal attack.
-    SET displayMessage=You were unable to dodge the %curEn%'s swift attack^!
+) ELSE IF %EA% GEQ 15 (
+    SET displayMessage=The %currentEnemy% scored a hit
     SET /A player.health=!player.health! -%enemy.damage%
-    GOTO :EBS
-) ELSE IF %EAC% GTR 12 (
-    REM Glancing blow
-    SET displayMessage=The enemy lands a glancing blow, a weak hit^!
-    SET /A player.health=!player.health! -%enemy.damage%
-    SET /A player.health=!player.health! +8
+    SET /A enemy.stamina=!enemy.stamina! -13
     GOTO :EBS
 ) ELSE (
-    REM The Enemy misses their attack.
-    SET displayMessage=You see the attack coming from miles away and move out of the way before it connects.
+    SET displayMessage=The %currentEnemy% attempted a far too obvious attack and missed.
     GOTO :EBS
 )
 
-REM This should probably get reworked. I mean, obviously. The inventory is getting a big ol upgrade.
+:ENEMY_STAMINA_RECOVERY
+SET /A RSR=%RANDOM% %%30
+IF %RSR% GEQ 29 (
+    REM Full recovery
+    SET enemy.stamina=100
+    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering their stamina
+    GOTO :EBS
+) ELSE IF %RSR% GEQ 19 (
+    SET /A enemy.stamina=!enemy.stamina! +30
+    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering some stamina
+    GOTO :EBS
+) ELSE IF %RSR% GEQ 9 (
+    SET /A enemy.stamina=!enemy.stamina! +20
+    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering some stamina
+    GOTO :EBS
+) ELSE (
+    SET /A enemy.stamina=!enemy.stamina! +10
+    SET displayMessage=The %currentEnemy% rests for a brief moment, recovering some stamina
+    GOTO :EBS
+)
+
+REM What is this doing here?
+SET /A enemy.stamina=!enemy.stamina! +35
+
+:EAC_BOSS
+REM BOSS FIGHT MECHANICS
+
 :PLAYER_INVENTORY
-ECHO disabled
-PAUSE
-GOTO :EBS
-REM SET CE7CALL=1
-REM CALL "%cd%\data\functions\Inventory Viewer.bat"
+REM REDESIGN PLAYER INVENTORY ACCESS
 
-
-REM Handles those pesky errors.
 :ERROR_HANDLER
 CALL "%cd%\data\functions\Error Handler.bat"
+CLS
+ECHO.
+ECHO An error has occured in Combat Engine. It is not recommended that you continue.
+ECHO Save your game and exit?
+CHOICE /C YN /N /M "Y/N"
+IF ERRORLEVEL 2 GOTO :EH_WARN
+IF ERRORLEVEL 1 GOTO :EH_CS
+
+:EH_WARN
+ECHO You have been warned.
+PAUSE
+GOTO :EBS
+
+:EH_CS
+SET SLOPr=SAVE
+CALL "%winLoc%\data\functions\SLOP.bat"
 EXIT
 
-REM Handles victory conditions. This should eventually scale with difficulty.
+:VICTORY_STATS_TRACK
+IF "%currentEnemy%" == "Bandit" (
+    SET /A player.bandits_slain=!player.bandits_slain! +1
+    GOTO :VICTORY_REWARDS
+) ELSE IF "%currentEnemy%" == "Abyssal Guardian" (
+    SET /A player.iridescent_ab_defeated=1
+    GOTO :VICTORY_REWARDS
+) ELSE (
+    REM Enemy doesn't exist? How'd you get here?
+    GOTO :ERROR_HANDLER
+)
+
 :VICTORY_REWARDS
-CALL "%cd%\data\functions\leveler.bat"
 SET player.health=%player.health_max%
 SET player.stamina=%player.stamina_max%
 SET player.magicka=%player.magicka_max%
-SET /A RR=%RANDOM% %%20
-IF %RR% GEQ 15 (
-    SET goldGained=60
-    SET xpGained=25
+SET /A XPE=%RANDOM% %%80
+IF %XPE% LEQ 30 (
+    SET /A player.xp=!player.xp! +30
+    SET displayMessage=Earned 30 XP
+    GOTO :VICTORY_REWARDS_LUNIS
+) ELSE IF %XPE% LEQ 60 (
+    SET /A player.xp=!player.xp! +70
+    SET displayMessage=Earned 70 XP
+    GOTO :VICTORY_REWARDS_LUNIS
+) ELSE (
+    SET /A player.xp=!player.xp! +100
+    SET displayMessage=Earned 100 XP
+    GOTO :VICTORY_REWARDS_LUNIS
+)
+
+:VICTORY_REWARDS_LUNIS
+IF %player.level% LSS 10 (
+    SET /A player.coins=!player.coins! +5
+    SET player.message=You earned 5 LUNIS
     GOTO :VICTORY_SCREEN
-) ELSE IF %RR% LEQ 8 (
-    SET goldGained=20
-    SET xpGained=10
+) ELSE IF %player.level% LSS 20 (
+    SET /A player.coins=!player.coins! +10
+    SET player.message=You earned 10 LUNIS
+    GOTO :VICTORY_SCREEN
+) ELSE IF %player.level% LSS 30 (
+    SET /A player.coins=!player.coins! +20
+    SET player.message=You earned 20 LUNIS
+    GOTO :VICTORY_SCREEN
+) ELSE IF %player.level% LSS 40 (
+    SET /A player.coins=!player.coins! +30
+    SET player.message=You earned 40 LUNIS
     GOTO :VICTORY_SCREEN
 ) ELSE (
-    SET goldGained=10
-    SET xpGained=5
+    SET /A player.coins=!player.coins! +50
+    SET player.message=You earned 50 LUNIS
     GOTO :VICTORY_SCREEN
 )
 
 :VICTORY_SCREEN
-SET /A player.coins=!player.coins! +%goldGained%
-SET /A player.xp=!player.xp! +%xpGained%
-TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.class% is victorious!
+MODE con: cols=105 lines=18
 CLS
 ECHO.
-TYPE "%cd%\data\assets\ui\victory.txt"
+TYPE "%winLoc%\data\assets\ui\victory.txt"
 ECHO.
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| %lootFound% ^| %player.levelup_notif%
-ECHO ^| You defeated the %curEn%, congratulations^! You've been rewarded with %goldGained% Gold and %xpGained% xp.
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| STM: %player.stamina% ^| ATK: %player.damage% ^| AMR: %player.armor% ^| MGK: %player.magicka%
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| ACTION 1: %q_action_1% ^| ACTION 2: %q_action_2% ^| ACTION 3: %q_action_3%
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / LOOT %curEn% ] ^| [E / EXIT ]  ^| %player.message%                                                      +
-ECHO +----------------------------------------------------------------------------------------------------------------------+
-CHOICE /C 1E /N /M ">"
-IF ERRORLEVEL 2 GOTO :EXIT
-IF ERRORLEVEL 1 GOTO :LOOT
+ECHO The %currentEnemy% was defeated. Your health, stamina and magicka has been refilled!
+ECHO %player.message% ^| %displayMessage%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina%/%player.stamina_max% ^| MG: %player.magicka%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO [1 / LOOT ] ^| [Q LEAVE ]
+ECHO +-------------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :LOOT
+IF /I "%CH%" == "Q" GOTO :EXIT
 
 :LOOT
-CALL "%cd%\data\Combat Engine\scripts\ceLoot.bat"
-SET enLooted=1
-GOTO :VICTORY_SCREEN
+IF %enLooted% EQU 1 (
+    SET player.message=This enemy was looted already.
+    GOTO :VICTORY_SCREEN
+) ELSE (
+    GOTO :VICTORY_LOOT
+)
+
+:VICTORY_LOOT
+IF %player.level% LEQ 10 (
+    GOTO :PLAYER_LEVEL_10_LOWER
+) ELSE (
+    echo NOT IMPLEMENTED
+    GOTO :VICTORY_SCREEN
+)
+
+:PLAYER_LEVEL_10_LOWER
+SET /A LT=%RANDOM% %%40
+IF %LT% LEQ 10 (
+    SET enLooted=1
+    SET /A CR=%RANDOM% * 17 / 32768 + 8
+    SET /A player.coins=!player.coins! +%CR%
+    SET player.message=You found %CR% LUNIS
+    GOTO :VICTORY_SCREEN
+) ELSE IF %LT% LEQ 20 (
+    SET enLooted=1
+    SET /A CR=%RANDOM% * 32 / 32768 + 12
+    SET /A player.coins=!player.coins! +%CR%
+    SET player.message=You found %CR% LUNIS
+    GOTO :VICTORY_SCREEN
+) ELSE IF %LT% LEQ 30 (
+    SET enLooted=1
+    SET /A player.item_long_sword_owned=!player.item_long_sword_owned! +1
+    SET player.message=You found a Long Sword.
+    GOTO :VICTORY_SCREEN
+) ELSE IF %LT% LEQ 40 (
+    SET enLooted=1
+    SET /A CR=%RANDOM% * 48 / 32768 + 21
+    SET /A player.coins=!player.coins! +%CR%
+    SET /A player.item_cactus_armor_owned=!player.item_cactus_armor_owned! +1
+    SET player.message=You found %CR% LUNIS and 1 CACTUS ARMOR
+    GOTO :VICTORY_SCREEN
+)
 
 :DEFEAT_SCREEN
-SET /A player.xp=!player.xp! +10
-SET player.health=%player.health_max%
-TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.class% is victorious!
+SET /A player.total_deaths=!player.total_deaths! +1
+SET /A player.health=!player.health! +25
+SET /A player.stamina=!player.stamina! +25
+SET /A player.magicka=!player.magicka! +25
+SET player.message=...
+SET displayMessage=...
+MODE con: cols=105 lines=18
 CLS
 ECHO.
-TYPE "%cd%\data\assets\ui\defeat.txt"
+TYPE "%winLoc%\data\assets\ui\defeat.txt"
 ECHO.
-ECHO +---------------------------------------------------------------------------------------------------------------------+
-ECHO ^| %lootFound%
-ECHO ^| You were defeated ny the %curEn%! You've been rewarded with 10 xp.
-ECHO +---------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health% ^| STM: %player.stamina% ^| ATK: %player.damage% ^| AMR: %player.armor% ^| MGK: %player.magicka%
-ECHO +---------------------------------------------------------------------------------------------------------------------+
-ECHO ^| ACTION 1: %q_action_1% ^| ACTION 2: %q_action_2% ^| ACTION 3: %q_action_3%
-ECHO +---------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [E / EXIT ]  ^| %player.message%                                                                            +
-ECHO +---------------------------------------------------------------------------------------------------------------------+
-CHOICE /C E /N /M ">"
-IF ERRORLEVEL 1 GOTO :EXIT
+ECHO You were defeated by the %currentEnemy%. Your health, stamina and magicka has been partially refilled.
+ECHO %player.message% ^| %displayMessage%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina%/%player.stamina_max% ^| MG: %player.magicka%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| [Q LEAVE ]
+ECHO +-------------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "Q" GOTO :EXIT
 
-REM Performs some cleanup and then exits.
 :EXIT
-SET player.armor_calculated=1
-SET enemy.attack=%enemy.attack_normal%
+SET enLooted=0
+SET enemy.damage=%enemy.damage_base%
 GOTO :EOF
