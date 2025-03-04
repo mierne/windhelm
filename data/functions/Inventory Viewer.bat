@@ -87,7 +87,7 @@ ECHO.
 ECHO Showing detailed information for the Long Sword.
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_long_sword_owned%
-ECHO ^| DAMAGE: %windhelm.item_long_sword_damage%
+ECHO ^| DAMAGE: %windhelm.item_long_sword_damage%, %windhelm.item_long_sword_damage_type%
 ECHO ^| STAMINA USAGE: %windhelm.item_long_sword_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_long_sword_category%
 ECHO ^| TYPE: %windhelm.item_long_sword_type%
@@ -110,6 +110,7 @@ IF %player.weapon_equipped% == EMPTY (
         SET player.weapon_equipped=%windhelm.item_long_sword_name%
         SET player.damage=%windhelm.item_long_sword_damage%
         SET player.attack_stamina_usage=%windhelm.item_long_sword_stamina_usage%
+        SET player.weapon_damage_type=%windhelm.item_long_sword_damage_type%
         SET displayMessage=Equipped the Long Sword^!
         GOTO :IVM
     ) ELSE (
@@ -150,7 +151,7 @@ ECHO.
 ECHO Showing detailed information for the Short Sword.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_short_sword_owned%
-ECHO ^| DAMAGE: %windhelm.item_short_sword_damage%
+ECHO ^| DAMAGE: %windhelm.item_short_sword_damage%, %windhelm.item_short_sword_damage_type%
 ECHO ^| STAMINA USAGE: %windhelm.item_short_sword_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_short_sword_category%
 ECHO ^| TYPE: %windhelm.item_short_sword_type%
@@ -172,6 +173,7 @@ IF %player.weapon_equipped% == EMPTY (
         SET player.weapon_equipped=%windhelm.item_short_sword_name%
         SET player.damage=%windhelm.item_short_sword_damage%
         SET player.attack_stamina_usage=%windhelm.item_short_sword_stamina_usage%
+        SET player.weapon_damage_type=%windhelm.item_short_sword_damage_type%
         SET displayMessage=Equipped the Short Sword^!
         GOTO :IVM
     ) ELSE (
@@ -235,7 +237,7 @@ ECHO.
 ECHO Showing detailed information for the Great Axe.
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_great_axe_owned%
-ECHO ^| DAMAGE: %windhelm.item_great_axe_damage%
+ECHO ^| DAMAGE: %windhelm.item_great_axe_damage%, %windhelm.item_great_axe_damage_type%
 ECHO ^| STAMINA USAGE: %windhelm.item_great_axe_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_great_axe_category%
 ECHO ^| TYPE: %windhelm.item_great_axe_type%
@@ -257,6 +259,7 @@ IF %player.weapon_equipped% == EMPTY (
         SET player.weapon_equipped=%windhelm.item_great_axe_name%
         SET player.damage=%windhelm.item_great_axe_damage%
         SET player.attack_stamina_usage=%windhelm.item_great_axe_stamina_usage%
+        SET player.weapon_damage_type=%windhelm.item_great_axe_damage_type%
         SET displayMessage=Equipped the Great Axe^!
         GOTO :IVM
     ) ELSE (
@@ -320,7 +323,7 @@ ECHO.
 ECHO Showing detailed information for the Mace.
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_mace_owned%
-ECHO ^| DAMAGE: %windhelm.item_mace_damage%
+ECHO ^| DAMAGE: %windhelm.item_mace_damage%, %windhelm.item_mace_damage_type%
 ECHO ^| STAMINA USAGE: %windhelm.item_mace_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_mace_category%
 ECHO ^| TYPE: %windhelm.item_mace_type%
@@ -342,6 +345,7 @@ IF %player.weapon_equipped% == EMPTY (
         SET player.weapon_equipped=%windhelm.item_mace_name%
         SET player.damage=%windhelm.item_mace_damage%
         SET player.attack_stamina_usage=%windhelm.item_mace_stamina_usage%
+        SET player.weapon_damage_type=%windhelm.item_mace_damage_type%
         SET displayMessage=Equipped the Mace^!
         GOTO :IVM
     ) ELSE (
@@ -405,7 +409,7 @@ ECHO.
 ECHO Showing detailed information for the Wooden Bow.
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_wooden_bow_owned%
-ECHO ^| DAMAGE: %windhelm.item_wooden_bow_damage%
+ECHO ^| DAMAGE: %windhelm.item_wooden_bow_damage%, %windhelm.item_wooden_bow_damage_type%
 ECHO ^| STAMINA USAGE: %windhelm.item_wooden_bow_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_wooden_bow_category%
 ECHO ^| TYPE: %windhelm.item_wooden_bow_type%
@@ -427,6 +431,7 @@ IF %player.weapon_equipped% == EMPTY (
         SET player.weapon_equipped=%windhelm.item_wooden_bow_name%
         SET player.damage=%windhelm.item_wooden_bow_damage%
         SET player.attack_stamina_usage=%windhelm.item_wooden_bow_stamina_usage%
+        SET player.weapon_damage_type=%windhelm.item_wooden_bow_damage_type%
         SET displayMessage=Equipped the Wooden Bow^!
         GOTO :IVM
     ) ELSE (
@@ -512,7 +517,7 @@ ECHO.
 ECHO Showing detailed information for Cactus Armor.
 ECHO +------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_cactus_armor_owned%
-ECHO ^| PROTECTION: %windhelm.item_cactus_armor_prot%
+ECHO ^| PROTECTION: %windhelm.item_cactus_armor_prot%, %windhelm.item_cactus_armor_type_resistance%
 ECHO ^| CATEGORY: %windhelm.item_cactus_armor_category%
 ECHO ^| TYPE: %windhelm.item_cactus_armor_type%
 ECHO +------------------------------------------------------------------------------------------------------------------------+
@@ -532,6 +537,7 @@ IF %player.armor_equipped% == EMPTY (
         REM The Player owns more than zero of this item.
         SET player.armor_equipped=%windhelm.item_cactus_armor_name%
         SET player.armor_prot=%windhelm.item_cactus_armor_damage%
+        SET player.armor_resistance_type=%windhelm.item_cactus_armor_type_resistance%
         SET displayMessage=Equipped Cactus Armor^!
         GOTO :IVM
     ) ELSE (
@@ -571,7 +577,7 @@ ECHO.
 ECHO Showing detailed information for Guard Armor.
 ECHO +--------------------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_guard_armor_owned%
-ECHO ^| PROTECTION: %windhelm.item_guard_armor_prot%
+ECHO ^| PROTECTION: %windhelm.item_guard_armor_prot%, %windhelm.item_guard_armor_type_resistance%
 ECHO ^| CATEGORY: %windhelm.item_guard_armor_category%
 ECHO ^| TYPE: %windhelm.item_guard_armor_type%
 ECHO +--------------------------------------------------------------------------------------------------------------+
@@ -591,6 +597,7 @@ IF %player.armor_equipped% == EMPTY (
         REM The Player owns more than zero of this item.
         SET player.armor_equipped=%windhelm.item_guard_armor_name%
         SET player.armor_prot=%windhelm.item_guard_armor_damage%
+        SET player.armor_resistance_type=%windhelm.item_guard_armor_type_resistance%
         SET displayMessage=Equipped Guard Armor^!
         GOTO :IVM
     ) ELSE (
@@ -652,7 +659,7 @@ ECHO.
 ECHO Showing detailed information for Iron Armor.
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_iron_armor_owned%
-ECHO ^| PROTECTION: %windhelm.item_iron_armor_prot%
+ECHO ^| PROTECTION: %windhelm.item_iron_armor_prot%, %windhelm.item_iron_armor_type_resistance%
 ECHO ^| CATEGORY: %windhelm.item_iron_armor_category%
 ECHO ^| TYPE: %windhelm.item_iron_armor_type%
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -672,6 +679,7 @@ IF %player.armor_equipped% == EMPTY (
         REM The Player owns more than zero of this item.
         SET player.armor_equipped=%windhelm.item_iron_armor_name%
         SET player.armor_prot=%windhelm.item_iron_armor_damage%
+        SET player.armor_resistance_type=%windhelm.item_iron_armor_type_resistance%
         SET displayMessage=Equipped Iron Armor^!
         GOTO :IVM
     ) ELSE (
@@ -711,7 +719,7 @@ ECHO.
 ECHO Showing detailed information for Stone Armor.
 ECHO +--------------------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_stone_armor_owned%
-ECHO ^| PROTECTION: %windhelm.item_stone_armor_prot%
+ECHO ^| PROTECTION: %windhelm.item_stone_armor_prot%, %windhelm.item_stone_armor_type_resistance%
 ECHO ^| CATEGORY: %windhelm.item_stone_armor_category%
 ECHO ^| TYPE: %windhelm.item_stone_armor_type%
 ECHO +--------------------------------------------------------------------------------------------------------------+
@@ -730,6 +738,7 @@ IF %player.armor_equipped% == EMPTY (
         REM The Player owns more than zero of this item.
         SET player.armor_equipped=%windhelm.item_stone_armor_name%
         SET player.armor_prot=%windhelm.item_stone_armor_damage%
+        SET player.armor_resistance_type=%windhelm.item_stone_armor_type_resistance%
         SET displayMessage=Equipped Stone Armor^!
         GOTO :IVM
     ) ELSE (
@@ -791,7 +800,7 @@ ECHO.
 ECHO Showing detailed information for Steel Armor.
 ECHO +--------------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_steel_armor_owned%
-ECHO ^| PROTECTION: %windhelm.item_steel_armor_prot%
+ECHO ^| PROTECTION: %windhelm.item_steel_armor_prot%, %windhelm.item_steel_armor_type_resistance%
 ECHO ^| CATEGORY: %windhelm.item_steel_armor_category%
 ECHO ^| TYPE: %windhelm.item_steel_armor_type%
 ECHO +--------------------------------------------------------------------------------------------------------+
@@ -811,6 +820,7 @@ IF %player.armor_equipped% == EMPTY (
         REM The Player owns more than zero of this item.
         SET player.armor_equipped=%windhelm.item_steel_armor_name%
         SET player.armor_prot=%windhelm.item_steel_armor_damage%
+        SET player.armor_resistance_type=%windhelm.item_steel_armor_type_resistance%
         SET displayMessage=Equipped Steel Armor^!
         GOTO :IVM
     ) ELSE (
@@ -850,7 +860,7 @@ ECHO.
 ECHO Showing detailed information for Scale Armor.
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_scale_armor_owned%
-ECHO ^| PROTECTION: %windhelm.item_scale_armor_prot%
+ECHO ^| PROTECTION: %windhelm.item_scale_armor_prot%, %windhelm.item_scale_armor_type_resistance%
 ECHO ^| CATEGORY: %windhelm.item_scale_armor_category%
 ECHO ^| TYPE: %windhelm.item_scale_armor_type%
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -870,6 +880,7 @@ IF %player.armor_equipped% == EMPTY (
         REM The Player owns more than zero of this item.
         SET player.armor_equipped=%windhelm.item_scale_armor_name%
         SET player.armor_prot=%windhelm.item_scale_armor_damage%
+        SET player.armor_resistance_type=%windhelm.item_scale_armor_type_resistance%
         SET displayMessage=Equipped Scale Armor^!
         GOTO :IVM
     ) ELSE (
