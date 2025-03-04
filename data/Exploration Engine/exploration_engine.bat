@@ -13,11 +13,11 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / IRIDESCENT FOREST ] ^| [2 / WINDHELM EXTERIOR ] ^| [3 / ROCKWINN PLAZA ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C 123Q /N /M ">"
-IF ERRORLEVEL 4 GOTO :AUTOSAVE
-IF ERRORLEVEL 3 GOTO :VENTURE_ROCKWINN_PLAZA
-IF ERRORLEVEL 2 GOTO :VENTURE_WINDHELM_EXTERIOR
-IF ERRORLEVEL 1 GOTO :VENTURE_IRIDESCENT_FOREST
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :VENTURE_IRIDESCENT_FOREST
+IF /I "%CH%" == "2" GOTO :VENTURE_WINDHELM_EXTERIOR
+IF /I "%CH%" == "3" GOTO :VENTURE_ROCKWINN_PLAZA
+IF /I "%CH%" == "Q" GOTO :AUTOSAVE
 
 :VENTURE_IRIDESCENT_FOREST
 MODE con: cols=105 lines=17
@@ -31,10 +31,10 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / ADVENTURE ] ^| [2 / AREA BOSS ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C 12Q /N /M ">"
-IF ERRORLEVEL 3 GOTO :MAIN
-IF ERRORLEVEl 2 GOTO :IFOR_CHALLENGE_AREA_BOSS
-IF ERRORLEVEL 1 GOTO :IFOR_ADVENTURE
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :IFOR_ADVENTURE
+IF /I "%CH%" == "2" GOTO :IFOR_CHALLENGE_AREA_BOSS
+IF /I "%CH%" == "Q" GOTO :MAIN
 
 :IFOR_ADVENTURE
 SET /A EE=%RANDOM% %%50
@@ -69,10 +69,10 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / WANDER ] ^| [2 / TRAVELING MERCHANT ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-CHOICE /C 12Q /N /M ">"
-IF ERRORLEVEL 3 GOTO :MAIN
-IF ERRORLEVEl 2 GOTO :WE_TRAVELING_MERCHANT
-IF ERRORLEVEL 1 GOTO :WE_WANDER
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :WE_WANDER
+IF /I "%CH%" == "2" GOTO :WE_TRAVELING_MERCHANT
+IF /I "%CH%" == "Q" GOTO :MAIN
 
 :WE_WANDER
 SET /A  WE=%RANDOM% %%50
@@ -83,6 +83,10 @@ IF %WE% LEQ 15 (
     SET displayMessage=You didn't find anything of interest.
     GOTO :VENTURE_WINDHELM_EXTERIOR
 )
+
+:VENTURE_ROCKWINN_PLAZA
+CALL "%winLoc%\data\functions\Rockwinn Plaza.bat"
+GOTO :MAIN
 
 :WE_WANDER_ENCOUNTER_1
 MODE con: cols=105 lines=19
@@ -96,6 +100,10 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / APPROACH ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :WEWE1_APPROACH_INTERACTION
+IF /I "%CH%" == "Q" GOTO :MAIN
+
 CHOICE /C 1Q /N /M ">"
 IF ERRORLEVEL 3 GOTO :MAIN
 IF ERRORLEVEL 1 GOTO :WEWE1_APPROACH_INTERACTION
