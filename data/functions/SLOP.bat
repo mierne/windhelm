@@ -12,7 +12,7 @@ SET refundPrice=0
 SET itemStored=false
 SET player.message=...
 REM Other values
-SET windhelm.vn=STABLE-0.2.4-250304
+SET windhelm.vn=STABLE-0.2.5-250311
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
