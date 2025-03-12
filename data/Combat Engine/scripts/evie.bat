@@ -17,7 +17,7 @@ SET bandit.stamina=100
 SET bandit.magicka=100
 SET bandit.damage=14
 SET bandit.damage_type_resistance=physical
-SET bandit.damage_resisted=6
+SET bandit.damage_resisted=0
 
 REM Abyssal Guardian Information
 SET abyssal_guardian.health=250
