@@ -5,6 +5,7 @@ SET /A CR=%RANDOM% * 17 / 32768 + 8
 MODE con: cols=120 lines=20
 IF %enemy.health% LEQ 0 GOTO :VICTORY_STATS_TRACK
 IF %player.health% LEQ 0 GOTO :DEFEAT_SCREEN
+SET player.damage=%player.damage_base%
 TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.race% %player.class% vs %curEn% & SET enAT=%enATb%
 CLS
 ECHO.
