@@ -1,6 +1,6 @@
 <div align="center">
   
-  ![](https://badgen.net/badge/icon/windows?icon=windows&label) ![](https://badgen.net/github/release/mierne/windhelm/) ![](https://badgen.net/github/stars/mierne/windhelm)
+  ![](https://badgen.net/badge/icon/windows?icon=windows&label) ![](https://badgen.net/github/release/mierne/windhelm/)
   ##### Originally created by Mierne
 </div>
 
