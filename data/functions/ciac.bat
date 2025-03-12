@@ -5,14 +5,8 @@ REM COMPAT FOR PRONOUN CHANGE FEATURE.
 IF %player.pronouns_change_req% == 1 (
     GOTO :CHOOSE_PRONOUN
 ) ELSE (
-    GOTO :SELF_INIT
+    GOTO :CFEPD
 )
-
-REM Intializes character and game data to be modified later.
-:SELF_INIT
-SET SLOPr=INIT
-CALL "%cd%\data\functions\SLOP.bat"
-GOTO :CFEPD
 
 REM Check for existing Player data.
 :CFEPD
@@ -32,9 +26,9 @@ ECHO.
 ECHO.
 ECHO WARNING! An existing save has been detected. Do you wish to overwrite this existing save?
 ECHO +---------------------------------------------------------------------------------------------+
-CHOICE /C YN /N /M "Y/N"
-IF ERRORLEVEL 2 GOTO :NO_OVERWRITE
-IF ERRORLEVEL 1 GOTO :ENTER_NAME
+SET /P CH=">"
+IF /I "%P%" == "Y" GOTO :ENTER_NAME
+IF /I "%P%" == "N" GOTO :NO_OVERWRITE
 
 REM Do not overwrite an existing save.
 :NO_OVERWRITE
@@ -68,11 +62,11 @@ ECHO ^| [S] SHE/HER/HERS
 ECHO ^| [H] HE/HIM/HIS
 ECHO ^| [C] CUSTOM SELECTION
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-CHOICE /C CHST /N /M ">"
-IF ERRORLEVEL 4 GOTO :THT
-IF ERRORLEVEL 3 GOTO :SHH
-IF ERRORLEVEL 2 GOTO :HHH
-IF ERRORLEVEL 1 GOTO :CUSTOM_P_PERSONAL
+SET /P CH=">"
+IF /I "%P%" == "T" GOTO :THT
+IF /I "%P%" == "S" GOTO :SHH
+IF /I "%P%" == "H" GOTO :HHH
+IF /I "%P%" == "C" GOTO :CUSTOM_P_PERSONAL
 
 :THT
 SET player.personal_p_1=they
@@ -113,7 +107,7 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| Enter a PERSONAL pronoun. EXAMPLE: SHE/HER, HE/HIM, THEY/THEM, IT/ITS
 ECHO ^| Please enter one half of your desired set, you will be asked for the second half next.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-SET /P personal_p_1=
+SET /P player.personal_p_1=
 GOTO :CHOOSE_P_PERSONAL_2
 
 :CHOOSE_P_PERSONAL_2
@@ -126,7 +120,7 @@ ECHO Custom Pronouns / 2
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Enter a PERSONAL pronoun. EXAMPLE: SHE/HER, HE/HIM, THEY/THEM, IT/ITS
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-SET /P personal_p_2=
+SET /P player.personal_p_2=
 GOTO :CHOOSE_P_POSSESIVE
 
 :CHOOSE_P_POSSESIVE
@@ -139,8 +133,8 @@ ECHO Custom Pronouns
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Enter a POSSESIVE pronoun. EXAMPLE: HERS, HIS, THEIRS, ITS
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-SET /P possesive_1=
-GOTO :CHOOSE_P_REFLEXIVE_AND_INTENSIVE_1
+SET /P player.possesive_1=
+GOTO :CHOOSE_P_REFLEXIVE_1
 
 :CHOOSE_P_REFLEXIVE_1
 CLS
@@ -153,8 +147,8 @@ ECHO This set covers Reflexive and Intensive pronouns.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Enter a REFLEXIVE and INTENSIVE pronoun. EXAMPLE: HERSELF, HIMSELF, THEMSELF, ITSELF
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-SET /P reflexive_1=
-IF %player.pronouns_change_req% == 1 GOTO :EOF
+SET /P player.reflexive_1=
+IF %player.pronouns_change_req% EQU 1 GOTO :EOF
 GOTO :CHOOSE_RACE
 
 :CHOOSE_RACE
@@ -171,11 +165,14 @@ ECHO ^| [2] Fael   : Short, stalky people native to the Dredge.
 ECHO ^| [3] Frawen : Tall with sharp, pointy ears, these people are native to the forests of Fulkwinn.
 ECHO ^| [4] Nemmar : Cat-like people, native to the warm climates of Valar.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-CHOICE /C 1234 /N /M ">"
-IF ERRORLEVEl 4 GOTO :MORE_NEMMAR
-IF ERRORLEVEl 3 GOTO :MORE_FRAWEN
-IF ERRORLEVEL 2 GOTO :MORE_FAEL
-IF ERRORLEVEL 1 GOTO :MORE_HUMAN
+SET /P CH=">"
+IF /I "%P%" == "1" GOTO :MORE_HUMAN
+IF /I "%P%" == "2" GOTO :MORE_FAEL
+IF /I "%P%" == "3" GOTO :MORE_FRAWEN
+IF /I "%P%" == "4" GOTO :MORE_NEMMAR
+ECHO %CH% not available.
+PAUSE
+GOTO :CHOOSE_RACE
 
 :MORE_HUMAN
 REM MODE con: cols=125 lines=22
@@ -193,9 +190,9 @@ ECHO ^| +50 to starting HEALTH.
 ECHO ^| +2 to starting DAMAGE skill.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK ]
-CHOICE /C 1Q /N /M ">"
-IF ERRORLEVEL 2 GOTO :CHOOSE_RACE
-IF ERRORLEVEL 1 GOTO :SELECT_HUMAN_RACE
+SET /P CH=">"
+IF /I "%P%" == "1" GOTO :SELECT_HUMAN_RACE
+IF /I "%P%" == "Q" GOTO :CHOOSE_RACE
 
 :SELECT_HUMAN_RACE
 SET player.race=human
@@ -213,9 +210,9 @@ ECHO ^| legends and strength of their tools and armors. They've remained mostly 
 ECHO ^| SKILL TO BOOST UNDETERMINED
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK ]
-CHOICE /C 1Q /N /M ">"
-IF ERRORLEVEL 2 GOTO :CHOOSE_RACE
-IF ERRORLEVEL 1 GOTO :SELECT_FAEL_RACE
+SET /P CH=">"
+IF /I "%P%" == "1" GOTO :SELECT_FAEL_RACE
+IF /I "%P%" == "Q" GOTO :CHOOSE_RACE
 
 :SELECT_FAEL_RACE
 SET player.race=fael
@@ -235,9 +232,9 @@ ECHO ^| +2 to starting INTELLIGENCE skill.
 ECHO ^| +50 to starting STAMINA.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK ]
-CHOICE /C 1Q /N /M ">"
-IF ERRORLEVEL 2 GOTO :CHOOSE_RACE
-IF ERRORLEVEL 1 GOTO :SELECT_FRAWEN_RACE
+SET /P CH=">"
+IF /I "%P%" == "1" GOTO :SELECT_FRAWEN_RACE
+IF /I "%P%" == "Q" GOTO :CHOOSE_RACE
 
 :SELECT_FRAWEN_RACE
 SET player.race=frawen
@@ -256,9 +253,9 @@ ECHO ^| +2 to starting DAMAGE skill.
 ECHO ^| +50 to starting HEALTH.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK ]
-CHOICE /C 1Q /N /M ">"
-IF ERRORLEVEL 2 GOTO :CHOOSE_RACE
-IF ERRORLEVEL 1 GOTO :SELECT_NEMMAR_RACE
+SET /P CH=">"
+IF /I "%P%" == "1" GOTO :SELECT_NEMMAR_RACE
+IF /I "%P%" == "Q" GOTO :CHOOSE_RACE
 
 :SELECT_NEMMAR_RACE
 SET player.race=nemmar
@@ -276,11 +273,10 @@ ECHO ^| [S] Sorcerer : Born to a family of poor Sorcerers, lost to the winds.
 ECHO ^| [W] Warrior  : A shard formed in battle, many scars remain.
 ECHO ^| [D] Druid    : Their greatest distraction will be their downfall.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-CHOICE /C SWD /N /M ">"
-IF ERRORLEVEL 3 GOTO :DRUID_CHOSEN_PREVIEW
-IF ERRORLEVEL 2 GOTO :WARRIOR_CHOSEN_PREVIEW
-IF ERRORLEVEL 1 GOTO :SORCERER_CHOSEN_PREVIEW
-GOTO :CHOOSE_CLASS
+SET /P CH=">"
+IF /I "%P%" == "S" GOTO :SORCERER_CHOSEN_PREVIEW
+IF /I "%P%" == "W" GOTO :WARRIOR_CHOSEN_PREVIEW
+IF /I "%P%" == "D" GOTO :DRUID_CHOSEN_PREVIEW
 
 :DRUID_CHOSEN_PREVIEW
 MODE con: cols=125 lines=22
@@ -299,10 +295,9 @@ ECHO ^| Starting magic skills: ALTERATION: 6 ^| DESTRUCTION: 2     ^| RESTORATIO
 ECHO ^| Other: REPUTATION: 2 ^| FACTION: Association Druider
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
-CHOICE /C 1Q /N /M ">"
-IF ERRORLEVEL 2 GOTO :CHOOSE_CLASS
-IF ERRORLEVEL 1 GOTO :DRUID_CHOSEN
-GOTO :CHOOSE_CLASS
+SET /P CH=">"
+IF /I "%P%" == "1" GOTO :DRUID_CHOSEN
+IF /I "%P%" == "Q" GOTO :CHOOSE_CLASS
 
 :WARRIOR_CHOSEN_PREVIEW
 MODE con: cols=120 lines=23
@@ -322,10 +317,9 @@ ECHO ^| Starting magic skills: ALTERATION: 2 ^| DESTRUCTION: 2 ^| RESTORATION: 2
 ECHO ^| Other: REPUTATION: 2 ^| FACTION: Silver Sliver's Guild
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
-CHOICE /C 1Q /N /M ">"
-IF ERRORLEVEL 2 GOTO :CHOOSE_CLASS
-IF ERRORLEVEL 1 GOTO :WARRIOR_CHOSEN
-GOTO :CHOOSE_CLASS
+SET /P CH=">"
+IF /I "%P%" == "1" GOTO :WARRIOR_CHOSEN
+IF /I "%P%" == "Q" GOTO :CHOOSE_CLASS
 
 :SORCERER_CHOSEN_PREVIEW
 MODE con: cols=120 lines=24
@@ -345,10 +339,9 @@ ECHO ^| Starting magica skills: ALTERATION: 12 ^| DESTRUCTION: 8 ^| RESTORATION:
 ECHO ^| Other: REPUTATION: 2 ^| FACTION: Sorcerers Guild
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
-CHOICE /C 1Q /N /M ">"
-IF ERRORLEVEL 2 GOTO :CHOOSE_CLASS
-IF ERRORLEVEL 1 GOTO :SORCERER_CHOSEN
-GOTO :CHOOSE_CLASS
+SET /P CH=">"
+IF /I "%P%" == "1" GOTO :SORCERER_CHOSEN
+IF /I "%P%" == "Q" GOTO :CHOOSE_CLASS
 
 :DRUID_CHOSEN
 SET player.health=70
@@ -415,22 +408,62 @@ REM More weird, inconsist batch behavior! Regardless of DELAYEDEXPANSION, SET /A
 SET /A player.health_max=!player.health_max! +50
 SET player.health=%player.health_max%
 SET /A player.skill_damage=!player.skill_damage! +2
-GOTO :SAVE_DATA
+GOTO :CHOOSE_ORIGIN
 
 :APPLY_RACE_BONUS_FAEL
-GOTO :SAVE_DATA
+GOTO :CHOOSE_ORIGIN
 
 :APPLY_RACE_BONUS_FRAWEN
 SET /A player.health=!player.health_max! +50
 SET player.health=!player.health_max!
 SET /A player.skill_intelligence=!player.skill_intelligence! +2
-GOTO :SAVE_DATA
+GOTO :CHOOSE_ORIGIN
 
 :APPLY_RACE_BONUS_NEMMAR
 SET /A player.health=!player.health! +50
 SET player.health=!player.health_max!
 SET /A player.skill_damage=!player.skill_damage! +2
-GOTO :SAVE_DATA
+GOTO :CHOOSE_ORIGIN
+
+REM Allows the Player to choose an origin for their character. In the future this will determine endings available to the Player.
+:CHOOSE_ORIGIN
+MODE con: cols=120 lines=20
+CLS
+ECHO.
+TYPE "%cd%\data\assets\ui\origin.txt"
+ECHO.
+ECHO Choose an origin for %player.name%. Select an origin to learn more about it.
+ECHO +----------------------------------------------------------------------------------------------------------------------+
+ECHO ^| [1] Forest Origin  : You've awoken in a forest clearing, head pounding and no memories.
+ECHO ^| [2] Injured Origin : Your eyes open and you find yourself in a medical tent, you aren't sure where.
+ECHO ^| [3] Inn Origin     : You've come to on a bed in a local inn. You're unsure of how you got here.
+ECHO +----------------------------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%P%" == "1" GOTO :VIEW_FOREST_ORIGIN
+IF /I "%P%" == "2" GOTO :VIEW_INJURED_ORIGIN
+IF /I "%P%" == "3" GOTO :VIEW_INN_ORIGIN
+
+REM Describe this origin story in more depth.
+:VIEW_FOREST_ORIGIN
+MODE con: cols=120 lines=24
+CLS
+ECHO.
+TYPE "%cd%\data\assets\ui\forest_origin.txt"
+ECHO.
+ECHO.
+ECHO Choose the FOREST origin? NOTE: Origins do not impact character skills, only the available endings.
+ECHO +----------------------------------------------------------------------------------------------------------------------+
+ECHO ^| 
+ECHO ^| 
+ECHO ^| 
+ECHO ^| 
+ECHO ^| 
+ECHO ^| 
+ECHO ^| 
+ECHO +----------------------------------------------------------------------------------------------------------------------+
+ECHO [1 / CHOOSE ] ^| [Q / BACK]
+CHOICE /C 1Q /N /M ">"
+
 
 REM Saves data and exits.
 :SAVE_DATA
