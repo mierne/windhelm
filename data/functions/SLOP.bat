@@ -12,7 +12,7 @@ SET refundPrice=0
 SET itemStored=false
 SET player.message=...
 REM Other values
-SET windhelm.vn=UNSTABLE-0.3.0-250304
+SET windhelm.vn=UNSTABLE-0.3.0-250315
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
@@ -361,6 +361,13 @@ REM STAT TRACKING
 SET player.bandits_slain=0
 REM Misc
 SET player.pronouns_change_req=0
+REM Player beasitary
+SET player.bestiary_unlocked=0
+SET player.besitary_locked=2
+SET player.besitary_bandit_encountered=0
+SET player.besitary_abyssal_guardian_encountered=0
+SET player.bestiary_bandit=???
+SET player.bestiary_abyssal_guardian=???
 GOTO :PLAYER_INIT_INVENTORY
 
 REM Equipment slots
