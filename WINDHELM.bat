@@ -1,6 +1,6 @@
 if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 @ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION
-REM Copyright (C) 2025 Mierne <ahoy@mierne.net>
+REM Copyright (C) 2021-2025 Mierne <ahoy@mierne.net>
 REM    This program is free software: you can redistribute it and/or modify
 REM    it under the terms of the GNU General Public License as published by
 REM    the Free Software Foundation, either version 3 of the License, or
