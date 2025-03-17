@@ -185,16 +185,16 @@ ECHO %displayMessage%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / EXPLORE ] ^| [2 / INVENTORY ] ^| [C / VIEW CHARACTER ] ^| [B / BESITARY ]
+ECHO ^| [1 / EXPLORE ] ^| [2 / INVENTORY ] ^| [V / VIEW CHARACTER ] ^| [C / CATALOGUE ]
 ECHO ^| [S / SAVE ]    ^| [Q / EXIT ]
 ECHO +---------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :exploration_engine
 IF /I "%CH%" == "2" GOTO :view_inventory
-IF /I "%CH%" == "C" GOTO :character_view
+IF /I "%CH%" == "V" GOTO :character_view
 IF /I "%CH%" == "S" GOTO :Save_Game
 IF /I "%CH%" == "Q" GOTO :Exit_Without_Saving
-IF /I "%CH%" == "B" GOTO :bestiary
+IF /I "%CH%" == "C" GOTO :catalogue
 GOTO :INVALID_INPUT
 
 :Exit_Without_Saving
@@ -272,14 +272,14 @@ GOTO :AUTOSAVE
 CALL "%winLoc%\data\Exploration Engine\exploration_engine.bat"
 GOTO :AUTOSAVE
 
-:bestiary
-TITLE (Windhelm - %windhelm.ut%) Player Besitary ^| %player.name% the %player.race% %player.class%
+:catalogue
+TITLE (Windhelm - %windhelm.ut%) Player catalogue ^| %player.name% the %player.race% %player.class%
 CLS
-SET RETURN=besitary
+SET RETURN=catalogue
 ECHO.
 TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
-ECHO %displayMessage% ^| Total discovered: %player.bestiary_unlocked%/%player.besitary_locked%
+ECHO %displayMessage% ^| Total discovered: %player.catalogue_unlocked%/%player.catalogue_locked%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
@@ -287,65 +287,68 @@ ECHO ^| [1 / HUMANOIDS ]
 ECHO ^| [Q / EXIT ]
 ECHO +---------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :bestiary_category_humanoids
+IF /I "%CH%" == "1" GOTO :catalogue_category_humanoids
 IF /I "%CH%" == "Q" GOTO :dashboard
 GOTO :INVALID_INPUT
 
-:bestiary_category_humanoids
-TITLE (Windhelm - %windhelm.ut%) Player Besitary - Humanoids ^| %player.name% the %player.race% %player.class%
+:catalogue_category_humanoids
+TITLE (Windhelm - %windhelm.ut%) Player catalogue - Humanoids ^| %player.name% the %player.race% %player.class%
+MODE con: cols=101 lines=18
 CLS
-SET RETURN=besitary
+SET RETURN=catalogue_category_humanoids
 ECHO.
 TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
-ECHO %displayMessage% ^| Total discovered: %player.bestiary_unlocked%/%player.besitary_locked%
+ECHO %displayMessage% ^| Total discovered: %player.catalogue_unlocked%/%player.catalogue_locked%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / %player.bestiary_bandit% ] ^| [2 / %player.bestiary_abyssal_guardian% ]
+ECHO ^| [1 / %player.catalogue_bandit% ] ^| [2 / %player.catalogue_abyssal_guardian% ]
 ECHO ^| [Q / EXIT ]
 ECHO +---------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :bestiary_check_bandit
-IF /I "%CH%" == "2" GOTO :besitary_check_abgu
+IF /I "%CH%" == "1" GOTO :catalogue_check_bandit
+IF /I "%CH%" == "2" GOTO :catalogue_check_abgu
 IF /I "%CH%" == "3" GOTO :unlock_cheat
-IF /I "%CH%" == "Q" GOTO :dashboard
+IF /I "%CH%" == "Q" GOTO :catalogue
 GOTO :INVALID_INPUT
 
 :unlock_cheat
-SET player.bestiary_bandit=Bandit
-SET player.besitary_bandit_encountered=1
-SET /A player.bestiary_unlocked=!player.bestiary_unlocked! +1
+SET player.catalogue_bandit=Bandit
+SET player.catalogue_bandit_encountered=1
+SET player.catalogue_abyssal_guardian_encountered=1
+SET player.catalogue_abyssal_guardian=Abyssal Guardian
+SET /A player.catalogue_unlocked=!player.catalogue_unlocked! +1
 SET displayMessage=cheat activated
-GOTO :bestiary_category_humanoids
+GOTO :catalogue_category_humanoids
 
-:bestiary_check_bandit
+:catalogue_check_bandit
 REM Check if the Player has this entry unlocked.
-IF %player.besitary_bandit_encountered% EQU 0 (
+IF %player.catalogue_bandit_encountered% EQU 0 (
     SET displayMessage=You haven't encountered this yet.
-    GOTO :bestiary_category_humanoids
+    GOTO :catalogue_category_humanoids
 ) ELSE (
-    GOTO :bestiary_view_bandit
+    GOTO :catalogue_view_bandit
 )
 
-:besitary_check_abgu
+:catalogue_check_abgu
 REM Check if the Player has this entry unlocked.
-IF %player.besitary_abyssal_guardian_encountered% EQU 0 (
+IF %player.catalogue_abyssal_guardian_encountered% EQU 0 (
     SET displayMessage=You haven't encountered this yet.
-    GOTO :bestiary_category_humanoids
+    GOTO :catalogue_category_humanoids
 ) ELSE (
-    GOTO :bestiary_view_abgu
+    GOTO :catalogue_view_abgu
 )
 
-:bestiary_view_bandit
+:catalogue_view_bandit
 MODE con: cols=120 lines=24
-SET RETURN=bestiary_view_bandit
+SET RETURN=catalogue_view_bandit
 CLS
 ECHO.
 TYPE "%cd%\data\assets\enemies\Iridescent Forest\bandit.txt"
 ECHO.
 ECHO.
-ECHO Viewing the BANDIT bestiary entry.
+ECHO Viewing the BANDIT catalogue entry.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Your average no good thief. Bandits are a common sight on the roads outside of Windhelm.
 ECHO ^| They might not be very strong, but they are crafty and there are a LOT of them.
@@ -357,30 +360,31 @@ ECHO ^| Faction: Non-Aligned
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| [Q / BACK]
 SET /P CH=">"
-IF /I "%CH%" == "Q" GOTO :bestiary_category_humanoids
+IF /I "%CH%" == "Q" GOTO :catalogue_category_humanoids
 GOTO :INVALID_INPUT
 
-:bestiary_view_abgu
+:catalogue_view_abgu
 MODE con: cols=120 lines=24
-SET RETURN=bestiary_view_abgu
+SET RETURN=catalogue_view_abgu
 CLS
 ECHO.
 TYPE "%cd%\data\assets\enemies\Iridescent Forest\abyssal guardian.txt"
 ECHO.
 ECHO.
-ECHO Viewing the ABYSSAL GUARDIAN bestiary entry.
+ECHO Viewing the ABYSSAL GUARDIAN catalogue entry.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| idk what to write here yet
-ECHO ^| 
+ECHO ^| An unknown entity which has been found across Laera, it appears hostile to all who have encountered it.
+ECHO ^| It's purpose remains unknown, but they have been most commonly spotted guarding shatter-points.
+ECHO ^| Attempts at communicating with this entity has resulted in nothing but death. Do not attempt to make contact. 
 ECHO ^| ABYSSAL GUARDIAN stats:
 ECHO ^|----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| Bandit Health: 250 ^| Bandit Stamina: 200 ^| Bandit Magicka: 400
-ECHO ^| Bandit Damage: 20/45 ^| Resistance Type: Physical ^| Total Resistance: 12
-ECHO ^| Bandit Faction: Abyss Lurkers
+ECHO ^| Health: 250 ^| Stamina: 200 ^| Magicka: 400
+ECHO ^| Damage: 20/45 ^| Resistance Type: Physical ^| Total Resistance: 12
+ECHO ^| Faction: Abyss Lurkers
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| [Q / BACK]
 SET /P CH=">"
-IF /I "%CH%" == "Q" GOTO :bestiary_category_humanoids
+IF /I "%CH%" == "Q" GOTO :catalogue_category_humanoids
 GOTO :INVALID_INPUT
 
 :INVALID_INPUT
