@@ -1,4 +1,4 @@
-TITLE (WINDHELM) Inventory Viewer ^| %player.name% the %player.class%
+TITLE (WINDHELM) Inventory Viewer ^| %player.name% the %player.race% %player.class%
 
 REM Return to simplicity
 :IVM
@@ -23,9 +23,14 @@ IF /I "%CH%" == "3" GOTO :VIEW_TYPE_TONICS
 IF /I "%CH%" == "Q" GOTO :EOF
 GOTO :INVALID_INPUT
 
-
 REM Displays the categories of weapons and allows the Player to view their owned items in each.
 :VIEW_TYPE_WEAPONS
+IF %windhelm.inventory_call% == combat (
+    SET displayMessage=Switching weapons is disallowed during combat.
+    GOTO :IVM
+) ELSE (
+    REM Do nothing
+)
 MODE con: cols=100 lines=19
 CLS
 SET RETURN=VIEW_TYPE_WEAPONS
@@ -463,6 +468,12 @@ IF NOT %player.weapon_equipped% == "Wooden Bow" (
 
 REM Displays the categories of armor and allows the Player to view their owned items in each.
 :VIEW_TYPE_ARMORS
+IF %windhelm.inventory_call% == combat (
+    SET displayMessage=Switching armor is disallowed during combat.
+    GOTO :IVM
+) ELSE (
+    REM Do nothing
+)
 MODE con: cols=103 lines=19
 CLS
 SET RETURN=VIEW_TYPE_ARMORS
@@ -958,13 +969,13 @@ REM Check if the Player owns any of this item.
 IF %player.item_tonic_healing_owned% LEQ 0 (
     REM The Player doesn't have any of this Tonic.
     SET displayMessage=You do not have any of this Tonic to consume.
-    GOTO :IVM
+    GOTO :VIEW_TYPE_TONICS
 ) ELSE (
     REM Now check if the Player actually needs to consume the Tonic.
     IF %player.health% EQU %player.health_max% (
         REM Player is at max health.
         SET displayMessage=Your health is already full.
-        GOTO :IVM
+        GOTO :VIEW_TYPE_TONICS
     ) ELSE (
         REM Heal the Player for the value provided by the Tonics modifier.
         SET /A player.health=!player.health! +%windhelm.item_tonic_healing_modifier%
@@ -974,7 +985,7 @@ IF %player.item_tonic_healing_owned% LEQ 0 (
             REM Player health is above their cap.
             SET player.health=%player.health_max%
             SET displayMessage=Healed for %windhelm.item_tonic_healing_modifier% HP.
-            GOTO :IVM
+            GOTO :VIEW_TYPE_TONICS
         )
     )
 )
@@ -1006,13 +1017,13 @@ REM Check if the Player owns any of this item.
 IF %player.item_tonic_stamina_owned% LEQ 0 (
     REM The Player doesn't have any of this Tonic.
     SET displayMessage=You do not have any of this Tonic to consume.
-    GOTO :IVM
+    GOTO :VIEW_TYPE_TONICS
 ) ELSE (
     REM Now check if the Player actually needs to consume the Tonic.
     IF %player.stamina% EQU %player.stamina_max% (
         REM Player is at max health.
         SET displayMessage=Your health is already full.
-        GOTO :IVM
+        GOTO :VIEW_TYPE_TONICS
     ) ELSE (
         REM Heal the Player for the value provided by the Tonics modifier.
         SET /A player.stamina=!player.stamina! +%windhelm.item_tonic_stamina_modifier%
@@ -1022,7 +1033,7 @@ IF %player.item_tonic_stamina_owned% LEQ 0 (
             REM Player health is above their cap.
             SET player.stamina=%player.stamina_max%
             SET displayMessage=Replenished %windhelm.item_tonic_stamina_modifier% stamina.
-            GOTO :IVM
+            GOTO :VIEW_TYPE_TONICS
         )
     )
 )
@@ -1054,13 +1065,13 @@ REM Check if the Player owns any of this item.
 IF %player.item_tonic_magicka_owned% LEQ 0 (
     REM The Player doesn't have any of this Tonic.
     SET displayMessage=You do not have any of this Tonic to consume.
-    GOTO :IVM
+    GOTO :VIEW_TYPE_TONICS
 ) ELSE (
     REM Now check if the Player actually needs to consume the Tonic.
     IF %player.stamina% EQU %player.stamina_max% (
         REM Player is at max health.
         SET displayMessage=Your health is already full.
-        GOTO :IVM
+        GOTO :VIEW_TYPE_TONICS
     ) ELSE (
         REM Heal the Player for the value provided by the Tonics modifier.
         SET /A player.stamina=!player.stamina! +%windhelm.item_tonic_magicka_modifier%
@@ -1070,7 +1081,7 @@ IF %player.item_tonic_magicka_owned% LEQ 0 (
             REM Player health is above their cap.
             SET player.stamina=%player.stamina_max%
             SET displayMessage=Replenished %windhelm.item_tonic_magicka_modifier% stamina.
-            GOTO :IVM
+            GOTO :VIEW_TYPE_TONICS
         )
     )
 )
