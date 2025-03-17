@@ -18,12 +18,11 @@ ECHO ^| %player.message%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina%/%player.stamina_max% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [A / ATTACK ] ^| [I / ITEMS ] ^| [R / RECOVER ] ^| [Q / FLEE ]
+ECHO ^| [A / ATTACK ] ^| [I / ITEMS ] ^| [Q / FLEE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :PLAYER_ATTACK_CHECK_STAMINA
-IF /I "%CH%" == "2" GOTO :PLAYER_ITEMS
-IF /I "%CH%" == "3" GOTO :PLAYER_RECOVER
+IF /I "%CH%" == "A" GOTO :PLAYER_ATTACK_CHECK_STAMINA
+IF /I "%CH%" == "I" GOTO :PLAYER_ITEMS
 IF /I "%CH%" == "Q" GOTO :PLAYER_FLEE
 
 :PLAYER_ATTACK_CHECK_STAMINA
@@ -132,6 +131,11 @@ REM BOSS FIGHT MECHANICS
 
 :PLAYER_INVENTORY
 REM REDESIGN PLAYER INVENTORY ACCESS
+
+:PLAYER_ITEMS
+SET windhelm.inventory_call=combat
+CALL "%winLoc%\data\functions\Inventory Viewer.bat"
+GOTO :EBS
 
 :ERROR_HANDLER
 CALL "%cd%\data\functions\Error Handler.bat"
