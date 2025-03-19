@@ -5,7 +5,7 @@ SET /A CR=%RANDOM% * 17 / 32768 + 8
 MODE con: cols=120 lines=20
 IF %enemy.health% LEQ 0 GOTO :VICTORY_STATS_TRACK
 IF %player.health% LEQ 0 GOTO :DEFEAT_SCREEN
-REM SET player.damage=%player.damage_base% // Not good enough. This corrects it after. Enemies are still being healed by Player attacks.
+SET player.damage=%player.damage_base%
 TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.race% %player.class% vs %curEn% & SET enAT=%enATb%
 CLS
 ECHO.
@@ -26,7 +26,6 @@ IF /I "%CH%" == "I" GOTO :PLAYER_ITEMS
 IF /I "%CH%" == "Q" GOTO :PLAYER_FLEE
 
 :PLAYER_ATTACK_CHECK_STAMINA
-@REM @ECHO ON
 IF %player.stamina% LSS %player.attack_stamina% (
     SET player.message=Your stamina is too low.
     GOTO :EBS
@@ -34,6 +33,12 @@ IF %player.stamina% LSS %player.attack_stamina% (
     REM Check enemy resistance type. There's probably a faster way to do this.
     IF "%enemy.damage_type_resistance%" == "%player.weapon_damage_type%" (
         SET /A player.damage=!player.damage! -%enemy.damage_resisted%
+        REM Ensure the ensuing damage value isn't negative.
+        IF %player.damage% LEQ 0 (
+            REM Prevent Player damage from going below 5.
+            SET player.damage=5
+            GOTO :PLAYER_ATTACK
+        )
         GOTO :PLAYER_ATTACK
     ) ELSE (
         REM Player can attack without a debuff.
