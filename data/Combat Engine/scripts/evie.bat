@@ -20,14 +20,17 @@ SET bandit.damage_type_resistance=physical
 SET bandit.damage_resisted=0
 
 REM Abyssal Guardian Information
-SET abyssal_guardian.health=250
+SET abyssal_guardian.health=200
 SET abyssal_guardian.stamina=200
 SET abyssal_guardian.magicka=400
 SET abyssal_guardian.damage=20
 SET abyssal_guardian.special_damage=45
+SET abyssal_guardian.special_stamina_cost=20
 SET abyssal_guardian.damage_type_resistance=physical
-SET abyssal_guardian.damage_resisted=12
-SET abyssal_guardian.special_name=The Dark Lurketh
+SET abyssal_guardian.damage_resisted=6
+SET abyssal_guardian.dialogue_title=Abyss Lurker L'yahn
+REM Currently unsued data
+SET abyssal_guardian.faction=Abyss Lurkers
 
 :ENCOUNTER
 IF "%currentEnemy%" == "Bandit" (
@@ -47,10 +50,11 @@ IF "%currentEnemy%" == "Bandit" (
     SET enemy.magicka=%abyssal_guardian.magicka%
     SET enemy.damage=%abyssal_guardian.damage%
     SET enemy.damage_base=%abyssal_guardian.damage%
-    SET enemy.special_damage==%abyssal_guardian.special_damage%
+    SET enemy.special_damage=%abyssal_guardian.special_damage%
+    SET enemy.special_stamina_cost=%abyssal_guardian.special_stamina_cost%
     SET enemy.damage_type_resistance=%abyssal_guardian.damage_type_resistance%
     SET enemy.damage_resisted=%abyssal_guardian.damage_resisted%
-    SET enemy.special_name==%abyssal_guardian.special_name%
+    SET enemy.dialogue_title=%abyssal_guardian.dialogue_title%
     SET ce.boss_active=1
     SET curEn=Abyssal Guardian
     GOTO :combat_engine
