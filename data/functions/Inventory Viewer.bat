@@ -107,7 +107,7 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Long Sword as the Player's active weapon.
 :EQUIP_LONG_SWORD
 REM First check that it or some other weapon isn't already equipped.
-IF %player.weapon_equipped% == EMPTY (
+IF %player.weapon_equipped% == "EMPTY" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_long_sword_owned% GTR 0 (
         PAUSE
@@ -138,7 +138,7 @@ IF NOT %player.weapon_equipped% == "Long Sword" (
     GOTO :IVM
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped=EMPTY
+    SET player.weapon_equipped="EMPTY"
     SET player.damage=5
     SET player.attack_stamina_usage=1
     SET displayMessage=Unequipped the Long Sword.
@@ -171,7 +171,7 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Long Sword as the Player's active weapon.
 :EQUIP_SHORT_SWORD
 REM First check that it or some other weapon isn't already equipped.
-IF %player.weapon_equipped% == EMPTY (
+IF %player.weapon_equipped% == "EMPTY" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_short_sword_owned% GTR 0 (
         REM The Player owns more than zero of this item.
@@ -201,7 +201,7 @@ IF NOT %player.weapon_equipped% == "Short Sword" (
     GOTO :IVM
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped=EMPTY
+    SET player.weapon_equipped="EMPTY"
     SET player.damage=5
     SET player.attack_stamina_usage=1
     SET displayMessage=Unequipped the Short Sword.
@@ -257,7 +257,7 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Great Axe as the Player's active weapon.
 :EQUIP_GREAT_AXE
 REM First check that it or some other weapon isn't already equipped.
-IF %player.weapon_equipped% == EMPTY (
+IF %player.weapon_equipped% == "EMPTY" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_great_axe_owned% GTR 0 (
         REM The Player owns more than zero of this item.
@@ -287,7 +287,7 @@ IF NOT %player.weapon_equipped% == "Great Axe" (
     GOTO :IVM
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped=EMPTY
+    SET player.weapon_equipped="EMPTY"
     SET player.damage=5
     SET player.attack_stamina_usage=1
     SET displayMessage=Unequipped the Great Axe.
@@ -343,7 +343,7 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Mace as the Player's active weapon.
 :EQUIP_MACE
 REM First check that it or some other weapon isn't already equipped.
-IF %player.weapon_equipped% == EMPTY (
+IF %player.weapon_equipped% == "EMPTY" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_mace_owned% GTR 0 (
         REM The Player owns more than zero of this item.
@@ -373,7 +373,7 @@ IF NOT %player.weapon_equipped% == "Mace" (
     GOTO :IVM
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped=EMPTY
+    SET player.weapon_equipped="EMPTY"
     SET player.damage=5
     SET player.attack_stamina_usage=1
     SET displayMessage=Unequipped the Mace.
@@ -429,7 +429,7 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Wooden Bow as the Player's active weapon.
 :EQUIP_WOODEN_BOW
 REM First check that it or some other weapon isn't already equipped.
-IF %player.weapon_equipped% == EMPTY (
+IF %player.weapon_equipped% == "EMPTY" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_wooden_bow_owned% GTR 0 (
         REM The Player owns more than zero of this item.
@@ -459,7 +459,7 @@ IF NOT %player.weapon_equipped% == "Wooden Bow" (
     GOTO :IVM
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped=EMPTY
+    SET player.weapon_equipped="EMPTY"
     SET player.damage=5
     SET player.attack_stamina_usage=1
     SET displayMessage=Unequipped the Wooden Bow.
@@ -542,12 +542,12 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Cactus Armor as the Player's active armor.
 :EQUIP_CACTUS_ARMOR
 REM First check that it or some other armor isn't already equipped.
-IF %player.armor_equipped% == EMPTY (
+IF "%player.armor_equipped%" == "EMPTY" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_cactus_armor_owned% GTR 0 (
         REM The Player owns more than zero of this item.
         SET player.armor_equipped=%windhelm.item_cactus_armor_name%
-        SET player.armor_prot=%windhelm.item_cactus_armor_damage%
+        SET player.armor=%windhelm.item_cactus_armor_prot%
         SET player.armor_resistance_type=%windhelm.item_cactus_armor_type_resistance%
         SET displayMessage=Equipped Cactus Armor^!
         GOTO :IVM
@@ -558,21 +558,21 @@ IF %player.armor_equipped% == EMPTY (
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have a armor equipped^!
+    SET displayMessage=You already have the %player.armor_equipped% armor equipped^!
     GOTO :IVM
 )
 
 REM Attempts to unequip the Cactus Armor from the Player's armor equipment slot.
 :UNEQUIP_CACTUS_ARMOR
 REM Check if this is even the active armor.
-IF NOT %player.armor_equipped% == "Cactus Armor" (
+IF NOT "%player.armor_equipped%" == "Cactus Armor" (
     REM This isn't the active armor.
     SET displayMessage=You do not have Cactus Armor equipped.
     GOTO :IVM
 ) ELSE (
     REM Unequip the armor.
     SET player.armor_equipped=EMPTY
-    SET player.armor_prot=0
+    SET player.armor=0
     SET displayMessage=Unequipped Cactus Armor.
     GOTO :IVM
 )
@@ -602,12 +602,12 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Guard Armor as the Player's active armor.
 :EQUIP_GUARD_ARMOR
 REM First check that it or some other armor isn't already equipped.
-IF %player.armor_equipped% == EMPTY (
+IF "%player.armor_equipped%" == "EMPTY" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_guard_armor_owned% GTR 0 (
         REM The Player owns more than zero of this item.
         SET player.armor_equipped=%windhelm.item_guard_armor_name%
-        SET player.armor_prot=%windhelm.item_guard_armor_damage%
+        SET player.armor=%windhelm.item_guard_armor_prot%
         SET player.armor_resistance_type=%windhelm.item_guard_armor_type_resistance%
         SET displayMessage=Equipped Guard Armor^!
         GOTO :IVM
@@ -618,21 +618,21 @@ IF %player.armor_equipped% == EMPTY (
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have a armor equipped^!
+    SET displayMessage=You already have the %player.armor_equipped% armor equipped^!
     GOTO :IVM
 )
 
 REM Attempts to unequip the Guard Armor from the Player's armor equipment slot.
 :UNEQUIP_GUARD_ARMOR
 REM Check if this is even the active armor.
-IF NOT %player.armor_equipped% == "Guard Armor" (
+IF NOT "%player.armor_equipped%" == "Guard Armor" (
     REM This isn't the active armor.
     SET displayMessage=You do not have Guard Armor equipped.
     GOTO :IVM
 ) ELSE (
     REM Unequip the armor.
     SET player.armor_equipped=EMPTY
-    SET player.armor_prot=0
+    SET player.armor=0
     SET displayMessage=Unequipped Guard Armor.
     GOTO :IVM
 )
@@ -684,12 +684,12 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Iron Armor as the Player's active armor.
 :EQUIP_IRON_ARMOR
 REM First check that it or some other armor isn't already equipped.
-IF %player.armor_equipped% == EMPTY (
+IF "%player.armor_equipped%" == "EMPTY" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_iron_armor_owned% GTR 0 (
         REM The Player owns more than zero of this item.
         SET player.armor_equipped=%windhelm.item_iron_armor_name%
-        SET player.armor_prot=%windhelm.item_iron_armor_damage%
+        SET player.armor=%windhelm.item_iron_armor_prot%
         SET player.armor_resistance_type=%windhelm.item_iron_armor_type_resistance%
         SET displayMessage=Equipped Iron Armor^!
         GOTO :IVM
@@ -700,21 +700,21 @@ IF %player.armor_equipped% == EMPTY (
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have a armor equipped^!
+    SET displayMessage=You already have the %player.armor_equipped% armor equipped^!
     GOTO :IVM
 )
 
 REM Attempts to unequip the Iron Armor from the Player's armor equipment slot.
 :UNEQUIP_IRON_ARMOR
 REM Check if this is even the active armor.
-IF NOT %player.armor_equipped% == "Iron Armor" (
+IF NOT "%player.armor_equipped%" == "Iron Armor" (
     REM This isn't the active armor.
     SET displayMessage=You do not have Iron Armor equipped.
     GOTO :IVM
 ) ELSE (
     REM Unequip the armor.
     SET player.armor_equipped=EMPTY
-    SET player.armor_prot=0
+    SET player.armor=0
     SET displayMessage=Unequipped Iron Armor.
     GOTO :IVM
 )
@@ -743,12 +743,12 @@ GOTO :INVALID_INPUT
 
 :EQUIP_STONE_ARMOR
 REM First check that it or some other armor isn't already equipped.
-IF %player.armor_equipped% == EMPTY (
+IF "%player.armor_equipped%" == "EMPTY" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_stone_armor_owned% GTR 0 (
         REM The Player owns more than zero of this item.
         SET player.armor_equipped=%windhelm.item_stone_armor_name%
-        SET player.armor_prot=%windhelm.item_stone_armor_damage%
+        SET player.armor=%windhelm.item_stone_armor_prot%
         SET player.armor_resistance_type=%windhelm.item_stone_armor_type_resistance%
         SET displayMessage=Equipped Stone Armor^!
         GOTO :IVM
@@ -759,21 +759,21 @@ IF %player.armor_equipped% == EMPTY (
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have a armor equipped^!
+    SET displayMessage=You already have the %player.armor_equipped% armor equipped^!
     GOTO :IVM
 )
 
 REM Attempts to unequip the Stone Armor from the Player's armor equipment slot.
 :UNEQUIP_STONE_ARMOR
 REM Check if this is even the active armor.
-IF NOT %player.armor_equipped% == "Stone Armor" (
+IF NOT "%player.armor_equipped%" == "Stone Armor" (
     REM This isn't the active armor.
     SET displayMessage=You do not have Stone Armor equipped.
     GOTO :IVM
 ) ELSE (
     REM Unequip the armor.
     SET player.armor_equipped=EMPTY
-    SET player.armor_prot=0
+    SET player.armor=0
     SET displayMessage=Unequipped Stone Armor.
     GOTO :IVM
 )
@@ -825,12 +825,12 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Steel Armor as the Player's active armor.
 :EQUIP_STEEL_ARMOR
 REM First check that it or some other armor isn't already equipped.
-IF %player.armor_equipped% == EMPTY (
+IF "%player.armor_equipped%" == "EMPTY" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_steel_armor_owned% GTR 0 (
         REM The Player owns more than zero of this item.
         SET player.armor_equipped=%windhelm.item_steel_armor_name%
-        SET player.armor_prot=%windhelm.item_steel_armor_damage%
+        SET player.armor=%windhelm.item_steel_armor_prot%
         SET player.armor_resistance_type=%windhelm.item_steel_armor_type_resistance%
         SET displayMessage=Equipped Steel Armor^!
         GOTO :IVM
@@ -841,21 +841,21 @@ IF %player.armor_equipped% == EMPTY (
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have a armor equipped^!
+    SET displayMessage=You already have the %player.armor_equipped% armor equipped^!
     GOTO :IVM
 )
 
 REM Attempts to unequip the Steel Armor from the Player's armor equipment slot.
 :UNEQUIP_STEEL_ARMOR
 REM Check if this is even the active armor.
-IF NOT %player.armor_equipped% == "Steel Armor" (
+IF NOT "%player.armor_equipped%" == "Steel Armor" (
     REM This isn't the active armor.
     SET displayMessage=You do not have Steel Armor equipped.
     GOTO :IVM
 ) ELSE (
     REM Unequip the armor.
     SET player.armor_equipped=EMPTY
-    SET player.armor_prot=0
+    SET player.armor=0
     SET displayMessage=Unequipped Steel Armor.
     GOTO :IVM
 )
@@ -885,12 +885,12 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Scale Armor as the Player's active armor.
 :EQUIP_SCALE_ARMOR
 REM First check that it or some other armor isn't already equipped.
-IF %player.armor_equipped% == EMPTY (
+IF "%player.armor_equipped%" == "EMPTY" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_scale_armor_owned% GTR 0 (
         REM The Player owns more than zero of this item.
         SET player.armor_equipped=%windhelm.item_scale_armor_name%
-        SET player.armor_prot=%windhelm.item_scale_armor_damage%
+        SET player.armor=%windhelm.item_scale_armor_prot%
         SET player.armor_resistance_type=%windhelm.item_scale_armor_type_resistance%
         SET displayMessage=Equipped Scale Armor^!
         GOTO :IVM
@@ -901,21 +901,21 @@ IF %player.armor_equipped% == EMPTY (
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have a armor equipped^!
+    SET displayMessage=You already have the %player.armor_equipped% armor equipped^!
     GOTO :IVM
 )
 
 REM Attempts to unequip the Scale Armor from the Player's armor equipment slot.
 :UNEQUIP_SCALE_ARMOR
 REM Check if this is even the active armor.
-IF NOT %player.armor_equipped% == "Scale Armor" (
+IF NOT "%player.armor_equipped%" == "Scale Armor" (
     REM This isn't the active armor.
     SET displayMessage=You do not have Scale Armor equipped.
     GOTO :IVM
 ) ELSE (
     REM Unequip the armor.
     SET player.armor_equipped=EMPTY
-    SET player.armor_prot=0
+    SET player.armor=0
     SET displayMessage=Unequipped Scale Armor.
     GOTO :IVM
 )
