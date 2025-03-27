@@ -49,8 +49,8 @@ IF %EE% LEQ 50 (
 )
 
 :IFOR_CHALLENGE_AREA_BOSS
-IF %player.level% GEQ 20 (
-    SET currentEnemy="Abyssal Guardian"
+IF %player.level% GEQ 5 (
+    SET currentEnemy="Abyss Guardian"
     CALL "%winLoc%\data\Combat Engine\scripts\evie.bat"
 ) ELSE (
     SET displayMessage=Your level is too low for this encounter.
