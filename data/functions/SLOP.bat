@@ -13,7 +13,7 @@ SET itemStored=false
 SET player.message=...
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=UNSTABLE-0.3.0-250319
+SET windhelm.vn=UNSTABLE-0.3.0-250326
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
@@ -162,6 +162,12 @@ ECHO %player.magicSchool_DestructionSkill%
 ECHO %player.magicSchool_RestorationSkill%
 ECHO %player.ruins_unlocked%
 ECHO %player.bandits_slain%
+ECHO %player.catalogue_unlocked%
+ECHO %player.catalogue_locked%
+ECHO %player.catalogue_bandit_encountered%
+ECHO %player.catalogue_abyss_guardian_encountered%
+ECHO %player.catalogue_bandit%
+ECHO %player.catalogue_abyss_guardian%
 ECHO %player.armor_equipped%
 ECHO %player.weapon_equipped%
 ECHO %player.spell_equipped%
@@ -258,6 +264,12 @@ SET /P player.magicSchool_DestructionSkill=
 SET /P player.magicSchool_RestorationSkill=
 SET /P player.ruins_unlocked=
 SET /P player.bandits_slain=
+SET /P player.catalogue_unlocked=
+SET /P player.catalogue_locked=
+SET /P player.catalogue_bandit_encountered=
+SET /P player.catalogue_abyss_guardian_encountered=
+SET /P player.catalogue_bandit=
+SET /P player.catalogue_abyss_guardian=
 SET /P player.armor_equipped=
 SET /P player.weapon_equipped=
 SET /P player.spell_equipped=
@@ -366,9 +378,9 @@ REM Player beasitary
 SET player.catalogue_unlocked=0
 SET player.catalogue_locked=2
 SET player.catalogue_bandit_encountered=0
-SET player.catalogue_abyssal_guardian_encountered=0
+SET player.catalogue_abyss_guardian_encountered=0
 SET player.catalogue_bandit=???
-SET player.catalogue_abyssal_guardian=???
+SET player.catalogue_abyss_guardian=???
 GOTO :PLAYER_INIT_INVENTORY
 
 REM Equipment slots
