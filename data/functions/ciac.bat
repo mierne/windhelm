@@ -26,9 +26,9 @@ ECHO.
 ECHO.
 ECHO WARNING! An existing save has been detected. Do you wish to overwrite this existing save?
 ECHO +---------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%P%" == "Y" GOTO :ENTER_NAME
-IF /I "%P%" == "N" GOTO :NO_OVERWRITE
+SET /P CH="Y/N"
+IF /I "%CH%" == "Y" GOTO :ENTER_NAME
+IF /I "%CH%" == "N" GOTO :NO_OVERWRITE
 
 REM Do not overwrite an existing save.
 :NO_OVERWRITE
@@ -63,10 +63,10 @@ ECHO ^| [H] HE/HIM/HIS
 ECHO ^| [C] CUSTOM SELECTION
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%P%" == "T" GOTO :THT
-IF /I "%P%" == "S" GOTO :SHH
-IF /I "%P%" == "H" GOTO :HHH
-IF /I "%P%" == "C" GOTO :CUSTOM_P_PERSONAL
+IF /I "%CH%" == "T" GOTO :THT
+IF /I "%CH%" == "S" GOTO :SHH
+IF /I "%CH%" == "H" GOTO :HHH
+IF /I "%CH%" == "C" GOTO :CUSTOM_P_PERSONAL
 
 :THT
 SET player.personal_p_1=they
@@ -166,10 +166,10 @@ ECHO ^| [3] Frawen : Tall with sharp, pointy ears, these people are native to th
 ECHO ^| [4] Nemmar : Cat-like people, native to the warm climates of Valar.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%P%" == "1" GOTO :MORE_HUMAN
-IF /I "%P%" == "2" GOTO :MORE_FAEL
-IF /I "%P%" == "3" GOTO :MORE_FRAWEN
-IF /I "%P%" == "4" GOTO :MORE_NEMMAR
+IF /I "%CH%" == "1" GOTO :MORE_HUMAN
+IF /I "%CH%" == "2" GOTO :MORE_FAEL
+IF /I "%CH%" == "3" GOTO :MORE_FRAWEN
+IF /I "%CH%" == "4" GOTO :MORE_NEMMAR
 ECHO %CH% not available.
 PAUSE
 GOTO :CHOOSE_RACE
@@ -191,8 +191,8 @@ ECHO ^| +2 to starting DAMAGE skill.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK ]
 SET /P CH=">"
-IF /I "%P%" == "1" GOTO :SELECT_HUMAN_RACE
-IF /I "%P%" == "Q" GOTO :CHOOSE_RACE
+IF /I "%CH%" == "1" GOTO :SELECT_HUMAN_RACE
+IF /I "%CH%" == "Q" GOTO :CHOOSE_RACE
 
 :SELECT_HUMAN_RACE
 SET player.race=human
@@ -211,8 +211,8 @@ ECHO ^| SKILL TO BOOST UNDETERMINED
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK ]
 SET /P CH=">"
-IF /I "%P%" == "1" GOTO :SELECT_FAEL_RACE
-IF /I "%P%" == "Q" GOTO :CHOOSE_RACE
+IF /I "%CH%" == "1" GOTO :SELECT_FAEL_RACE
+IF /I "%CH%" == "Q" GOTO :CHOOSE_RACE
 
 :SELECT_FAEL_RACE
 SET player.race=fael
@@ -233,8 +233,8 @@ ECHO ^| +50 to starting STAMINA.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK ]
 SET /P CH=">"
-IF /I "%P%" == "1" GOTO :SELECT_FRAWEN_RACE
-IF /I "%P%" == "Q" GOTO :CHOOSE_RACE
+IF /I "%CH%" == "1" GOTO :SELECT_FRAWEN_RACE
+IF /I "%CH%" == "Q" GOTO :CHOOSE_RACE
 
 :SELECT_FRAWEN_RACE
 SET player.race=frawen
@@ -254,8 +254,8 @@ ECHO ^| +50 to starting HEALTH.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK ]
 SET /P CH=">"
-IF /I "%P%" == "1" GOTO :SELECT_NEMMAR_RACE
-IF /I "%P%" == "Q" GOTO :CHOOSE_RACE
+IF /I "%CH%" == "1" GOTO :SELECT_NEMMAR_RACE
+IF /I "%CH%" == "Q" GOTO :CHOOSE_RACE
 
 :SELECT_NEMMAR_RACE
 SET player.race=nemmar
@@ -274,9 +274,9 @@ ECHO ^| [W] Warrior  : A shard formed in battle, many scars remain.
 ECHO ^| [D] Druid    : Their greatest distraction will be their downfall.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%P%" == "S" GOTO :SORCERER_CHOSEN_PREVIEW
-IF /I "%P%" == "W" GOTO :WARRIOR_CHOSEN_PREVIEW
-IF /I "%P%" == "D" GOTO :DRUID_CHOSEN_PREVIEW
+IF /I "%CH%" == "S" GOTO :SORCERER_CHOSEN_PREVIEW
+IF /I "%CH%" == "W" GOTO :WARRIOR_CHOSEN_PREVIEW
+IF /I "%CH%" == "D" GOTO :DRUID_CHOSEN_PREVIEW
 
 :DRUID_CHOSEN_PREVIEW
 MODE con: cols=125 lines=22
@@ -292,12 +292,11 @@ ECHO ^| Druids are granted +100 MAGICKA, however the devotion costs them -30 HEA
 ECHO ^| Starting stats: HEALTH: 70 ^| STAMINA: 100 ^| MAGICKA: 200
 ECHO ^| Starting skills: DAMAGE: 2 ^| STAMINA: 2   ^| MAGICKA 6 ^| SPEECH: 2 ^| ATHLETICS: 2 ^| REFLEX: 2 ^| INTELLIGENCE: 2
 ECHO ^| Starting magic skills: ALTERATION: 6 ^| DESTRUCTION: 2     ^| RESTORATION: 6
-ECHO ^| Other: REPUTATION: 2 ^| FACTION: Association Druider
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
 SET /P CH=">"
-IF /I "%P%" == "1" GOTO :DRUID_CHOSEN
-IF /I "%P%" == "Q" GOTO :CHOOSE_CLASS
+IF /I "%CH%" == "1" GOTO :DRUID_CHOSEN
+IF /I "%CH%" == "Q" GOTO :CHOOSE_CLASS
 
 :WARRIOR_CHOSEN_PREVIEW
 MODE con: cols=120 lines=23
@@ -314,12 +313,11 @@ ECHO ^| Their strong devotion to their Gods lowers their MAGICKA by 70.
 ECHO ^| Starting stats: HEALTH: 160 ^| STAMINA: 100 ^| MAGICKA: 30
 ECHO ^| Starting skills: DAMAGE: 6  ^| STAMINA: 2   ^| MAGICKA: 2
 ECHO ^| Starting magic skills: ALTERATION: 2 ^| DESTRUCTION: 2 ^| RESTORATION: 2
-ECHO ^| Other: REPUTATION: 2 ^| FACTION: Silver Sliver's Guild
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
 SET /P CH=">"
-IF /I "%P%" == "1" GOTO :WARRIOR_CHOSEN
-IF /I "%P%" == "Q" GOTO :CHOOSE_CLASS
+IF /I "%CH%" == "1" GOTO :WARRIOR_CHOSEN
+IF /I "%CH%" == "Q" GOTO :CHOOSE_CLASS
 
 :SORCERER_CHOSEN_PREVIEW
 MODE con: cols=120 lines=24
@@ -336,12 +334,11 @@ ECHO ^| magical skills than others.
 ECHO ^| Starting stats: HEALTH: 100 ^| STAMINA: 50 ^| MAGICKA: 200
 ECHO ^| Starting skills: DAMAGE: 2  ^| STAMINA: 2  ^| MAGICKA: 6
 ECHO ^| Starting magica skills: ALTERATION: 12 ^| DESTRUCTION: 8 ^| RESTORATION: 12
-ECHO ^| Other: REPUTATION: 2 ^| FACTION: Sorcerers Guild
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
 SET /P CH=">"
-IF /I "%P%" == "1" GOTO :SORCERER_CHOSEN
-IF /I "%P%" == "Q" GOTO :CHOOSE_CLASS
+IF /I "%CH%" == "1" GOTO :SORCERER_CHOSEN
+IF /I "%CH%" == "Q" GOTO :CHOOSE_CLASS
 
 :DRUID_CHOSEN
 SET player.health=70
@@ -354,8 +351,6 @@ SET player.magicSchool_DestructionSkill=2
 SET player.magicSchool_RestorationSkill=6
 SET player.class=Druid
 SET player.class_ability=precognition
-SET player.faction=Association Druider
-SET player.factionRelations_AssociationDruider=40
 GOTO :APPLY_RACE_BONUSES
 
 :WARRIOR_CHOSEN
@@ -370,8 +365,6 @@ SET player.magicSchool_DestructionSkill=2
 SET player.magicSchool_RestorationSkill=2
 SET player.class=Warrior
 SET player.class_ability=rage
-SET player.faction=Silver Slivers Guild
-SET player.factionRelations_SilverSliversGuild=40
 GOTO :APPLY_RACE_BONUSES
 
 :SORCERER_CHOSEN
@@ -387,8 +380,6 @@ SET player.magicSchool_DestructionSkill=8
 SET player.magicSchool_RestorationSkill=12
 SET player.class=Sorcerer
 SET player.class_ability=sapping
-SET player.faction=Sorcerers Guild
-SET player.factionRelations_SorcerersGuild=40
 GOTO :APPLY_RACE_BONUSES
 
 REM Applies health and other skill bonuses.
@@ -439,9 +430,9 @@ ECHO ^| [2] Injured Origin : Your eyes open and you find yourself in a medical t
 ECHO ^| [3] Inn Origin     : You've come to on a bed in a local inn. You're unsure of how you got here.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%P%" == "1" GOTO :VIEW_FOREST_ORIGIN
-IF /I "%P%" == "2" GOTO :VIEW_INJURED_ORIGIN
-IF /I "%P%" == "3" GOTO :VIEW_INN_ORIGIN
+IF /I "%CH%" == "1" GOTO :VIEW_FOREST_ORIGIN
+IF /I "%CH%" == "2" GOTO :VIEW_INJURED_ORIGIN
+IF /I "%CH%" == "3" GOTO :VIEW_INN_ORIGIN
 
 REM Describe this origin story in more depth.
 :VIEW_FOREST_ORIGIN
