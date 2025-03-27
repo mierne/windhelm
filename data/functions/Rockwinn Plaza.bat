@@ -537,13 +537,13 @@ IF %vendor.blacksmith_cactus_armor_stock% LEQ 0 (
     SET displayMessage=Sorry, we're sold out of this set.
     GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
 ) ELSE (
-    IF %player.coins% LSS %vendor.blacksmith_cactus_armor_stock% (
+    IF %player.coins% LSS %vendor.blacksmith_cactus_armor_price% (
         SET displayMessage=Sorry, you can't afford this weapon.
         GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
     ) ELSE (
         SET /A player.item_cactus_armor_owned=!player.item_cactus_armor_owned! +1
         SET /A vendor.blacksmith_cactus_armor_stock=!vendor.blacksmith_cactus_armor_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_cactus_armor_price%
+        SET /A player.coins=!player.coins! -%vendor.blacksmith_cactus_armor_price%
         SET displayMessage=Purchased 1 Cactus Armor set for %vendor.blacksmith_cactus_armor_price%.
         GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
     )
@@ -575,13 +575,13 @@ IF %vendor.blacksmith_guard_armor_stock% LEQ 0 (
     SET displayMessage=Sorry, we're sold out of this set.
     GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
 ) ELSE (
-    IF %player.coins% LSS %vendor.blacksmith_guard_armor_stock% (
+    IF %player.coins% LSS %vendor.blacksmith_guard_armor_price% (
         SET displayMessage=Sorry, you can't afford this weapon.
         GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
     ) ELSE (
         SET /A player.item_guard_armor_owned=!player.item_guard_armor_owned! +1
         SET /A vendor.blacksmith_guard_armor_stock=!vendor.blacksmith_guard_armor_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_guard_armor_price%
+        SET /A player.coins=!player.coins! -%vendor.blacksmith_guard_armor_price%
         SET displayMessage=Purchased 1 Guard Armor set for %vendor.blacksmith_guard_armor_price%.
         GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
     )
@@ -637,13 +637,13 @@ IF %vendor.blacksmith_stone_armor_stock% LEQ 0 (
     SET displayMessage=Sorry, we're sold out of this set.
     GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
 ) ELSE (
-    IF %player.coins% LSS %vendor.blacksmith_stone_armor_stock% (
+    IF %player.coins% LSS %vendor.blacksmith_stone_armor_price% (
         SET displayMessage=Sorry, you can't afford this weapon.
         GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
     ) ELSE (
         SET /A player.item_stone_armor_owned=!player.item_stone_armor_owned! +1
         SET /A vendor.blacksmith_stone_armor_stock=!vendor.blacksmith_stone_armor_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_stone_armor_price%
+        SET /A player.coins=!player.coins! -%vendor.blacksmith_stone_armor_price%
         SET displayMessage=Purchased 1 Stone Armor set for %vendor.blacksmith_stone_armor_price%.
         GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
     )
@@ -675,13 +675,13 @@ IF %vendor.blacksmith_iron_armor_stock% LEQ 0 (
     SET displayMessage=Sorry, we're sold out of this set.
     GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
 ) ELSE (
-    IF %player.coins% LSS %vendor.blacksmith_iron_armor_stock% (
+    IF %player.coins% LSS %vendor.blacksmith_iron_armor_price% (
         SET displayMessage=Sorry, you can't afford this weapon.
         GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
     ) ELSE (
         SET /A player.item_iron_armor_owned=!player.item_iron_armor_owned! +1
         SET /A vendor.blacksmith_iron_armor_stock=!vendor.blacksmith_iron_armor_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_iron_armor_price%
+        SET /A player.coins=!player.coins! -%vendor.blacksmith_iron_armor_price%
         SET displayMessage=Purchased 1 Iron Armor set for %vendor.blacksmith_iron_armor_price%.
         GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
     )
@@ -737,13 +737,13 @@ IF %vendor.blacksmith_steel_armor_stock% LEQ 0 (
     SET displayMessage=Sorry, we're sold out of this set.
     GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
 ) ELSE (
-    IF %player.coins% LSS %vendor.blacksmith_steel_armor_stock% (
+    IF %player.coins% LSS %vendor.blacksmith_steel_armor_price% (
         SET displayMessage=Sorry, you can't afford this weapon.
         GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
     ) ELSE (
         SET /A player.item_steel_armor_owned=!player.item_steel_armor_owned! +1
         SET /A vendor.blacksmith_steel_armor_stock=!vendor.blacksmith_steel_armor_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_steel_armor_price%
+        SET /A player.coins=!player.coins! -%vendor.blacksmith_steel_armor_price%
         SET displayMessage=Purchased 1 Iron Armor set for %vendor.blacksmith_steel_armor_price%.
         GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
     )
@@ -776,13 +776,13 @@ IF %vendor.blacksmith_scale_armor_stock% LEQ 0 (
     SET displayMessage=Sorry, we're sold out of this set.
     GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
 ) ELSE (
-    IF %player.coins% LSS %vendor.blacksmith_scale_armor_stock% (
+    IF %player.coins% LSS %vendor.blacksmith_scale_armor_price% (
         SET displayMessage=Sorry, you can't afford this weapon.
         GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
     ) ELSE (
         SET /A player.item_scale_armor_owned=!player.item_scale_armor_owned! +1
         SET /A vendor.blacksmith_scale_armor_stock=!vendor.blacksmith_scale_armor_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_scale_armor_price%
+        SET /A player.coins=!player.coins! -%vendor.blacksmith_scale_armor_price%
         SET displayMessage=Purchased 1 Scale Armor set for %vendor.blacksmith_scale_armor_price%.
         GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
     )
