@@ -19,18 +19,18 @@ SET bandit.damage=14
 SET bandit.damage_type_resistance=physical
 SET bandit.damage_resisted=0
 
-REM Abyssal Guardian Information
-SET abyssal_guardian.health=200
-SET abyssal_guardian.stamina=200
-SET abyssal_guardian.magicka=400
-SET abyssal_guardian.damage=20
-SET abyssal_guardian.special_damage=45
-SET abyssal_guardian.special_stamina_cost=20
-SET abyssal_guardian.damage_type_resistance=physical
-SET abyssal_guardian.damage_resisted=6
-SET abyssal_guardian.dialogue_title=Abyss Lurker L'yahn
+REM Abyss Guardian Information
+SET abyss_guardian.health=200
+SET abyss_guardian.stamina=200
+SET abyss_guardian.magicka=400
+SET abyss_guardian.damage=20
+SET abyss_guardian.special_damage=45
+SET abyss_guardian.special_stamina_cost=20
+SET abyss_guardian.damage_type_resistance=physical
+SET abyss_guardian.damage_resisted=6
+SET abyss_guardian.dialogue_title=Abyss Lurker L'yahn
 REM Currently unsued data
-SET abyssal_guardian.faction=Abyss Lurkers
+SET abyss_guardian.faction=Abyss Lurkers
 
 :ENCOUNTER
 IF "%currentEnemy%" == "Bandit" (
@@ -44,19 +44,19 @@ IF "%currentEnemy%" == "Bandit" (
     SET ce.boss_active=0
     SET curEn=Bandit
     GOTO :combat_engine
-) ELSE IF "%currentEnemy%" == "Abyssal Guardian" (
-    SET enemy.health=%abyssal_guardian.health%
-    SET enemy.stamina=%abyssal_guardian.stamina%
-    SET enemy.magicka=%abyssal_guardian.magicka%
-    SET enemy.damage=%abyssal_guardian.damage%
-    SET enemy.damage_base=%abyssal_guardian.damage%
-    SET enemy.special_damage=%abyssal_guardian.special_damage%
-    SET enemy.special_stamina_cost=%abyssal_guardian.special_stamina_cost%
-    SET enemy.damage_type_resistance=%abyssal_guardian.damage_type_resistance%
-    SET enemy.damage_resisted=%abyssal_guardian.damage_resisted%
-    SET enemy.dialogue_title=%abyssal_guardian.dialogue_title%
+) ELSE IF "%currentEnemy%" == "Abyss Guardian" (
+    SET enemy.health=%abyss_guardian.health%
+    SET enemy.stamina=%abyss_guardian.stamina%
+    SET enemy.magicka=%abyss_guardian.magicka%
+    SET enemy.damage=%abyss_guardian.damage%
+    SET enemy.damage_base=%abyss_guardian.damage%
+    SET enemy.special_damage=%abyss_guardian.special_damage%
+    SET enemy.special_stamina_cost=%abyss_guardian.special_stamina_cost%
+    SET enemy.damage_type_resistance=%abyss_guardian.damage_type_resistance%
+    SET enemy.damage_resisted=%abyss_guardian.damage_resisted%
+    SET enemy.dialogue_title=%abyss_guardian.dialogue_title%
     SET ce.boss_active=1
-    SET curEn=Abyssal Guardian
+    SET curEn=Abyss Guardian
     GOTO :combat_engine
 ) ELSE (
     REM Error handling.
