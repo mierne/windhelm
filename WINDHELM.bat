@@ -303,7 +303,7 @@ ECHO %displayMessage% ^| Total discovered: %player.catalogue_unlocked%/%player.c
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / %player.catalogue_bandit% ] ^| [2 / %player.catalogue_abyssal_guardian% ]
+ECHO ^| [1 / %player.catalogue_bandit% ] ^| [2 / %player.catalogue_abyss_guardian% ]
 ECHO ^| [Q / EXIT ]
 ECHO +---------------------------------------------------------------------------------------------------+
 SET /P CH=">"
@@ -317,7 +317,7 @@ GOTO :INVALID_INPUT
 SET player.catalogue_bandit=Bandit
 SET player.catalogue_bandit_encountered=1
 SET player.catalogue_abyssal_guardian_encountered=1
-SET player.catalogue_abyssal_guardian=Abyssal Guardian
+SET player.catalogue_abyssal_guardian=Abyss Guardian
 SET /A player.catalogue_unlocked=!player.catalogue_unlocked! +1
 SET displayMessage=cheat activated
 GOTO :catalogue_category_humanoids
@@ -368,15 +368,15 @@ MODE con: cols=120 lines=24
 SET RETURN=catalogue_view_abgu
 CLS
 ECHO.
-TYPE "%cd%\data\assets\enemies\Iridescent Forest\abyssal guardian.txt"
+TYPE "%cd%\data\assets\enemies\Iridescent Forest\abyss guardian.txt"
 ECHO.
 ECHO.
-ECHO Viewing the ABYSSAL GUARDIAN catalogue entry.
+ECHO Viewing the ABYSS GUARDIAN catalogue entry.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| An unknown entity which has been found across Laera, it appears hostile to all who have encountered it.
 ECHO ^| It's purpose remains unknown, but they have been most commonly spotted guarding shatter-points.
 ECHO ^| Attempts at communicating with this entity has resulted in nothing but death. Do not attempt to make contact. 
-ECHO ^| ABYSSAL GUARDIAN stats:
+ECHO ^| ABYSS GUARDIAN stats:
 ECHO ^|----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Health: 250 ^| Stamina: 200 ^| Magicka: 400
 ECHO ^| Damage: 20/45 ^| Resistance Type: Physical ^| Total Resistance: 12
