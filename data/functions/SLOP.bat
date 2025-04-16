@@ -19,7 +19,6 @@ SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
 REM Level up skill costs base
 SET windhelm.damage_skill_base_cost_level=2
-SET windhelm.stamina_skill_base_cost_level=2
 SET windhelm.magicka_skill_base_cost_level=2
 SET windhelm.intelligence_skill_base_cost_level=2
 REM Reflex scales with athletics, for future reference. That's why it's excluded here.
@@ -28,36 +27,26 @@ SET windhelm.damage_speech_base_cost_level=2
 REM Weapon item data
 SET windhelm.item_long_sword_name=Long Sword
 SET windhelm.item_long_sword_damage=8
-SET windhelm.item_long_sword_stamina_usage=12
-SET windhelm.item_long_sword_stamina_usage_heavy=24
 SET windhelm.item_long_sword_type=weapon
 SET windhelm.item_long_sword_category=swords
 SET windhelm.item_long_sword_damage_type=physical
 SET windhelm.item_short_sword_name=Short Sword
 SET windhelm.item_short_sword_damage=4
-SET windhelm.item_short_sword_stamina_usage=6
-SET windhelm.item_short_sword_stamina_usage_heavy=12
 SET windhelm.item_short_sword_type=weapon
 SET windhelm.item_short_sword_category=swords
 SET windhelm.item_short_sword_damage_type=physical
 SET windhelm.item_great_axe_name=Great Axe
 SET windhelm.item_great_axe_damage=17
-SET windhelm.item_great_axe_stamina_usage=15
-SET windhelm.item_great_axe_stamina_usage_heavy=45
 SET windhelm.item_great_axe_type=weapon
 SET windhelm.item_great_axe_category=axes
 SET windhelm.item_great_axe_damage_type=physical
 SET windhelm.item_mace_name=mace
 SET windhelm.item_mace_damage=12
-SET windhelm.item_mace_stamina_usage=15
-SET windhelm.item_mace_stamina_usage=30
 SET windhelm.item_mace_type=weapon
 SET windhelm.item_mace_category=maces
 SET windhelm.item_mace_damage_type=physical
 SET windhelm.item_wooden_bow_name=Wooden Bow
 SET windhelm.item_wooden_bow_damage=15
-SET windhelm.item_wooden_bow_stamina_usage=25
-SET windhelm.item_wooden_bow_stamina_usage_heavy=35
 SET windhelm.item_wooden_bow_type=weapon
 SET windhelm.item_wooden_bow_category=bows
 SET windhelm.item_wooden_bow_damage_type=physical
@@ -97,10 +86,6 @@ SET windhelm.item_tonic_healing_name=Health Tonic
 SET windhelm.item_tonic_healing_modifier=20
 SET windhelm.item_tonic_healing_type=consumable
 SET windhelm.item_tonic_healing_category=tonics
-SET windhelm.item_tonic_stamina_name=Stamina Tonic
-SET windhelm.item_tonic_stamina_modifier=10
-SET windhelm.item_tonic_stamina_type=consumable
-SET windhelm.item_tonic_stamina_category=tonics
 SET windhelm.item_tonic_magicka_name=Magicka Tonic
 SET windhelm.item_tonic_magicka_modifier=15
 SET windhelm.item_tonic_magicka_type=consumable
@@ -133,7 +118,6 @@ ECHO %player.possesive_1%
 ECHO %player.reflexive_1%
 ECHO %player.intensive_1%
 ECHO %player.health%
-ECHO %player.stamina%
 ECHO %player.magicka%
 ECHO %player.damage%
 ECHO %player.damage_heavy%
@@ -143,14 +127,11 @@ ECHO %player.coins%
 ECHO %player.xp%
 ECHO %player.xp_required%
 ECHO %player.level%
-ECHO %player.stamina_max%
 ECHO %player.magicka_max%
 ECHO %player.health_max%
 ECHO %player.weapon_type%
 ECHO %player.weapon_damage_type%
 ECHO %player.armor_prot%
-ECHO %player.attack_stamina%
-ECHO %player.attack_stamina_usage%
 ECHO %player.skill_damage%
 ECHO %player.skill_magicka%
 ECHO %player.skill_speech%
@@ -183,7 +164,6 @@ ECHO %player.item_great_axe_owned%
 ECHO %player.item_mace_owned%
 ECHO %player.item_wooden_bow_owned%
 ECHO %player.item_tonic_healing_owned%
-ECHO %player.item_tonic_stamina_owned%
 ECHO %player.item_tonic_magicka_owned%
 ECHO %player.item_tonic_xp_owned%
 ECHO %player.bandits_slain%
@@ -217,10 +197,8 @@ ECHO %vendor.blacksmith_steel_armor_stock%
 ECHO %vendor.blacksmith_iron_armor_stock%
 ECHO %vendor.blacksmith_scale_armor_stock%
 ECHO %vendor.alchemist.health_tonic_price%
-ECHO %vendor.alchemist.stamina_tonic_price%
 ECHO %vendor.alchemist.magicka_tonic_price%
 ECHO %vendor.alchemist.health_tonic_stock%
-ECHO %vendor.alchemist.stamina_tonic_stock%
 ECHO %vendor.alchemist.magicka_tonic_stock%
 )>"%cd%\data\player\savedata.txt"
 GOTO :EOF
@@ -235,7 +213,6 @@ SET /P player.possesive_1=
 SET /P player.reflexive_1=
 SET /P player.intensive_1=
 SET /P player.health=
-SET /P player.stamina=
 SET /P player.magicka=
 SET /P player.damage=
 SET /P player.damage_heavy=
@@ -245,14 +222,11 @@ SET /P player.coins=
 SET /P player.xp=
 SET /P player.xp_required=
 SET /P player.level=
-SET /P player.stamina_max=
 SET /P player.magicka_max=
 SET /P player.health_max=
 SET /P player.weapon_type=
 SET /P player.weapon_damage_type=
 SET /P player.armor_prot=
-SET /P player.attack_stamina=
-SET /P player.attack_stamina_usage=
 SET /P player.skill_damage=
 SET /P player.skill_magicka=
 SET /P player.skill_speech=
@@ -285,7 +259,6 @@ SET /P player.item_great_axe_owned=
 SET /P player.item_mace_owned=
 SET /P player.item_wooden_bow_owned=
 SET /P player.item_tonic_healing_owned=
-SET /P player.item_tonic_stamina_owned=
 SET /P player.item_tonic_magicka_owned=
 SET /P player.item_tonic_xp_owned=
 SET /P player.bandits_slain=
@@ -319,10 +292,8 @@ SET /P vendor.blacksmith_steel_armor_stock=
 SET /P vendor.blacksmith_iron_armor_stock=
 SET /P vendor.blacksmith_scale_armor_stock=
 SET /P vendor.alchemist.health_tonic_price=
-SET /P vendor.alchemist.stamina_tonic_price=
 SET /P vendor.alchemist.magicka_tonic_price=
 SET /P vendor.alchemist.health_tonic_stock=
-SET /P vendor.alchemist.stamina_tonic_stock=
 SET /P vendor.alchemist.magicka_tonic_stock=
 )<"%cd%\data\player\savedata.txt"
 GOTO :EOF
@@ -339,7 +310,6 @@ GOTO :PLAYER_INIT_STATS
 
 :PLAYER_INIT_STATS
 SET player.health=100
-SET player.stamina=100
 SET player.magicka=100
 SET player.damage=5
 SET player.damage_heavy=10
@@ -349,7 +319,6 @@ SET player.coins=1000
 SET player.xp=0
 SET player.xp_required=5000
 SET player.level=1
-SET player.stamina_max=100
 SET player.magicka_max=100
 SET player.health_max=100
 SET player.weapon_type=Melee
@@ -357,8 +326,6 @@ SET player.weapon_damage_type=physical
 REM Player armor value. Used to modify attack damages against the Player.
 SET player.armor_prot=0
 SET player.armor_resistance_type=physical
-SET player.attack_stamina=1
-SET player.attack_stamina_usage=1
 SET player.skill_damage=2
 SET player.skill_magicka=2
 SET player.skill_speech=2
@@ -401,7 +368,6 @@ SET player.item_great_axe_owned=0
 SET player.item_mace_owned=0
 SET player.item_wooden_bow_owned=0
 SET player.item_tonic_healing_owned=0
-SET player.item_tonic_stamina_owned=0
 SET player.item_tonic_magicka_owned=0
 SET player.item_tonic_xp_owned=0
 REM Player statistics tracking
@@ -450,11 +416,9 @@ SET vendor.blacksmith_iron_armor_stock=12
 SET vendor.blacksmith_scale_armor_stock=12
 REM Alchemist Shop Base Prices.
 SET vendor.alchemist.health_tonic_price=25
-SET vendor.alchemist.stamina_tonic_price=25
 SET vendor.alchemist.magicka_tonic_price=25
 REM Alchemist Item Stock.
 SET vendor.alchemist.health_tonic_stock=50
-SET vendor.alchemist.stamina_tonic_stock=50
 SET vendor.alchemist.magicka_tonic_stock=50
 IF %SLOPr% == INIT (
     GOTO :EOF
