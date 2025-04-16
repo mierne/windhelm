@@ -143,21 +143,19 @@ ECHO.
 ECHO Which skill would you like to improve? Each improvement costs 2 points.
 ECHO %displayMessage%
 ECHO +----------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player_health% ^| STM: %player_stamina% ^| ATK: %player_damage% ^| AMR: %player_armor% ^| MGK: %player_magicka% ^| COINS: %player_coins% ^| XP: %player_xp% ^| LUNIS: %player_lunis%
+ECHO ^| HP: %player_health% ^| ATK: %player_damage% ^| AMR: %player_armor% ^| MGK: %player_magicka% ^| COINS: %player_coins% ^| XP: %player_xp% ^| LUNIS: %player_lunis%
 ECHO +----------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE:  %player.skill_damage%,  COST:  6 LEVELS  ^| ATHLETICS: %player.skill_athletics%
 ECHO ^| SPEECH:  %player.skill_speech%,  COST:  9 LEVELS  ^| INTELLIGENCE: %player.skill_intelligence%
-ECHO ^| STAMINA: %player.skill_stamina%,  COST: 12 LEVELS ^|
 ECHO ^| MAGICKA: %player.skill_magicka%,  COST: 20 LEVELS ^|
 ECHO +----------------------------------------------------------------------------------------------------------------+
-ECHO + [1 / IMPROVE DAMAGE ] ^| [2 / IMPROVE SPEECH ] ^| [3 / IMPROVE STAMINA ] ^| [4 / IMPROVE MAGICKA ] ^| [5 / IMPROVE ATHLETICS ] ^ [6 / IMPROVE INTELLIGENCE ] ^| [E / DONE ]
+ECHO + [1 / IMPROVE DAMAGE ] ^| [2 / IMPROVE SPEECH ] ^| [3 / IMPROVE MAGICKA ] ^| [4 / IMPROVE ATHLETICS ] ^ [5 / IMPROVE INTELLIGENCE ] ^| [E / DONE ]
 ECHO +----------------------------------------------------------------------------------------------------------------+
-CHOICE /C 123456E /N /M ">"
-IF ERRORLEVEL 7 GOTO :EOF
-IF ERRORLEVEL 6 GOTO :SKILLS_IMPROVE_INTELLIGENCE
-IF ERRORLEVEL 5 GOTO :SKILLS_IMPROVE_ATHLETICS
-IF ERRORLEVEL 4 GOTO :SKILLS_IMPROVE_MAGICKA
-IF ERRORLEVEL 3 GOTO :SKILLS_IMPROVE_STAMINA
+CHOICE /C 12345E /N /M ">"
+IF ERRORLEVEL 6 GOTO :EOF
+IF ERRORLEVEL 5 GOTO :SKILLS_IMPROVE_INTELLIGENCE
+IF ERRORLEVEL 4 GOTO :SKILLS_IMPROVE_ATHLETICS
+IF ERRORLEVEL 3 GOTO :SKILLS_IMPROVE_MAGICKA
 IF ERRORLEVEL 2 GOTO :SKILLS_IMPROVE_SPEECH
 IF ERRORLEVEL 1 GOTO :SKILLS_IMPROVE_DAMAGE
 
@@ -197,26 +195,6 @@ IF %player.skill_speech% EQU 10 (
         SET /A player.skill_speech=!player.skill_speech! +1
         SET /A player.level_up_points=!player.level_up_points! -1
         SET displayMessage=Increased speech skill by 1 for two points.
-        GOTO :LEVEL_UP_SKILLS
-    )
-)
-
-REM Attempt to improve the stamina skill.
-:SKILLS_IMPROVE_STAMINA
-IF %player.skill_stamina% EQU 10 (
-    REM This skill is at the maximum level.
-    SET displayMessage=This skill is already at the maximum level^!
-    GOTO :LEVEL_UP_SKILLS
-) ELSE (
-    REM Improve the skill level.
-    IF %player.level_up_points% LSS %windhelm.damage_skill_base_cost_level% (
-        REM Player does not have enough level up points for this.
-        SET displayMessage=You do not have enough points for this.
-        GOTO :LEVEL_UP_SKILLS
-    ) ELSE (
-        SET /A player.skill_stamina=!player.skill_stamina! +1
-        SET /A player.level_up_points=!player.level_up_points! -1
-        SET displayMessage=Increased stamina skill by 1 for two points.
         GOTO :LEVEL_UP_SKILLS
     )
 )
