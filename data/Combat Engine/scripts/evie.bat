@@ -13,7 +13,6 @@ SET player.damage_base=%player.damage%
 
 REM Iridescent Bandit Information
 SET bandit.health=80
-SET bandit.stamina=100
 SET bandit.magicka=100
 SET bandit.damage=14
 SET bandit.damage_type_resistance=physical
@@ -21,11 +20,9 @@ SET bandit.damage_resisted=0
 
 REM Abyss Guardian Information
 SET abyss_guardian.health=200
-SET abyss_guardian.stamina=200
 SET abyss_guardian.magicka=400
 SET abyss_guardian.damage=20
 SET abyss_guardian.special_damage=45
-SET abyss_guardian.special_stamina_cost=20
 SET abyss_guardian.damage_type_resistance=physical
 SET abyss_guardian.damage_resisted=6
 SET abyss_guardian.dialogue_title=Abyss Lurker L'yahn
@@ -35,7 +32,6 @@ SET abyss_guardian.faction=Abyss Lurkers
 :ENCOUNTER
 IF "%currentEnemy%" == "Bandit" (
     SET enemy.health=%bandit.health%
-    SET enemy.stamina=%bandit.stamina%
     SET enemy.magicka=%bandit.magicka%
     SET enemy.damage=%bandit.damage%
     SET enemy.damage_type_resistance=%bandit.damage_type_resistance%
@@ -46,12 +42,10 @@ IF "%currentEnemy%" == "Bandit" (
     GOTO :combat_engine
 ) ELSE IF "%currentEnemy%" == "Abyss Guardian" (
     SET enemy.health=%abyss_guardian.health%
-    SET enemy.stamina=%abyss_guardian.stamina%
     SET enemy.magicka=%abyss_guardian.magicka%
     SET enemy.damage=%abyss_guardian.damage%
     SET enemy.damage_base=%abyss_guardian.damage%
     SET enemy.special_damage=%abyss_guardian.special_damage%
-    SET enemy.special_stamina_cost=%abyss_guardian.special_stamina_cost%
     SET enemy.damage_type_resistance=%abyss_guardian.damage_type_resistance%
     SET enemy.damage_resisted=%abyss_guardian.damage_resisted%
     SET enemy.dialogue_title=%abyss_guardian.dialogue_title%
