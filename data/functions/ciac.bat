@@ -229,7 +229,6 @@ ECHO ^| The Frawen are tall with sharp, pointy ears and reside almost exclusivel
 ECHO ^| surrounding Windhelm. Their knowledge of the forests makes them excellent at moving quickly and quietly.
 ECHO ^| Their time in the forest has also been a boon to their intelligence.
 ECHO ^| +2 to starting INTELLIGENCE skill.
-ECHO ^| +50 to starting STAMINA.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK ]
 SET /P CH=">"
@@ -289,8 +288,8 @@ ECHO Choose the DRUID class?
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Druids are powerful mages who devote their life to nature. Due to their strong relationship with the Goddess of Nature,
 ECHO ^| Druids are granted +100 MAGICKA, however the devotion costs them -30 HEALTH.
-ECHO ^| Starting stats: HEALTH: 70 ^| STAMINA: 100 ^| MAGICKA: 200
-ECHO ^| Starting skills: DAMAGE: 2 ^| STAMINA: 2   ^| MAGICKA 6 ^| SPEECH: 2 ^| ATHLETICS: 2 ^| REFLEX: 2 ^| INTELLIGENCE: 2
+ECHO ^| Starting stats: HEALTH: 70 ^| MAGICKA: 200
+ECHO ^| Starting skills: DAMAGE: 2 ^| MAGICKA 6 ^| SPEECH: 2 ^| ATHLETICS: 2 ^| REFLEX: 2 ^| INTELLIGENCE: 2
 ECHO ^| Starting magic skills: ALTERATION: 6 ^| DESTRUCTION: 2     ^| RESTORATION: 6
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
@@ -310,8 +309,8 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| Warriors have spent most of their lives training for combat and as a result start with increased HEALTH and DAMAGE.
 ECHO ^| Warriors are granted +60 HEALTH. Warriors also start with a higher DAMAGE skill stat.
 ECHO ^| Their strong devotion to their Gods lowers their MAGICKA by 70.
-ECHO ^| Starting stats: HEALTH: 160 ^| STAMINA: 100 ^| MAGICKA: 30
-ECHO ^| Starting skills: DAMAGE: 6  ^| STAMINA: 2   ^| MAGICKA: 2
+ECHO ^| Starting stats: HEALTH: 160 ^| MAGICKA: 30
+ECHO ^| Starting skills: DAMAGE: 6  ^| MAGICKA: 2
 ECHO ^| Starting magic skills: ALTERATION: 2 ^| DESTRUCTION: 2 ^| RESTORATION: 2
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
@@ -329,10 +328,10 @@ ECHO.
 ECHO Choose the SORCERER class?
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Sorcerers are born with a strong connection to the magical world and as a result start with increased MAGICKA.
-ECHO ^| Sorcerers are granted +100 MAGICKA. Their devotion has cost them 50 STAMINA. Druids also start with higher average
+ECHO ^| Sorcerers are granted +100 MAGICKA. Their devotion has cost them 25 HEALTH. Druids also start with higher average
 ECHO ^| magical skills than others.
-ECHO ^| Starting stats: HEALTH: 100 ^| STAMINA: 50 ^| MAGICKA: 200
-ECHO ^| Starting skills: DAMAGE: 2  ^| STAMINA: 2  ^| MAGICKA: 6
+ECHO ^| Starting stats: HEALTH: 100 ^| MAGICKA: 200
+ECHO ^| Starting skills: DAMAGE: 2  ^| MAGICKA: 6
 ECHO ^| Starting magica skills: ALTERATION: 12 ^| DESTRUCTION: 8 ^| RESTORATION: 12
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
@@ -368,12 +367,10 @@ SET player.class_ability=rage
 GOTO :APPLY_RACE_BONUSES
 
 :SORCERER_CHOSEN
-SET player.health=100
-SET player.health_max=100
+SET player.health=75
+SET player.health_max=75
 SET player.magicka=150
 SET player.magicka_max=150
-SET player.stamina=50
-SET player.stamina_max=50
 SET player.magicka_skill=6
 SET player.magicSchool_AlterationSkill=12
 SET player.magicSchool_DestructionSkill=8
