@@ -10,7 +10,7 @@ TYPE "%cd%\data\assets\ui\inventory.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -39,7 +39,7 @@ TYPE "%cd%\data\assets\ui\weapons.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -63,7 +63,7 @@ TYPE "%cd%\data\assets\ui\swords.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -93,7 +93,6 @@ ECHO Showing detailed information for the Long Sword.
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_long_sword_owned%
 ECHO ^| DAMAGE: %windhelm.item_long_sword_damage%, %windhelm.item_long_sword_damage_type%
-ECHO ^| STAMINA USAGE: %windhelm.item_long_sword_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_long_sword_category%
 ECHO ^| TYPE: %windhelm.item_long_sword_type%
 ECHO +---------------------------------------------------------------------------------------------------+
@@ -114,7 +113,6 @@ IF %player.weapon_equipped% == "EMPTY" (
         REM The Player owns more than zero of this item.
         SET player.weapon_equipped=%windhelm.item_long_sword_name%
         SET player.damage=%windhelm.item_long_sword_damage%
-        SET player.attack_stamina_usage=%windhelm.item_long_sword_stamina_usage%
         SET player.weapon_damage_type=%windhelm.item_long_sword_damage_type%
         SET displayMessage=Equipped the Long Sword^!
         GOTO :IVM
@@ -140,7 +138,6 @@ IF NOT %player.weapon_equipped% == "Long Sword" (
     REM Unequip the weapon.
     SET player.weapon_equipped="EMPTY"
     SET player.damage=5
-    SET player.attack_stamina_usage=1
     SET displayMessage=Unequipped the Long Sword.
     GOTO :IVM
 )
@@ -157,7 +154,6 @@ ECHO Showing detailed information for the Short Sword.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_short_sword_owned%
 ECHO ^| DAMAGE: %windhelm.item_short_sword_damage%, %windhelm.item_short_sword_damage_type%
-ECHO ^| STAMINA USAGE: %windhelm.item_short_sword_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_short_sword_category%
 ECHO ^| TYPE: %windhelm.item_short_sword_type%
 ECHO +-------------------------------------------------------------------------------------------------------------+
@@ -177,7 +173,6 @@ IF %player.weapon_equipped% == "EMPTY" (
         REM The Player owns more than zero of this item.
         SET player.weapon_equipped=%windhelm.item_short_sword_name%
         SET player.damage=%windhelm.item_short_sword_damage%
-        SET player.attack_stamina_usage=%windhelm.item_short_sword_stamina_usage%
         SET player.weapon_damage_type=%windhelm.item_short_sword_damage_type%
         SET displayMessage=Equipped the Short Sword^!
         GOTO :IVM
@@ -203,7 +198,6 @@ IF NOT %player.weapon_equipped% == "Short Sword" (
     REM Unequip the weapon.
     SET player.weapon_equipped="EMPTY"
     SET player.damage=5
-    SET player.attack_stamina_usage=1
     SET displayMessage=Unequipped the Short Sword.
     GOTO :IVM
 )
@@ -218,7 +212,7 @@ TYPE "%cd%\data\assets\ui\axes.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -243,7 +237,6 @@ ECHO Showing detailed information for the Great Axe.
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_great_axe_owned%
 ECHO ^| DAMAGE: %windhelm.item_great_axe_damage%, %windhelm.item_great_axe_damage_type%
-ECHO ^| STAMINA USAGE: %windhelm.item_great_axe_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_great_axe_category%
 ECHO ^| TYPE: %windhelm.item_great_axe_type%
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -263,7 +256,6 @@ IF %player.weapon_equipped% == "EMPTY" (
         REM The Player owns more than zero of this item.
         SET player.weapon_equipped=%windhelm.item_great_axe_name%
         SET player.damage=%windhelm.item_great_axe_damage%
-        SET player.attack_stamina_usage=%windhelm.item_great_axe_stamina_usage%
         SET player.weapon_damage_type=%windhelm.item_great_axe_damage_type%
         SET displayMessage=Equipped the Great Axe^!
         GOTO :IVM
@@ -289,7 +281,6 @@ IF NOT %player.weapon_equipped% == "Great Axe" (
     REM Unequip the weapon.
     SET player.weapon_equipped="EMPTY"
     SET player.damage=5
-    SET player.attack_stamina_usage=1
     SET displayMessage=Unequipped the Great Axe.
     GOTO :IVM
 )
@@ -304,7 +295,7 @@ TYPE "%cd%\data\assets\ui\maces.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -329,7 +320,6 @@ ECHO Showing detailed information for the Mace.
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_mace_owned%
 ECHO ^| DAMAGE: %windhelm.item_mace_damage%, %windhelm.item_mace_damage_type%
-ECHO ^| STAMINA USAGE: %windhelm.item_mace_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_mace_category%
 ECHO ^| TYPE: %windhelm.item_mace_type%
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -349,7 +339,6 @@ IF %player.weapon_equipped% == "EMPTY" (
         REM The Player owns more than zero of this item.
         SET player.weapon_equipped=%windhelm.item_mace_name%
         SET player.damage=%windhelm.item_mace_damage%
-        SET player.attack_stamina_usage=%windhelm.item_mace_stamina_usage%
         SET player.weapon_damage_type=%windhelm.item_mace_damage_type%
         SET displayMessage=Equipped the Mace^!
         GOTO :IVM
@@ -375,7 +364,6 @@ IF NOT %player.weapon_equipped% == "Mace" (
     REM Unequip the weapon.
     SET player.weapon_equipped="EMPTY"
     SET player.damage=5
-    SET player.attack_stamina_usage=1
     SET displayMessage=Unequipped the Mace.
     GOTO :IVM
 )
@@ -390,7 +378,7 @@ TYPE "%cd%\data\assets\ui\bows.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -415,7 +403,6 @@ ECHO Showing detailed information for the Wooden Bow.
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_wooden_bow_owned%
 ECHO ^| DAMAGE: %windhelm.item_wooden_bow_damage%, %windhelm.item_wooden_bow_damage_type%
-ECHO ^| STAMINA USAGE: %windhelm.item_wooden_bow_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_wooden_bow_category%
 ECHO ^| TYPE: %windhelm.item_wooden_bow_type%
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -435,7 +422,6 @@ IF %player.weapon_equipped% == "EMPTY" (
         REM The Player owns more than zero of this item.
         SET player.weapon_equipped=%windhelm.item_wooden_bow_name%
         SET player.damage=%windhelm.item_wooden_bow_damage%
-        SET player.attack_stamina_usage=%windhelm.item_wooden_bow_stamina_usage%
         SET player.weapon_damage_type=%windhelm.item_wooden_bow_damage_type%
         SET displayMessage=Equipped the Wooden Bow^!
         GOTO :IVM
@@ -461,7 +447,6 @@ IF NOT %player.weapon_equipped% == "Wooden Bow" (
     REM Unequip the weapon.
     SET player.weapon_equipped="EMPTY"
     SET player.damage=5
-    SET player.attack_stamina_usage=1
     SET displayMessage=Unequipped the Wooden Bow.
     GOTO :IVM
 )
@@ -482,7 +467,7 @@ TYPE "%cd%\data\assets\ui\armors.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +-----------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +-----------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +-----------------------------------------------------------------------------------------------------+
@@ -505,7 +490,7 @@ TYPE "%cd%\data\assets\ui\light_armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +------------------------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +------------------------------------------------------------------------------------------------------------------+
@@ -647,7 +632,7 @@ TYPE "%cd%\data\assets\ui\medium_armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------------------+
@@ -788,7 +773,7 @@ TYPE "%cd%\data\assets\ui\heavy_armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +------------------------------------------------------------------------------------------------------------+
@@ -929,15 +914,14 @@ TYPE "%cd%\data\assets\ui\tonics.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / HEALTH TONIC (%player.item_tonic_healing_owned%) ] ^| [2 / STAMINA TONIC (%player.item_tonic_stamina_owned%) ] ^| [3 / MAGICKA TONIC (%player.item_tonic_magicka_owned%) ] ^| [4 / XP TONIC (%player.item_tonic_xp_owned%) ] ^| [Q / BACK ]
+ECHO ^| [1 / HEALTH TONIC (%player.item_tonic_healing_owned%) ] ^| [3 / MAGICKA TONIC (%player.item_tonic_magicka_owned%) ] ^| [4 / XP TONIC (%player.item_tonic_xp_owned%) ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :INSPECT_TONIC_HEALING
-IF /I "%CH%" == "2" GOTO :INSPECT_TONIC_STAMINA
 IF /I "%CH%" == "3" GOTO :INSPECT_TONIC_MAGICKA
 IF /I "%CH%" == "Q" GOTO :IVM
 GOTO :INVALID_INPUT
@@ -991,54 +975,6 @@ IF %player.item_tonic_healing_owned% LEQ 0 (
 )
 
 REM Displays detailed information of the specific tonic.
-:INSPECT_TONIC_STAMINA
-CLS
-SET RETURN=INSPECT_TONIC_STAMINA
-MODE con: cols=117 lines=19
-ECHO.
-TYPE "%cd%\data\assets\ui\stamina_tonic.txt"
-ECHO.
-ECHO Showing detailed information for the Stamina Tonic.
-ECHO +-------------------------------------------------------------------------------------------------------------------+
-ECHO ^| AMOUNT: %player.item_tonic_stamina_owned%
-ECHO ^| MODIFIER: %windhelm.item_tonic_stamina_modifier%
-ECHO ^| CATEGORY: %windhelm.item_tonic_stamina_category%
-ECHO ^| TYPE: %windhelm.item_tonic_stamina_type%
-ECHO +-------------------------------------------------------------------------------------------------------------------+
-ECHO [E / CONSUME ] ^| [U / DISCARD ] ^| [Q / BACK ]
-SET /P CH=">"
-IF /I "%CH%" == "E" GOTO :CONSUME_TONIC_STAMINA
-IF /I "%CH%" == "U" GOTO :DISCARD_TONIC_STAMINA
-IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_TONICS
-GOTO :INVALID_INPUT
-
-:CONSUME_TONIC_STAMINA
-REM Check if the Player owns any of this item.
-IF %player.item_tonic_stamina_owned% LEQ 0 (
-    REM The Player doesn't have any of this Tonic.
-    SET displayMessage=You do not have any of this Tonic to consume.
-    GOTO :VIEW_TYPE_TONICS
-) ELSE (
-    REM Now check if the Player actually needs to consume the Tonic.
-    IF %player.stamina% EQU %player.stamina_max% (
-        REM Player is at max health.
-        SET displayMessage=Your health is already full.
-        GOTO :VIEW_TYPE_TONICS
-    ) ELSE (
-        REM Heal the Player for the value provided by the Tonics modifier.
-        SET /A player.stamina=!player.stamina! +%windhelm.item_tonic_stamina_modifier%
-        SET /A player.item_tonic_stamina_owned=!player.item_tonic_stamina_owned! -1
-        REM Ensure the Player's health does not exceed their cap.
-        IF %player.stamina% GTR %player.stamina_max% (
-            REM Player health is above their cap.
-            SET player.stamina=%player.stamina_max%
-            SET displayMessage=Replenished %windhelm.item_tonic_stamina_modifier% stamina.
-            GOTO :VIEW_TYPE_TONICS
-        )
-    )
-)
-
-REM Displays detailed information of the specific tonic.
 :INSPECT_TONIC_MAGICKA
 CLS
 SET RETURN=INSPECT_TONIC_MAGICKA
@@ -1061,26 +997,19 @@ IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_TONICS
 GOTO :INVALID_INPUT
 
 :CONSUME_TONIC_MAGICKA
-REM Check if the Player owns any of this item.
 IF %player.item_tonic_magicka_owned% LEQ 0 (
-    REM The Player doesn't have any of this Tonic.
     SET displayMessage=You do not have any of this Tonic to consume.
     GOTO :VIEW_TYPE_TONICS
 ) ELSE (
-    REM Now check if the Player actually needs to consume the Tonic.
-    IF %player.stamina% EQU %player.stamina_max% (
-        REM Player is at max health.
+    IF %player.magicka% EQU %player.magicka_max% (
         SET displayMessage=Your health is already full.
         GOTO :VIEW_TYPE_TONICS
     ) ELSE (
-        REM Heal the Player for the value provided by the Tonics modifier.
-        SET /A player.stamina=!player.stamina! +%windhelm.item_tonic_magicka_modifier%
+        SET /A player.magicka=!player.magicka! +%windhelm.item_tonic_magicka_modifier%
         SET /A player.item_tonic_magicka_owned=!player.item_tonic_magicka_owned! -1
-        REM Ensure the Player's health does not exceed their cap.
-        IF %player.stamina% GTR %player.stamina_max% (
-            REM Player health is above their cap.
-            SET player.stamina=%player.stamina_max%
-            SET displayMessage=Replenished %windhelm.item_tonic_magicka_modifier% stamina.
+        IF %player.magicka% GTR %player.magicka_max% (
+            SET player.magicka=%player.magicka_max%
+            SET displayMessage=Replenished %windhelm.item_tonic_magicka_modifier% magicka.
             GOTO :VIEW_TYPE_TONICS
         )
     )
