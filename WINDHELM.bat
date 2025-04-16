@@ -183,7 +183,7 @@ TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / EXPLORE ] ^| [2 / INVENTORY ] ^| [V / VIEW CHARACTER ] ^| [C / CATALOGUE ]
 ECHO ^| [S / SAVE ]    ^| [Q / EXIT ]
@@ -222,7 +222,7 @@ TYPE "%winLoc%\data\assets\ui\character.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO ^| NAME: %player.name% ^| RACE: %player.race% ^| CLASS: %player.class% ^| PRONOUNS: %player.personal_p_1%/%player.personal_p_2%/%player.possesive_1%/%player.reflexive_1%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %player.skill_damage% ^| MAGICKA: %player.skill_magicka% ^| ATHLETICS: %player.skill_athletics% ^| SPEECH: %player.skill_speech% ^| INTELLIGENCE: %player.skill_intelligence%
@@ -251,7 +251,7 @@ TYPE "%winLoc%\data\assets\ui\name.txt"
 ECHO.
 ECHO Enter a new name.
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| TYPE CANCEL TO CANCEL.
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -281,7 +281,7 @@ TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
 ECHO %displayMessage% ^| Total discovered: %player.catalogue_unlocked%/%player.catalogue_locked%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / HUMANOIDS ]
 ECHO ^| [Q / EXIT ]
@@ -301,7 +301,7 @@ TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
 ECHO %displayMessage% ^| Total discovered: %player.catalogue_unlocked%/%player.catalogue_locked%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / %player.catalogue_bandit% ] ^| [2 / %player.catalogue_abyss_guardian% ]
 ECHO ^| [Q / EXIT ]
@@ -354,7 +354,7 @@ ECHO ^| Your average no good thief. Bandits are a common sight on the roads outs
 ECHO ^| They might not be very strong, but they are crafty and there are a LOT of them.
 ECHO ^| BANDIT stats:
 ECHO ^|----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| Health: 80 ^| Stamina: 100 ^| Magicka: 100
+ECHO ^| Health: 80 ^| Magicka: 100
 ECHO ^| Damage: 14 ^| Resistance Type: Physical ^| Total Resistance: 0
 ECHO ^| Faction: Non-Aligned
 ECHO +----------------------------------------------------------------------------------------------------------------------+
@@ -378,7 +378,7 @@ ECHO ^| It's purpose remains unknown, but they have been most commonly spotted g
 ECHO ^| Attempts at communicating with this entity has resulted in nothing but death. Do not attempt to make contact. 
 ECHO ^| ABYSS GUARDIAN stats:
 ECHO ^|----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| Health: 250 ^| Stamina: 200 ^| Magicka: 400
+ECHO ^| Health: 250 ^| Magicka: 400
 ECHO ^| Damage: 20/45 ^| Resistance Type: Physical ^| Total Resistance: 12
 ECHO ^| Faction: Abyss Lurkers
 ECHO +----------------------------------------------------------------------------------------------------------------------+
