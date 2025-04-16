@@ -12,39 +12,18 @@ ECHO.
 TYPE "%winLoc%\data\assets\enemies\Iridescent Forest\%currentEnemy%.txt"
 ECHO.
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| %currentEnemy% HP: %enemy.health% ^| ATK: %enemy.damage% ^| STM: %enemy.stamina%
+ECHO ^| %currentEnemy% HP: %enemy.health% ^| ATK: %enemy.damage%
 ECHO ^| %displayMessage%
 ECHO ^| %player.message%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina%/%player.stamina_max% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [A / ATTACK ] ^| [I / ITEMS ] ^| [Q / FLEE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%CH%" == "A" GOTO :PLAYER_ATTACK_CHECK_STAMINA
+IF /I "%CH%" == "A" GOTO :PLAYER_ATTACK
 IF /I "%CH%" == "I" GOTO :PLAYER_ITEMS
 IF /I "%CH%" == "Q" GOTO :PLAYER_FLEE
-
-:PLAYER_ATTACK_CHECK_STAMINA
-IF %player.stamina% LSS %player.attack_stamina% (
-    SET player.message=Your stamina is too low.
-    GOTO :EBS
-) ELSE (
-    REM Check enemy resistance type. There's probably a faster way to do this.
-    IF "%enemy.damage_type_resistance%" == "%player.weapon_damage_type%" (
-        SET /A player.damage=!player.damage! -%enemy.damage_resisted%
-        REM Ensure the ensuing damage value isn't negative.
-        IF %player.damage% LEQ 0 (
-            REM Prevent Player damage from going below 5.
-            SET player.damage=5
-            GOTO :PLAYER_ATTACK
-        )
-        GOTO :PLAYER_ATTACK
-    ) ELSE (
-        REM Player can attack without a debuff.
-        GOTO :PLAYER_ATTACK
-    )
-)
 
 :PLAYER_ATTACK
 REM a number between 0 and 100 can be split 4 ways, two hits, a crit and a miss. Descending chance in that order.
@@ -53,13 +32,11 @@ IF %PA% GEQ 80 (
     REM Critical hit
     SET player.message=That REALLY hurt.
     SET /A enemy.health=!enemy.health! -%player.damage%*2
-    SET /A player.stamina=!player.stamina! -%player.attack_stamina_usage%
     GOTO :PLAYER_ARMOR_CALCULATION
 ) ELSE IF %PA% GEQ 27 (
     REM Normal Attack 2
     SET player.message=You managed a hit, mother would be proud.
     SET /A enemy.health=!enemy.health! -%player.damage%
-    SET /A player.stamina=!player.stamina! -%player.attack_stamina_usage%
     GOTO :PLAYER_ARMOR_CALCULATION
 ) ELSE IF %PA% LEQ 26 (
     REM Player attack misses.
@@ -84,19 +61,12 @@ REM Checks if the Player activated the area boss.
 IF %ce.boss_active% EQU 1 (
     GOTO :EBS_BOSS
 ) ELSE (
-    GOTO :ENEMY_ATTACK_STAMINA_CHECK
+    GOTO :ENEMY_ATTACK_CALCULATION
 )
 
 :CHECK_ACTIVE_BOSS
 IF %ce.boss_active% EQU 1 (
     GOTO :EAC_BOSS
-) ELSE (
-    GOTO :ENEMY_ATTACK_STAMINA_CHECK
-)
-
-:ENEMY_ATTACK_STAMINA_CHECK
-IF %enemy.stamina% LSS 10 (
-    GOTO :ENEMY_STAMINA_RECOVERY
 ) ELSE (
     GOTO :ENEMY_ATTACK_CALCULATION
 )
@@ -108,13 +78,11 @@ IF %PA% GEQ 84 (
     REM Critical hit
     SET displayMessage=PLAYER HIT - placeholder
     SET /A player.health=!player.health! -%enemy.damage%*2
-    SET /A enemy.stamina=!enemy.stamina! -6
     GOTO :EBS
 ) ELSE IF %PA% GEQ 31 (
     REM Normal Attack 2
     SET displayMessage=PLAYER HIT - placeholder
     SET /A player.health=!player.health! -%enemy.damage%
-    SET /A enemy.stamina=!enemy.stamina! -6
     GOTO :EBS
 ) ELSE IF %PA% LEQ 30 (
     REM Player attack misses.
@@ -124,15 +92,30 @@ IF %PA% GEQ 84 (
     REM Error handling
 )
 
-:ENEMY_STAMINA_RECOVERY
-REM Recover a small, random amount of Stamina.
-SET /A ESR=%RANDOM% %%40
-SET /A enemy.stamina=!enemy.stamina! +%ESR%
-SET displayMessage=The enemy takes a short rest, recovering %ESR% stamina.
-GOTO :EBS
-
 :EAC_BOSS
-REM BOSS FIGHT MECHANICS
+REM Much like the enemy attack phase, just stronger.
+
+:ENEMY_ATTACK_CALCULATION
+REM a number between 0 and 100 can be split 4 ways, two hits, a crit and a miss. Descending chance in that order. Slightly favored to miss compared to the Player.
+SET /A PA=%RANDOM% %%100
+IF %PA% GEQ 84 (
+    REM Critical hit
+    SET displayMessage=PLAYER HIT - placeholder
+    SET /A player.health=!player.health! -%enemy.damage%*2
+    GOTO :EBS
+) ELSE IF %PA% GEQ 31 (
+    REM Normal Attack 2
+    SET displayMessage=PLAYER HIT - placeholder
+    SET /A player.health=!player.health! -%enemy.damage%
+    GOTO :EBS
+) ELSE IF %PA% LEQ 30 (
+    REM Player attack misses.
+    SET player.message=The %currentEnemy% tripped on a pebble and missed.
+    GOTO :EBS
+) ELSE (
+    REM Error handling
+)
+
 
 :PLAYER_INVENTORY
 REM REDESIGN PLAYER INVENTORY ACCESS
@@ -176,7 +159,6 @@ IF "%currentEnemy%" == "Bandit" (
 
 :VICTORY_REWARDS
 SET player.health=%player.health_max%
-SET player.stamina=%player.stamina_max%
 SET player.magicka=%player.magicka_max%
 SET /A XPE=%RANDOM% %%80
 IF %XPE% LEQ 30 (
@@ -222,10 +204,10 @@ CLS
 ECHO.
 TYPE "%winLoc%\data\assets\ui\victory.txt"
 ECHO.
-ECHO The %currentEnemy% was defeated. Your health, stamina and magicka has been refilled!
+ECHO The %currentEnemy% was defeated. Your health and magicka has been refilled!
 ECHO %player.message% ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina%/%player.stamina_max% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO [1 / LOOT ] ^| [Q LEAVE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -280,7 +262,6 @@ IF %LT% LEQ 10 (
 :DEFEAT_SCREEN
 SET /A player.total_deaths=!player.total_deaths! +1
 SET /A player.health=!player.health_max!
-SET /A player.stamina=!player.stamina_max!
 SET /A player.magicka=!player.magicka_max!
 SET player.message=...
 SET displayMessage=...
@@ -289,10 +270,10 @@ CLS
 ECHO.
 TYPE "%winLoc%\data\assets\ui\defeat.txt"
 ECHO.
-ECHO You were defeated by the %currentEnemy%. Your health, stamina and magicka has been partially refilled.
+ECHO You were defeated by the %currentEnemy%. Your health and magicka has been partially refilled.
 ECHO %player.message% ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina%/%player.stamina_max% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [Q LEAVE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
