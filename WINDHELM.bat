@@ -215,7 +215,7 @@ CALL "%winLoc%\data\functions\Inventory Viewer.bat"
 GOTO :dashboard
 
 :character_view
-MODE con: cols=105 lines=21
+MODE con: cols=105 lines=22
 CLS
 ECHO.
 TYPE "%winLoc%\data\assets\ui\character.txt"
@@ -226,6 +226,7 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO ^| NAME: %player.name% ^| RACE: %player.race% ^| CLASS: %player.class% ^| PRONOUNS: %player.personal_p_1%/%player.personal_p_2%/%player.possesive_1%/%player.reflexive_1%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %player.skill_damage% ^| MAGICKA: %player.skill_magicka% ^| ATHLETICS: %player.skill_athletics% ^| SPEECH: %player.skill_speech% ^| INTELLIGENCE: %player.skill_intelligence%
+ECHO ^| WEAPON: %player.weapon_equipped%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| BANDITS SLAIN: %player.bandits_slain%
 ECHO ^| TOTAL DEATHS: %player.total_deaths%
