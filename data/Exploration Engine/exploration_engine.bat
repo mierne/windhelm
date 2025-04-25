@@ -3,6 +3,7 @@ TITLE (WINDHELM) - EXPLORATION ENGINE ^| %player.name% the %player.race% %player
 
 :MAIN
 MODE con: cols=105 lines=17
+SET RETURN=MAIN
 CLS
 ECHO.
 TYPE "%winLoc%\data\assets\ui\exploration.txt"
@@ -18,9 +19,11 @@ IF /I "%CH%" == "1" GOTO :VENTURE_IRIDESCENT_FOREST
 IF /I "%CH%" == "2" GOTO :VENTURE_WINDHELM_EXTERIOR
 IF /I "%CH%" == "3" GOTO :VENTURE_ROCKWINN_PLAZA
 IF /I "%CH%" == "Q" GOTO :AUTOSAVE
+GOTO :INVALID_INPUT
 
 :VENTURE_IRIDESCENT_FOREST
 MODE con: cols=105 lines=17
+SET RETURN=VENTURE_IRIDESCENT_FOREST
 CLS
 ECHO.
 TYPE "%winLoc%\data\assets\ui\venture.txt"
@@ -35,6 +38,7 @@ SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :IFOR_ADVENTURE
 IF /I "%CH%" == "2" GOTO :IFOR_CHALLENGE_AREA_BOSS
 IF /I "%CH%" == "Q" GOTO :MAIN
+GOTO :INVALID_INPUT
 
 :IFOR_ADVENTURE
 SET /A EE=%RANDOM% %%50
@@ -49,16 +53,22 @@ IF %EE% LEQ 50 (
 )
 
 :IFOR_CHALLENGE_AREA_BOSS
-IF %player.level% GEQ 5 (
-    SET currentEnemy="Abyss Guardian"
-    CALL "%winLoc%\data\Combat Engine\scripts\evie.bat"
-) ELSE (
-    SET displayMessage=Your level is too low for this encounter.
+IF %player.iridescent_ab_defeated% EQU 1 (
+    SET displayMessage=You have already defeated this great foe.
     GOTO :VENTURE_IRIDESCENT_FOREST
+) ELSE (
+    IF %player.level% GEQ 5 (
+        SET currentEnemy="Abyss Guardian"
+        CALL "%winLoc%\data\Combat Engine\scripts\evie.bat"
+    ) ELSE (
+        SET displayMessage=Your level is too low for this encounter.
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    )
 )
 
 :VENTURE_WINDHELM_EXTERIOR
 MODE con: cols=105 lines=19
+SET RETURN=VENTURE_WINDHELM_EXTERIOR
 CLS
 ECHO.
 REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
@@ -73,6 +83,7 @@ SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER
 IF /I "%CH%" == "2" GOTO :WE_TRAVELING_MERCHANT
 IF /I "%CH%" == "Q" GOTO :MAIN
+GOTO :INVALID_INPUT
 
 :WE_WANDER
 SET /A  WE=%RANDOM% %%50
@@ -90,6 +101,8 @@ GOTO :MAIN
 
 :WE_WANDER_ENCOUNTER_1
 MODE con: cols=105 lines=19
+SET RETURN=WE_WANDER_ENCOUNTER_1
+SET displayMessage=...
 CLS
 ECHO.
 REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
@@ -101,16 +114,100 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| [1 / APPROACH ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :WEWE1_APPROACH_INTERACTION
+IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1
 IF /I "%CH%" == "Q" GOTO :MAIN
+GOTO :INVALID_INPUT
 
-CHOICE /C 1Q /N /M ">"
-IF ERRORLEVEL 3 GOTO :MAIN
-IF ERRORLEVEL 1 GOTO :WEWE1_APPROACH_INTERACTION
+:WE_WANDER_ENCOUNTER_1_INT1
+MODE con: cols=105 lines=19
+SET RETURN=WE_WANDER_ENCOUNTER_1_INT1
+CLS
+ECHO.
+REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
+ECHO.
+ECHO As you approach the set of guards, they turn and look to meet your gaze,
+ECHO their eyes barely visible behind their visors.
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / TELL ME ABOUT WINDHELM ] ^| [2 / EARNING LUNIS ] ^| [Q / BACK ] ^| %displayMessage%
+ECHO +-------------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH1
+IF /I "%CH%" == "2" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH2
+IF /I "%CH%" == "Q" GOTO :MAIN
+GOTO :INVALID_INPUT
 
-:WEWE1_APPROACH_INTERACTION
-SET displayMessage=NOT IMPLEMENTED.
-GOTO :MAIN
+:WE_WANDER_ENCOUNTER_1_INT1_CH1
+MODE con: cols=105 lines=22
+SET RETURN=WE_WANDER_ENCOUNTER_1_INT1_CH1
+CLS
+ECHO.
+REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
+ECHO.
+ECHO The guard on your left speaks up, a rather low baritone voice comes from his helment.
+ECHO "Bit of a vague question, no? Well regardless, I'm no historian so don't just run with what I tell you."
+ECHO "There's plenty of rumors I'm sure you've heard but, if I'm being honest.."
+ECHO.
+ECHO The guard leans in as much as the plate armor they wore allowed.
+ECHO "I'm pretty sure this castle was placed here by the Gods themselves. I mean, how could it not have been?"
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / CONTINUE ] ^| [Q / BACK ] ^| %displayMessage%
+ECHO +-------------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH1_SCH1
+IF /I "%CH%" == "Q" GOTO :WE_WANDER_ENCOUNTER_1_INT1
+GOTO :INVALID_INPUT
+
+:WE_WANDER_ENCOUNTER_1_INT1_CH1_SCH1
+MODE con: cols=105 lines=19
+SET RETURN=WE_WANDER_ENCOUNTER_1_INT1_CH1_SCH1
+CLS
+ECHO.
+REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
+ECHO.
+ECHO The guard on your left straights up. You can't imagine that armor is very comfortable.
+ECHO "It's in the perfect spot. Right in the middle of a strange, magical forest?"
+ECHO "It's hard enough leaving the forest, imagine trying to get in! Not a chance man put this here."
+ECHO "I mean, the records of this castle's builders are so scattered I'd be surprised if they were even real^!"
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / CONTINUE ] ^| [Q / BACK ] ^| %displayMessage%
+ECHO +-------------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH1_SCH2
+IF /I "%CH%" == "Q" GOTO :WE_WANDER_ENCOUNTER_1_INT1
+GOTO :INVALID_INPUT
+
+:WE_WANDER_ENCOUNTER_1_INT1_CH1_SCH2
+MODE con: cols=105 lines=19
+SET RETURN=WE_WANDER_ENCOUNTER_1_INT1_CH1_SCH2
+CLS
+ECHO.
+REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
+ECHO.
+ECHO The guard on your right turns around, clearly ready to take their leave.
+ECHO "Anyway, that's all I've to say about the matter at least. I would say visit the castle library"
+ECHO "but the Lorekeeper hasn't been seen in.. I believe about five days^! Very unusual."
+ECHO "You know, if you find the man and bring him back.. alive, the Lord may reward your efforts."
+ECHO.
+ECHO The guard on the left performs a small bow and turns about, following the other guard.
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^|[Q / BACK ] ^| %displayMessage%
+ECHO +-------------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "Q" GOTO :WE_WANDER_ENCOUNTER_1_INT1
+GOTO :INVALID_INPUT
+
+:INVALID_INPUT
+ECHO "%CH%" is not a valid input.
+PAUSE
+GOTO :%RETURN%
 
 REM Save Player progress before quitting Exploration Engine.
 :AUTOSAVE
