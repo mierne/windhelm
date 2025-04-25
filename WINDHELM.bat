@@ -199,7 +199,7 @@ GOTO :INVALID_INPUT
 
 :Exit_Without_Saving
 ECHO Exit now? All unsaved progress will be lost.
-SET /P CH="Y/N"
+SET /P CH="Y/n "
 IF /I "%CH%" == "Y" GOTO :START
 IF /I "%CH%" == "N" GOTO :dashboard
 GOTO :INVALID_INPUT
@@ -310,18 +310,8 @@ ECHO +--------------------------------------------------------------------------
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :catalogue_check_bandit
 IF /I "%CH%" == "2" GOTO :catalogue_check_abgu
-IF /I "%CH%" == "3" GOTO :unlock_cheat
 IF /I "%CH%" == "Q" GOTO :catalogue
 GOTO :INVALID_INPUT
-
-:unlock_cheat
-SET player.catalogue_bandit=Bandit
-SET player.catalogue_bandit_encountered=1
-SET player.catalogue_abyssal_guardian_encountered=1
-SET player.catalogue_abyssal_guardian=Abyss Guardian
-SET /A player.catalogue_unlocked=!player.catalogue_unlocked! +1
-SET displayMessage=cheat activated
-GOTO :catalogue_category_humanoids
 
 :catalogue_check_bandit
 REM Check if the Player has this entry unlocked.
@@ -334,7 +324,7 @@ IF %player.catalogue_bandit_encountered% EQU 0 (
 
 :catalogue_check_abgu
 REM Check if the Player has this entry unlocked.
-IF %player.catalogue_abyssal_guardian_encountered% EQU 0 (
+IF %player.catalogue_abyss_guardian_encountered% EQU 0 (
     SET displayMessage=You haven't encountered this yet.
     GOTO :catalogue_category_humanoids
 ) ELSE (
