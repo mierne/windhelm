@@ -51,7 +51,7 @@ IF %player.level% EQU 1 (
         SET /A player.level=!player.level! +1
         SET player.awarded_points=0
         SET displayMessage=Level up^! You've reached level five.
-        GOTO :EOF
+        GOTO :LEVEL_FIVE_REWARD
     ) ELSE (
         REM Level up not possible.
         GOTO :EOF
@@ -127,8 +127,12 @@ IF %player.level% EQU 1 (
     )
 )
 
+:LEVEL_FIVE_REWARD
+SET player.level_up_points=6
+GOTO :LEVEL_UP_SKILLS
+
 :LEVEL_TEN_REWARD
-SET player.level_up_points=4
+SET player.level_up_points=12
 GOTO :LEVEL_UP_SKILLS
 
 REM Awards the player a set number of points and allows them to increase skills.
@@ -149,15 +153,15 @@ ECHO ^| DAMAGE:  %player.skill_damage%,  COST:  6 LEVELS  ^| ATHLETICS: %player.
 ECHO ^| SPEECH:  %player.skill_speech%,  COST:  9 LEVELS  ^| INTELLIGENCE: %player.skill_intelligence%
 ECHO ^| MAGICKA: %player.skill_magicka%,  COST: 20 LEVELS ^|
 ECHO +----------------------------------------------------------------------------------------------------------------+
-ECHO + [1 / IMPROVE DAMAGE ] ^| [2 / IMPROVE SPEECH ] ^| [3 / IMPROVE MAGICKA ] ^| [4 / IMPROVE ATHLETICS ] ^ [5 / IMPROVE INTELLIGENCE ] ^| [E / DONE ]
+ECHO + [1 / IMPROVE DAMAGE ] ^| [2 / IMPROVE SPEECH ] ^| [3 / IMPROVE MAGICKA ] ^| [4 / IMPROVE ATHLETICS ] ^ [5 / IMPROVE INTELLIGENCE ] ^| [Q / DONE ]
 ECHO +----------------------------------------------------------------------------------------------------------------+
-CHOICE /C 12345E /N /M ">"
-IF ERRORLEVEL 6 GOTO :EOF
-IF ERRORLEVEL 5 GOTO :SKILLS_IMPROVE_INTELLIGENCE
-IF ERRORLEVEL 4 GOTO :SKILLS_IMPROVE_ATHLETICS
-IF ERRORLEVEL 3 GOTO :SKILLS_IMPROVE_MAGICKA
-IF ERRORLEVEL 2 GOTO :SKILLS_IMPROVE_SPEECH
-IF ERRORLEVEL 1 GOTO :SKILLS_IMPROVE_DAMAGE
+SET /P CH=">"
+IF /I "CH" == "1" GOTO :SKILLS_IMPROVE_DAMAGE
+IF /I "CH" == "2" GOTO :SKILLS_IMPROVE_SPEECH
+IF /I "CH" == "3" GOTO :SKILLS_IMPROVE_MAGICKA
+IF /I "CH" == "4" GOTO :SKILLS_IMPROVE_ATHLETICS
+IF /I "CH" == "5" GOTO :SKILLS_IMPROVE_INTELLIGENCE
+IF /I "CH" == "Q" GOTO :AUTOSAVE
 
 REM Attempt to improve the damage skill.
 :SKILLS_IMPROVE_DAMAGE
@@ -258,3 +262,8 @@ IF %player.skill_athletics% EQU 10 (
         GOTO :LEVEL_UP_SKILLS
     )
 )
+
+:AUTOSAVE
+SET SLOPr=SAVE
+CALL "%winLoc%\data\functions\SLOP.bat"
+GOTO :EOF
