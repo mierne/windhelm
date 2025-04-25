@@ -94,21 +94,19 @@ IF %PA% GEQ 84 (
 
 :EAC_BOSS
 REM Much like the enemy attack phase, just stronger.
-
-:ENEMY_ATTACK_CALCULATION
-REM a number between 0 and 100 can be split 4 ways, two hits, a crit and a miss. Descending chance in that order. Slightly favored to miss compared to the Player.
+REM a number between 0 and 100 can be split 4 ways, two hits, a crit and a miss. Descending chance in that order. Favored to crit the Player.
 SET /A PA=%RANDOM% %%100
-IF %PA% GEQ 84 (
+IF %PA% GEQ 70 (
     REM Critical hit
-    SET displayMessage=PLAYER HIT - placeholder
+    SET displayMessage=ABYSS placeholder - crit
     SET /A player.health=!player.health! -%enemy.damage%*2
     GOTO :EBS
-) ELSE IF %PA% GEQ 31 (
+) ELSE IF %PA% GEQ 11 (
     REM Normal Attack 2
-    SET displayMessage=PLAYER HIT - placeholder
+    SET displayMessage=ABYSS placeholder - norm
     SET /A player.health=!player.health! -%enemy.damage%
     GOTO :EBS
-) ELSE IF %PA% LEQ 30 (
+) ELSE IF %PA% LEQ 10 (
     REM Player attack misses.
     SET player.message=The %currentEnemy% tripped on a pebble and missed.
     GOTO :EBS
@@ -151,11 +149,18 @@ IF "%currentEnemy%" == "Bandit" (
     GOTO :VICTORY_REWARDS
 ) ELSE IF "%currentEnemy%" == "Abyssal Guardian" (
     SET /A player.iridescent_ab_defeated=1
-    GOTO :VICTORY_REWARDS
+    GOTO :BOSS_DEFEAT_REWARDS
+    REM GOTO :VICTORY_REWARDS
 ) ELSE (
     REM Enemy doesn't exist? How'd you get here?
     GOTO :ERROR_HANDLER
 )
+
+:BOSS_DEFEAT_REWARDS
+SET displayMessage=You defeated the Abyssal Guardian terrorizing the Iridescent Forest.
+SET /A player.coins=!player.coins! +2500
+SET /A player.xp=!player.xp! +10000
+GOTO :VICTORY_REWARDS
 
 :VICTORY_REWARDS
 SET player.health=%player.health_max%
@@ -213,23 +218,25 @@ ECHO [1 / LOOT ] ^| [Q LEAVE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :LOOT
-IF /I "%CH%" == "Q" GOTO :EXIT
+IF /I "%CH%" == "Q" GOTO :CLEANUP
 
 :LOOT
 IF %enLooted% EQU 1 (
     SET player.message=This enemy was looted already.
     GOTO :VICTORY_SCREEN
 ) ELSE (
-    GOTO :VICTORY_LOOT
+    IF %player.iridescent_ab_defeated% EQU 1 (
+        SET displayMessage=The great foe vanished upon defeat, nothing remains to pilfer.
+        GOTO :VICTORY_SCREEN
+    ) ELSE (
+        GOTO :VICTORY_LOOT
+    )
 )
 
 :VICTORY_LOOT
-IF %player.level% LEQ 10 (
-    GOTO :PLAYER_LEVEL_10_LOWER
-) ELSE (
-    echo NOT IMPLEMENTED
-    GOTO :VICTORY_SCREEN
-)
+ECHO NOT IMPLEMENTED
+PAUSE
+GOTO :VICTORY_SCREEN
 
 :PLAYER_LEVEL_10_LOWER
 SET /A LT=%RANDOM% %%40
@@ -270,7 +277,7 @@ CLS
 ECHO.
 TYPE "%winLoc%\data\assets\ui\defeat.txt"
 ECHO.
-ECHO You were defeated by the %currentEnemy%. Your health and magicka has been partially refilled.
+ECHO You were defeated by the %currentEnemy%. Your health and magicka has been restored.
 ECHO %player.message% ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
@@ -278,9 +285,14 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| [Q LEAVE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%CH%" == "Q" GOTO :EXIT
+IF /I "%CH%" == "Q" GOTO :CLEANUP
 
-:EXIT
+:CLEANUP
 SET enLooted=0
 SET enemy.damage=%enemy.damage_base%
+GOTO :AUTOSAVE
+
+:AUTOSAVE
+SET SLOPr=SAVE
+CALL "%winLoc%\data\functions\SLOP.bat"
 GOTO :EOF
