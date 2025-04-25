@@ -198,6 +198,7 @@ IF /I "%CH%" == "C" GOTO :catalogue
 GOTO :INVALID_INPUT
 
 :Exit_Without_Saving
+SET CH=Y
 ECHO Exit now? All unsaved progress will be lost.
 SET /P CH="Y/n "
 IF /I "%CH%" == "Y" GOTO :START
@@ -215,24 +216,23 @@ CALL "%winLoc%\data\functions\Inventory Viewer.bat"
 GOTO :dashboard
 
 :character_view
-MODE con: cols=105 lines=22
+MODE con: cols=113 lines=21
 CLS
 ECHO.
 TYPE "%winLoc%\data\assets\ui\character.txt"
 ECHO.
 ECHO %displayMessage%
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO +---------------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
-ECHO ^| NAME: %player.name% ^| RACE: %player.race% ^| CLASS: %player.class% ^| PRONOUNS: %player.personal_p_1%/%player.personal_p_2%/%player.possesive_1%/%player.reflexive_1%
-ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| DAMAGE: %player.skill_damage% ^| MAGICKA: %player.skill_magicka% ^| ATHLETICS: %player.skill_athletics% ^| SPEECH: %player.skill_speech% ^| INTELLIGENCE: %player.skill_intelligence%
-ECHO ^| WEAPON: %player.weapon_equipped%
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| NAME: %player.name% ^| RACE: %player.race% ^| CLASS: %player.class% ^| PRONOUNS: %player.personal_p_1%/%player.personal_p_2%/%player.possesive_1%/%player.reflexive_1% ^| ORIGIN: %player.origin%
+ECHO +---------------------------------------------------------------------------------------------------------------+
+ECHO ^| WEAPON: %player.weapon_equipped% ^| DAMAGE: %player.skill_damage% ^| MAGICKA: %player.skill_magicka% ^| ATHLETICS: %player.skill_athletics% ^| SPEECH: %player.skill_speech% ^| INTELLIGENCE: %player.skill_intelligence%
+ECHO +---------------------------------------------------------------------------------------------------------------+
 ECHO ^| BANDITS SLAIN: %player.bandits_slain%
 ECHO ^| TOTAL DEATHS: %player.total_deaths%
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO +---------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / LEVEL UP ] ^| [2 / CHANGE NAME ] ^| [3 / CHANGE PRONOUNS ] ^| [Q / BACK ]
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO +---------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :PLAYER_LEVEL_UP
 IF /I "%CH%" == "2" GOTO :PLAYER_CHANGE_NAME
