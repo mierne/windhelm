@@ -19,6 +19,7 @@ IF EXIST "%cd%\data\player\savedata.txt" (
 REM Warns the Player that an existing save has been found and asks if they wish to overwrite it.
 :overwrite_saveQ
 MODE con: cols=95 lines=20
+SET RETURN=overwrite_saveQ
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\overwrite_save.txt"
@@ -29,6 +30,7 @@ ECHO +--------------------------------------------------------------------------
 SET /P CH="Y/N"
 IF /I "%CH%" == "Y" GOTO :ENTER_NAME
 IF /I "%CH%" == "N" GOTO :NO_OVERWRITE
+GOTO :INVALID_INPUT
 
 REM Do not overwrite an existing save.
 :NO_OVERWRITE
@@ -50,6 +52,7 @@ GOTO :CHOOSE_PRONOUN
 
 :CHOOSE_PRONOUN
 MODE con: cols=120 lines=20
+SET RETURN=CHOOSE_PRONOUN
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\pronouns.txt"
@@ -67,6 +70,7 @@ IF /I "%CH%" == "T" GOTO :THT
 IF /I "%CH%" == "S" GOTO :SHH
 IF /I "%CH%" == "H" GOTO :HHH
 IF /I "%CH%" == "C" GOTO :CUSTOM_P_PERSONAL
+GOTO :INVALID_INPUT
 
 :THT
 SET player.personal_p_1=they
@@ -154,6 +158,7 @@ GOTO :CHOOSE_RACE
 :CHOOSE_RACE
 MODE con: cols=120 lines=20
 SET SLOPr=INIT
+SET RETURN=CHOOSE_RACE
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\your_race.txt"
@@ -170,12 +175,11 @@ IF /I "%CH%" == "1" GOTO :MORE_HUMAN
 IF /I "%CH%" == "2" GOTO :MORE_FAEL
 IF /I "%CH%" == "3" GOTO :MORE_FRAWEN
 IF /I "%CH%" == "4" GOTO :MORE_NEMMAR
-ECHO %CH% not available.
-PAUSE
-GOTO :CHOOSE_RACE
+GOTO :INVALID_INPUT
 
 :MORE_HUMAN
 REM MODE con: cols=125 lines=22
+SET RETURN=MORE_HUMAN
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\human.txt"
@@ -193,12 +197,14 @@ ECHO [1 / CHOOSE ] ^| [Q / BACK ]
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :SELECT_HUMAN_RACE
 IF /I "%CH%" == "Q" GOTO :CHOOSE_RACE
+GOTO :INVALID_INPUT
 
 :SELECT_HUMAN_RACE
 SET player.race=human
 GOTO :CHOOSE_CLASS
 
 :MORE_FAEL
+SET RETURN=MORE_FAEL
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\human.txt"
@@ -213,12 +219,14 @@ ECHO [1 / CHOOSE ] ^| [Q / BACK ]
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :SELECT_FAEL_RACE
 IF /I "%CH%" == "Q" GOTO :CHOOSE_RACE
+GOTO :INVALID_INPUT
 
 :SELECT_FAEL_RACE
 SET player.race=fael
 GOTO :CHOOSE_RACE
 
 :MORE_FRAWEN
+SET RETURN=MORE_FRAWEN
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\human.txt"
@@ -234,12 +242,14 @@ ECHO [1 / CHOOSE ] ^| [Q / BACK ]
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :SELECT_FRAWEN_RACE
 IF /I "%CH%" == "Q" GOTO :CHOOSE_RACE
+GOTO :INVALID_INPUT
 
 :SELECT_FRAWEN_RACE
 SET player.race=frawen
 GOTO :CHOOSE_CLASS
 
 :MORE_NEMMAR
+SET RETURN=MORE_NEMMAR
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\human.txt"
@@ -255,6 +265,7 @@ ECHO [1 / CHOOSE ] ^| [Q / BACK ]
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :SELECT_NEMMAR_RACE
 IF /I "%CH%" == "Q" GOTO :CHOOSE_RACE
+GOTO :INVALID_INPUT
 
 :SELECT_NEMMAR_RACE
 SET player.race=nemmar
@@ -262,6 +273,7 @@ GOTO :CHOOSE_CLASS
 
 :CHOOSE_CLASS
 MODE con: cols=120 lines=20
+SET RETURN=CHOOSE_CLASS
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\your_class.txt"
@@ -276,9 +288,11 @@ SET /P CH=">"
 IF /I "%CH%" == "S" GOTO :SORCERER_CHOSEN_PREVIEW
 IF /I "%CH%" == "W" GOTO :WARRIOR_CHOSEN_PREVIEW
 IF /I "%CH%" == "D" GOTO :DRUID_CHOSEN_PREVIEW
+GOTO :INVALID_INPUT
 
 :DRUID_CHOSEN_PREVIEW
 MODE con: cols=125 lines=22
+SET RETURN=DRUID_CHOSEN_PREVIEW
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\druid.txt"
@@ -296,9 +310,11 @@ ECHO [1 / CHOOSE ] ^| [Q / BACK]
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :DRUID_CHOSEN
 IF /I "%CH%" == "Q" GOTO :CHOOSE_CLASS
+GOTO :INVALID_INPUT
 
 :WARRIOR_CHOSEN_PREVIEW
 MODE con: cols=120 lines=23
+SET RETURN=WARRIOR_CHOSEN_PREVIEW
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\warrior.txt"
@@ -317,9 +333,11 @@ ECHO [1 / CHOOSE ] ^| [Q / BACK]
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WARRIOR_CHOSEN
 IF /I "%CH%" == "Q" GOTO :CHOOSE_CLASS
+GOTO :INVALID_INPUT
 
 :SORCERER_CHOSEN_PREVIEW
 MODE con: cols=120 lines=24
+SET RETURN=SORCERER_CHOSEN_PREVIEW
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\sorcerer.txt"
@@ -338,6 +356,7 @@ ECHO [1 / CHOOSE ] ^| [Q / BACK]
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :SORCERER_CHOSEN
 IF /I "%CH%" == "Q" GOTO :CHOOSE_CLASS
+GOTO :INVALID_INPUT
 
 :DRUID_CHOSEN
 SET player.health=70
@@ -391,7 +410,6 @@ IF %player.race% == human (
     GOTO :APPLY_RACE_BONUS_NEMMAR
 )
 
-REM More weird, inconsist batch behavior! Regardless of DELAYEDEXPANSION, SET /A simply does not work in this script. I have no idea why. It baffles me.
 :APPLY_RACE_BONUS_HUMAN
 SET /A player.health_max=!player.health_max! +50
 SET player.health=%player.health_max%
@@ -416,6 +434,7 @@ GOTO :CHOOSE_ORIGIN
 REM Allows the Player to choose an origin for their character. In the future this will determine endings available to the Player.
 :CHOOSE_ORIGIN
 MODE con: cols=120 lines=20
+SET RETURN=CHOOSE_ORIGIN
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\origin.txt"
@@ -430,28 +449,43 @@ SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :VIEW_FOREST_ORIGIN
 IF /I "%CH%" == "2" GOTO :VIEW_INJURED_ORIGIN
 IF /I "%CH%" == "3" GOTO :VIEW_INN_ORIGIN
+GOTO :INVALID_INPUT
 
-REM Describe this origin story in more depth.
+REM Describe this origin story in more depth. Certainly needs a rewrite to make the provided bonuses make sense.
 :VIEW_FOREST_ORIGIN
 MODE con: cols=120 lines=24
+SET RETURN=VIEW_FOREST_ORIGIN
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\forest_origin.txt"
 ECHO.
 ECHO.
-ECHO Choose the FOREST origin? NOTE: Origins do not impact character skills, only the available endings.
+ECHO Choose the FOREST origin? NOTE: Origins impact the starting max value of your skills and available endings.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| 
-ECHO ^| 
-ECHO ^| 
-ECHO ^| 
-ECHO ^| 
-ECHO ^| 
-ECHO ^| 
+ECHO ^| As you come to, your head pounding, you notice a strange ever present feeling. It was if a part of you was missing.
+ECHO ^| You attempt to sit up, though your attempt was thwarted by the pain from your pounding head. You instead elect
+ECHO ^| to take in your surroundings from where you lie. The soft warm glow of the sun, the gentle rays peering through
+ECHO ^| the leaves told you that it must be sometime early in the morning. You lay there for what felt like hours until the
+ECHO ^| pounding began to subside. This is when another realization hit you, you do not recall who you are. The only
+ECHO ^| memories are fading, and quick. You grab onto one before it slips away. Your name. Your name is %player.name%.
+ECHO ^|
+ECHO ^| The 'Forest Origin' provides the Player with +2 to INTELLIGENCE.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
-CHOICE /C 1Q /N /M ">"
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :FORST_ORIGIN_SELECTED
+IF /I "%CH%" == "Q" GOTO :CHOOSE_ORIGIN
+GOTO :INVALID_INPUT
 
+:FORST_ORIGIN_SELECTED
+SET /A player.skill_intelligence=!player.skill_intelligence! +2
+SET player.origin=Forest Origin
+GOTO :SAVE_DATA
+
+:INVALID_INPUT
+ECHO "%CH%" is not a valid input.
+PAUSE
+GOTO :%RETURN%
 
 REM Saves data and exits.
 :SAVE_DATA
