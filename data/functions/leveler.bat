@@ -115,7 +115,7 @@ IF %player.level% EQU 1 (
     REM Level three level up check & logic.
     IF %player.xp% GEQ 24000 (
         SET /A player.xp=!player.xp! -24000
-        SET player.xp_required=24000
+        SET player.xp_required=35000
         SET /A player.level=!player.level! +1
         SET player.awarded_points=0
         SET displayMessage=Level up^! You've reached level ten.
@@ -124,7 +124,38 @@ IF %player.level% EQU 1 (
         REM Level up not possible.
         SET displayMessage=Cannot level up.
         GOTO :EOF
+    ) 
+) ELSE IF %player.level% EQU 10 (
+    IF %player.xp% GEQ 35000 (
+        SET /A player.xp=!player.xp! -35000
+        SET player.xp_required=60000
+        SET /A player.level=!player.level! +1
+        SET player.awarded_points=0
+        SET displayMessage=Level up^! You've reached level 11.
+        GOTO :EOF
+    ) ELSE (
+        SET displayMessage=Cannot level up.
+        GOTO :EOF
     )
+) ELSE IF %player.level% EQU 11 (
+    IF %player.xp% GEQ 60000 (
+        SET /A player.xp=!player.xp! -60000
+        SET player.xp_required=120000
+        SET /A player.level=!player.level! +1
+        SET player.awarded_points=0
+        SET displayMessage=Level up^! You've reached level 12.
+    ) ELSE (
+        SET displayMessage=Cannot level up.
+        GOTO :EOF
+    )
+) ELSE IF %player.level% EQU 12 (
+    SET displayMessage=You've reached the maximum level.
+    GOTO :EOF
+) ELSE (
+    REM Error
+    ECHO LEVELER.BAT has encountered an error.
+    PAUSE
+    EXIT /B
 )
 
 :LEVEL_FIVE_REWARD
