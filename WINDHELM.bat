@@ -31,7 +31,7 @@ GOTO :START
 
 :START
 TITLE (Windhelm - %windhelm.ut%) ^| Welcome to Windhelm.
-MODE con: cols=120 lines=19
+MODE con: cols=120 lines=15
 CLS
 SET RETURN=START
 ECHO.
@@ -52,15 +52,13 @@ GOTO :INVALID_INPUT
 
 :ABOUT
 TITLE (Windhelm - %windhelm.ut%) ^| About Windhelm
-MODE con: cols=120 lines=19
+MODE con: cols=120 lines=21
 CLS
 SET RETURN=ABOUT
 ECHO.
-REM TO DO: about.txt
 TYPE "%winLoc%\data\assets\ui\about.txt"
-ECHO.
-ECHO.
-ECHO Windhelm Version %windhelm.vn%
+ECHO     Version %windhelm.vn%
+ECHO ========================================================================================================================
 ECHO This is an UNSTABLE build. Check the github page for more information.
 ECHO.
 ECHO Delve into the powerful, mysterious Iridescent Forest of the Kindgom of Fulkwinn and it's equally powerful castle,
@@ -68,11 +66,18 @@ ECHO Windhelm^^! Discover shards of your past and rebuild your identity, or forg
 ECHO alone. Take on the threats of the Iridescent Forest, defending it from those that wish it harm.
 ECHO Use soul memories to unlock special abilites and form strong bonds to other shards.
 ECHO ========================================================================================================================
-ECHO [Q / RETURN ]
+ECHO [1 / GITHUB PAGE ] ^| [Q / RETURN ]
 ECHO.
+ECHO Copyright (C) 2021-2025 Mierne ^<ahoy@mierne.net^> licensed under GNU GPLv3
 SET /P CH=">"
+IF /I "%CH%" == "1" START https://www.github.com/mierne/windhelm
 IF /I "%CH%" == "Q" GOTO :START
-GOTO :INVALID_INPUT
+REM Workaround for opening the link and avoiding an invalid input warning
+IF "%CH%" == "1" (
+    GOTO :ABOUT
+) ELSE (
+    GOTO :INVALID_INPUT
+)
 
 :SETTINGS
 TITLE (Windhelm - %windhelm.ut%) ^| Settings Menu.
@@ -216,7 +221,7 @@ CALL "%winLoc%\data\functions\Inventory Viewer.bat"
 GOTO :dashboard
 
 :character_view
-MODE con: cols=113 lines=21
+MODE con: cols=113 lines=22
 CLS
 ECHO.
 TYPE "%winLoc%\data\assets\ui\character.txt"
@@ -245,17 +250,18 @@ CALL "%winLoc%\data\functions\leveler.bat"
 GOTO :character_view
 
 :PLAYER_CHANGE_NAME
+MODE con: cols=113 lines=16
 SET player.name_old=%player.name%
 CLS
 ECHO.
-TYPE "%winLoc%\data\assets\ui\name.txt"
+TYPE "%winLoc%\data\assets\ui\your_name.txt"
 ECHO.
 ECHO Enter a new name.
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO +---------------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO +---------------------------------------------------------------------------------------------------------------+
 ECHO ^| TYPE CANCEL TO CANCEL.
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO +---------------------------------------------------------------------------------------------------------------+
 SET /P player.name=
 IF /I "%player.name%" == "CANCEL" GOTO :PLAYER_NAME_CANCEL
 GOTO :AUTOSAVE
