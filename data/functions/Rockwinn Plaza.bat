@@ -1,4 +1,5 @@
 TITLE (Rockwinn Plaza) - Rockwinn Plaza ^| %player.name% the %player.race% %player.class%
+SETLOCAL ENABLEDELAYEDEXPANSION
 SET refunded=false
 SET refundPrice=0
 
@@ -14,7 +15,7 @@ ECHO %displayMessage%
 ECHO +------------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +------------------------------------------------------------------------------------------------------------+
-ECHO + [1 / ALCHEMIST ] ^| [2 / BLACKSMITH ] ^| [3 / WIZARD ] ^| [Q / LEAVE ]                    +
+ECHO + [1 / ALCHEMIST ] ^| [2 / BLACKSMITH ] ^| [3 / WIZARD ] ^| [Q / LEAVE ]                                        +
 ECHO +------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :VENDOR_ALCHEMIST
@@ -36,21 +37,75 @@ ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HEALING TONIC: %vendor.alchemist.health_tonic_stock% STOCKED, PRICE: %vendor.alchemist.healing_tonic_price% LUNIS
-ECHO ^| STAMINA TONIC: %vendor.alchemist.stamina_tonic_stock% STOCKED, PRICE: %vendor.alchemist.stamina_tonic_price% LUNIS
+ECHO ^| HEALING TONIC: %vendor.alchemist.health_tonic_stock% STOCKED, PRICE: %vendor.alchemist.health_tonic_price% LUNIS
 ECHO ^| MAGICKA TONIC: %vendor.alchemist.magicka_tonic_stock% STOCKED, PRICE: %vendor.alchemist.magicka_tonic_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO + [1 / HEALING TONIC ] ^| [2 / STAMINA TONIC ] ^| [3 / MAGICKA TONIC ] ^| [Q / GO BACK ]              +
+ECHO + [1 / HEALING TONIC ] ^| [2 / MAGICKA TONIC ] ^| [Q / GO BACK ]                                     +
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :ALCHEMIST_BUY_HEALING_TONIC
-IF /I "%CH%" == "2" GOTO :ALCHEMIST_BUY_STAMINA_TONIC
-IF /I "%CH%" == "3" GOTO :ALCHEMIST_BUY_MAGICKA_TONIC
+IF /I "%CH%" == "2" GOTO :ALCHEMIST_BUY_MAGICKA_TONIC
 IF /I "%CH%" == "Q" GOTO :MAIN
 GOTO :INVALID_INPUT
 
+:ALCHEMIST_BUY_HEALING_TONIC
+CLS
+SET RETURN=ALCHEMIST_BUY_HEALING_TONIC
+MODE con: cols=103 lines=19
+ECHO.
+TYPE "%cd%\data\assets\ui\health_tonic.txt"
+ECHO.
+ECHO Showing detailed information for the Healing Tonic.
+ECHO +-----------------------------------------------------------------------------------------------------+
+ECHO ^| AMOUNT: %player.item_tonic_healing_owned%
+ECHO ^| MODIFIER: +%windhelm.item_tonic_healing_modifier% HP
+ECHO ^| CATEGORY: %windhelm.item_tonic_healing_category%
+ECHO ^| TYPE: %windhelm.item_tonic_healing_type%
+ECHO +-----------------------------------------------------------------------------------------------------+
+ECHO [E / PURCHASE (%vendor.alchemist.health_tonic_price% LUNIS) ] ^| [Q / BACK ]
+SET /P CH=">"
+IF /I "%CH%" == "E" GOTO :ALCHEMIST_CONFIRM_HEALING_TONIC
+IF /I "%CH%" == "Q" GOTO :VENDOR_ALCHEMIST
+GOTO :INVALID_INPUT
+
+:ALCHEMIST_CONFIRM_HEALING_TONIC
+IF %vendor.alchemist.health_tonic_stock% LSS 1 (
+    SET displayMessage=Sorry, I'm sold out of that one.
+    GOTO :VENDOR_ALCHEMIST
+) ELSE (
+    IF %player.coins% LSS %vendor.alchemist.health_tonic_price% (
+        SET displayMessage=You can't afford that Tonic.
+        GOTO :VENDOR_ALCHEMIST
+    ) ELSE (
+        SET /A player.coins=!player.coins! -%vendor.alchemist.health_tonic_price%
+        SET /A player.item_tonic_healing_owned=!player.item_tonic_healing_owned! +1
+        SET /A vendor.alchemist.health_tonic_stock=!vendor.alchemist.health_tonic_stock! -1
+        SET displayMessage=Purchased 1 Health Tonic for %vendor.alchemist.health_tonic_price%.
+        GOTO :VENDOR_ALCHEMIST
+    )
+)
+
 REM Purchase Magicka Tonic
 :ALCHEMIST_BUY_MAGICKA_TONIC
+SET RETURN=ALCHEMIST_BUY_MAGICKA_TONIC
+MODE con: cols=115 lines=22
+ECHO.
+TYPE "%cd%\data\assets\ui\magicka_tonic.txt"
+ECHO.
+ECHO Showing detailed information for the Magicka Tonic.
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO ^| AMOUNT: %player.item_tonic_magicka_owned%
+ECHO ^| MODIFIER: +%windhelm.item_tonic_magicka_modifier% HP
+ECHO ^| CATEGORY: %windhelm.item_tonic_magicka_category%
+ECHO ^| TYPE: %windhelm.item_tonic_magicka_type%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO [E / PURCHASE (%vendor.alchemist.magicka_tonic_price% LUNIS) ] ^| [Q / BACK ]
+SET /P CH=">"
+IF /I "%CH%" == "E" GOTO :ALCHEMIST_CONFIRM_MAGICKA_TONIC
+IF /I "%CH%" == "Q" GOTO :VENDOR_ALCHEMIST
+GOTO :INVALID_INPUT
+
+:ALCHEMIST_CONFIRM_MAGICKA_TONIC
 IF %vendor.alchemist.magicka_tonic_stock% LSS 1 (
     SET displayMessage=Sorry, we're sold out of that Tonic.
     GOTO :VENDOR_ALCHEMIST
@@ -63,42 +118,6 @@ IF %vendor.alchemist.magicka_tonic_stock% LSS 1 (
         SET /A player.item_tonic_magicka_owned=!player.item_tonic_magicka_owned! +1
         SET /A vendor.alchemist_magicka_tonic_stock=!vendor.alchemist_magicka_tonic_stock! -1
         SET displayMessage=Purchased 1 Magicka Tonic for %vendor.alchemist_magicka_tonic_price%.
-        GOTO :VENDOR_ALCHEMIST
-    )
-)
-
-REM Purchase Stamina Tonic
-:ALCHEMIST_BUY_STAMINA_TONIC
-IF %vendor.alchemist.stamina_tonic_stock% LSS 1 (
-    SET displayMessage=Sorry, we're sold out of that Tonic.
-    GOTO :VENDOR_ALCHEMIST
-) ELSE (
-    IF %player.coins% LSS %vendor.alchemist_stamina_tonic_price% (
-        SET displayMessage=Sorry, you can't afford that Tonic.
-        GOTO :VENDOR_ALCHEMIST
-    ) ELSE (
-        SET /A player.coins=!player.coins! -%vendor.alchemist.stamina_tonic_price%
-        SET /A player.item_tonic_stamina_owned=!player.item_tonic_stamina_owned! +1
-        SET /A vendor.alchemist_stamina_tonic_stock=!vendor.alchemist_stamina_tonic_stock! -1
-        SET displayMessage=Purchased 1 Stamina Tonic for %vendor.alchemist_stamina_tonic_price%.
-        GOTO :VENDOR_ALCHEMIST
-    )
-)
-
-REM Purchase Healing Tonic
-:ALCHEMIST_BUY_STAMINA_TONIC
-IF %vendor.alchemist.healing_tonic_stock% LSS 1 (
-    SET displayMessage=Sorry, we're sold out of that Tonic.
-    GOTO :VENDOR_ALCHEMIST
-) ELSE (
-    IF %player.coins% LSS %vendor.alchemist_healing_tonic_price% (
-        SET displayMessage=Sorry, you can't afford that Tonic.
-        GOTO :VENDOR_ALCHEMIST
-    ) ELSE (
-        SET /A player.coins=!player.coins! -%vendor.alchemist.healing_tonic_price%
-        SET /A player.item_tonic_healing_owned=!player.item_tonic_healing_owned! +1
-        SET /A vendor.alchemist_healing_tonic_stock=!vendor.alchemist_healing_tonic_stock! -1
-        SET displayMessage=Purchased 1 Healing Tonic for %vendor.alchemist_healing_tonic_price%.
         GOTO :VENDOR_ALCHEMIST
     )
 )
