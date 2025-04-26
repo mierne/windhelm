@@ -13,7 +13,7 @@ SET itemStored=false
 SET player.message=...
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=UNSTABLE-0.3.0-250425
+SET windhelm.vn=UNSTABLE-0.3.0-250426
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
@@ -148,8 +148,10 @@ ECHO %player.catalogue_unlocked%
 ECHO %player.catalogue_locked%
 ECHO %player.catalogue_bandit_encountered%
 ECHO %player.catalogue_abyss_guardian_encountered%
+ECHO %player.catalogue_wandering_trader_encountered%
 ECHO %player.catalogue_bandit%
 ECHO %player.catalogue_abyss_guardian%
+ECHO %player.catalogue_wandering_trader%
 ECHO %player.armor_equipped%
 ECHO %player.weapon_equipped%
 ECHO %player.spell_equipped%
@@ -244,8 +246,10 @@ SET /P player.catalogue_unlocked=
 SET /P player.catalogue_locked=
 SET /P player.catalogue_bandit_encountered=
 SET /P player.catalogue_abyss_guardian_encountered=
+SET /P player.catalogue_wandering_trader_encountered=
 SET /P player.catalogue_bandit=
 SET /P player.catalogue_abyss_guardian=
+SET /P player.catalogue_wandering_trader=
 SET /P player.armor_equipped=
 SET /P player.weapon_equipped=
 SET /P player.spell_equipped=
@@ -346,11 +350,13 @@ REM Misc
 SET player.pronouns_change_req=0
 REM Player beasitary
 SET player.catalogue_unlocked=0
-SET player.catalogue_locked=2
+SET player.catalogue_locked=3
 SET player.catalogue_bandit_encountered=0
 SET player.catalogue_abyss_guardian_encountered=0
+SET player.catalogue_wandering_trader_encountered=0
 SET player.catalogue_bandit=???
 SET player.catalogue_abyss_guardian=???
+SET player.catalogue_wandering_trader=???
 GOTO :PLAYER_INIT_INVENTORY
 
 REM Equipment slots
@@ -423,6 +429,10 @@ SET vendor.alchemist.magicka_tonic_price=25
 REM Alchemist Item Stock.
 SET vendor.alchemist.health_tonic_stock=50
 SET vendor.alchemist.magicka_tonic_stock=50
+REM Traveling Merchant Stock
+SET vendor.travmerch_xp_tonic_stock=6
+REM Traveling Merchant Prices
+SET vendor.travmerch_xp_tonic_price=400
 IF %SLOPr% == INIT (
     GOTO :EOF
 ) ELSE (
