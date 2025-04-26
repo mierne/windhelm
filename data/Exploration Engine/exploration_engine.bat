@@ -85,6 +85,82 @@ IF /I "%CH%" == "2" GOTO :WE_TRAVELING_MERCHANT
 IF /I "%CH%" == "Q" GOTO :MAIN
 GOTO :INVALID_INPUT
 
+:WE_TRAVELING_MERCHANT
+MODE con: cols=105 lines=19
+SET RETURN=WE_TRAVELING_MERCHANT
+SET displayMessage=...
+CLS
+ECHO.
+REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
+ECHO.
+ECHO You approach the merchant's wagon, which has been temporarily transformed into a market stall.
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / VIEW WARES ] ^| [Q / BACK ] ^| %displayMessage%
+ECHO +-------------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :TM_VIEW_ITEMS
+IF /I "%CH%" == "Q" GOTO :MAIN
+GOTO :INVALID_INPUT
+
+:TM_VIEW_ITEMS
+TITLE (Rockwinn Plaza) - Alchemist ^| %player.name% the %player.race% %player.class%
+MODE con: cols=100 lines=22
+SET RETURN=VENDOR_ALCHEMIST
+ECHO.
+TYPE "%cd%\data\assets\npcs\alchemist.txt"
+ECHO.
+ECHO.
+ECHO What can I do for you, Shard?
+ECHO %displayMessage%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| XP TONIC: %vendor.travmerch_xp_tonic_stock% STOCKED, PRICE: %vendor.travmerch_xp_tonic_price% LUNIS
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO + [1 / XP TONIC ] ^| [Q / GO BACK ]                                                                 +
+ECHO +--------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :TM_BUY_XP_TONIC
+IF /I "%CH%" == "Q" GOTO :WE_TRAVELING_MERCHANT
+GOTO :INVALID_INPUT
+
+:TM_BUY_XP_TONIC
+IF %vendor.travmerch_xp_tonic_stock% LSS 1 (
+    SET displayMessage=Apologizes, I am sold out of that item..
+    GOTO :TM_VIEW_ITEMS
+) ELSE (
+    IF %player.coins% LSS %vendor.travmerch_xp_tonic_price% (
+        SET displayMessage=Sorry, you can't afford that item.
+        GOTO :TM_VIEW_ITEMS
+    ) ELSE (
+        SET /A player.coins=!player.coins! -%vendor.travmrech_xp_tonic_price%
+        SET /A player.item_tonic_xp_owned=!player.item_tonic_xp_owned! +1
+        SET /A vendor.travmerch_xp_tonic_stock=!vendor.travmerch_xp_tonic_stock! -1
+        SET displayMessage=Purchased 1 XP Tonic for %vendor.travmerch_xp_tonic_price%.
+        GOTO :TM_VIEW_ITEMS
+    )
+)
+
+MODE con: cols=105 lines=19
+SET RETURN=TM_VIEW_ITEMS
+SET displayMessage=...
+CLS
+ECHO.
+REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
+ECHO.
+ECHO The merchant greets you with a friendly smile.
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / APPROACH ] ^| [Q / BACK ] ^| %displayMessage%
+ECHO +-------------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1
+IF /I "%CH%" == "Q" GOTO :WE_TRAVELING_MERCHANT
+GOTO :INVALID_INPUT
+
 :WE_WANDER
 SET /A  WE=%RANDOM% %%50
 IF %WE% LEQ 15 (
