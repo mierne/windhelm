@@ -64,11 +64,11 @@ ECHO Windhelm Version %windhelm.vn%
 ECHO This is an UNSTABLE build. Check the github page for more information.
 ECHO.
 ECHO Delve into the powerful, mysterious Iridescent Forest of the Kindgom of Fulkwinn and it's equally powerful castle,
-ECHO Windhelm! Discover shards of your past and rebuild your identity, or forge a new one. Your destiny is yours to control
+ECHO Windhelm^^! Discover shards of your past and rebuild your identity, or forge a new one. Your destiny is yours to control
 ECHO alone. Take on the threats of the Iridescent Forest, defending it from those that wish it harm.
 ECHO Use soul memories to unlock special abilites and form strong bonds to other shards.
 ECHO ========================================================================================================================
-ECHO                   [Q / RETURN ]
+ECHO [Q / RETURN ]
 ECHO.
 SET /P CH=">"
 IF /I "%CH%" == "Q" GOTO :START
@@ -185,7 +185,7 @@ ECHO %displayMessage%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / EXPLORE ] ^| [2 / INVENTORY ] ^| [V / VIEW CHARACTER ] ^| [C / CATALOGUE ]
+ECHO ^| [1 / EXPLORE ] ^| [2 / INVENTORY ] ^| [V / VIEW CHARACTER ] ^| [C / HANDBOOK ]
 ECHO ^| [S / SAVE ]    ^| [Q / EXIT ]
 ECHO +---------------------------------------------------------------------------------------------------+
 SET /P CH=">"
@@ -274,7 +274,7 @@ CALL "%winLoc%\data\Exploration Engine\exploration_engine.bat"
 GOTO :AUTOSAVE
 
 :catalogue
-TITLE (Windhelm - %windhelm.ut%) Player catalogue ^| %player.name% the %player.race% %player.class%
+TITLE (Windhelm - %windhelm.ut%) Player Handbook ^| %player.name% the %player.race% %player.class%
 CLS
 SET RETURN=catalogue
 ECHO.
@@ -293,7 +293,7 @@ IF /I "%CH%" == "Q" GOTO :dashboard
 GOTO :INVALID_INPUT
 
 :catalogue_category_humanoids
-TITLE (Windhelm - %windhelm.ut%) Player catalogue - Humanoids ^| %player.name% the %player.race% %player.class%
+TITLE (Windhelm - %windhelm.ut%) Player Handbook - Humanoids ^| %player.name% the %player.race% %player.class%
 MODE con: cols=101 lines=18
 CLS
 SET RETURN=catalogue_category_humanoids
@@ -304,12 +304,13 @@ ECHO %displayMessage% ^| Total discovered: %player.catalogue_unlocked%/%player.c
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / %player.catalogue_bandit% ] ^| [2 / %player.catalogue_abyss_guardian% ]
+ECHO ^| [1 / %player.catalogue_bandit% ] ^| [2 / %player.catalogue_abyss_guardian% ] ^| [ 3 / %player.catalogue_wandering_trader% ]
 ECHO ^| [Q / EXIT ]
 ECHO +---------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :catalogue_check_bandit
 IF /I "%CH%" == "2" GOTO :catalogue_check_abgu
+IF /I "%CH%" == "3" GOTO :catalogue_check_wantra
 IF /I "%CH%" == "Q" GOTO :catalogue
 GOTO :INVALID_INPUT
 
@@ -331,6 +332,15 @@ IF %player.catalogue_abyss_guardian_encountered% EQU 0 (
     GOTO :catalogue_view_abgu
 )
 
+:catalogue_check_wantra
+REM Check if the Player has this entry unlocked.
+IF %player.catalogue_wandering_trader_encountered% EQU 0 (
+    SET displayMessage=You haven't encountered this yet.
+    GOTO :catalogue_category_humanoids
+) ELSE (
+    GOTO :catalogue_view_wantra
+)
+
 :catalogue_view_bandit
 MODE con: cols=120 lines=24
 SET RETURN=catalogue_view_bandit
@@ -339,7 +349,7 @@ ECHO.
 TYPE "%cd%\data\assets\enemies\Iridescent Forest\bandit.txt"
 ECHO.
 ECHO.
-ECHO Viewing the BANDIT catalogue entry.
+ECHO Viewing the BANDIT Handbook entry.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Your average no good thief. Bandits are a common sight on the roads outside of Windhelm.
 ECHO ^| They might not be very strong, but they are crafty and there are a LOT of them.
@@ -362,7 +372,7 @@ ECHO.
 TYPE "%cd%\data\assets\enemies\Iridescent Forest\abyss guardian.txt"
 ECHO.
 ECHO.
-ECHO Viewing the ABYSS GUARDIAN catalogue entry.
+ECHO Viewing the ABYSS GUARDIAN Handbook entry.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| An unknown entity which has been found across Laera, it appears hostile to all who have encountered it.
 ECHO ^| It's purpose remains unknown, but they have been most commonly spotted guarding shatter-points.
@@ -372,6 +382,30 @@ ECHO ^|-------------------------------------------------------------------------
 ECHO ^| Health: 250 ^| Magicka: 400
 ECHO ^| Damage: 20/45 ^| Resistance Type: Physical ^| Total Resistance: 12
 ECHO ^| Faction: Abyss Lurkers
+ECHO +----------------------------------------------------------------------------------------------------------------------+
+ECHO ^| [Q / BACK]
+SET /P CH=">"
+IF /I "%CH%" == "Q" GOTO :catalogue_category_humanoids
+GOTO :INVALID_INPUT
+
+:catalogue_view_wantra
+MODE con: cols=120 lines=24
+SET RETURN=catalogue_view_wantra
+CLS
+ECHO.
+TYPE "%cd%\data\assets\enemies\Iridescent Forest\Wandering Trader.txt"
+ECHO.
+ECHO.
+ECHO Viewing the TRAVELING MERCHANT Handbook entry.
+ECHO +----------------------------------------------------------------------------------------------------------------------+
+ECHO ^| A trader of the Fa'Rel Union who wanders the territory surrounding Windhelm selling their goods to those who
+ECHO ^| would be interested.
+ECHO ^| 
+ECHO ^| TRAVELING MERCHANT stats:
+ECHO ^|----------------------------------------------------------------------------------------------------------------------+
+ECHO ^| Health: 100 ^| Magicka: 100
+ECHO ^| Damage: 0 ^| Resistance Type: Physical ^| Total Resistance: 0
+ECHO ^| Faction: Fa'rel Trading Union
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| [Q / BACK]
 SET /P CH=">"
