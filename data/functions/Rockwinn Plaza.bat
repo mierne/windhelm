@@ -13,7 +13,7 @@ ECHO.
 ECHO You enter the bustling street, inspecting each vendors stall closely.
 ECHO %displayMessage%
 ECHO +------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +------------------------------------------------------------------------------------------------------------+
 ECHO + [1 / ALCHEMIST ] ^| [2 / BLACKSMITH ] ^| [3 / WIZARD ] ^| [Q / LEAVE ]                                        +
 ECHO +------------------------------------------------------------------------------------------------------------+
@@ -35,7 +35,7 @@ ECHO.
 ECHO What can I do for you, Shard?
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| HEALING TONIC: %vendor.alchemist.health_tonic_stock% STOCKED, PRICE: %vendor.alchemist.health_tonic_price% LUNIS
 ECHO ^| MAGICKA TONIC: %vendor.alchemist.magicka_tonic_stock% STOCKED, PRICE: %vendor.alchemist.magicka_tonic_price% LUNIS
@@ -133,7 +133,7 @@ TYPE "%cd%\data\assets\npcs\blacksmith.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +-----------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +-----------------------------------------------------------------------------------------------------------+
 ECHO ^| Select a TYPE of item to view.
 ECHO +-----------------------------------------------------------------------------------------------------------+
@@ -155,7 +155,7 @@ TYPE "%cd%\data\assets\ui\weapons.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select a CATEGORY of weapon to view.
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -178,7 +178,7 @@ TYPE "%cd%\data\assets\ui\swords.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select a SWORD to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -196,14 +196,13 @@ GOTO :INVALID_INPUT
 :BLACKSMITH_INSPECT_LONG_SWORD
 CLS
 SET RETURN=BLACKSMITH_INSPECT_LONG_SWORD
-MODE con: cols=101 lines=21
+MODE con: cols=101 lines=24
 ECHO.
 TYPE "%cd%\data\assets\ui\long_sword.txt"
 ECHO.
 ECHO Inspecting the Long Sword.
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_long_sword_damage%
-ECHO ^| STAMINA USAGE: %windhelm.item_long_sword_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_long_sword_category%
 ECHO ^| DAMAGE TYPE: %windhelm.item_long_sword_damage_type%
 ECHO ^| OWNED: %player.item_long_sword_owned%
@@ -241,14 +240,13 @@ IF %vendor.blacksmith_long_sword_stock% LEQ 0 (
 :BLACKSMITH_INSPECT_SHORT_SWORD
 CLS
 SET RETURN=BLACKSMITH_INSPECT_SHORT_SWORD
-MODE con: cols=111 lines=18
+MODE con: cols=111 lines=22
 ECHO.
 TYPE "%cd%\data\assets\ui\short_sword.txt"
 ECHO.
 ECHO Showing detailed information for the Short Sword.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_short_sword_damage%
-ECHO ^| STAMINA USAGE: %windhelm.item_short_sword_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_short_sword_category%
 ECHO ^| DAMAGE TYPE: %windhelm.item_short_sword_damage_type%
 ECHO ^| OWNED: %player.item_short_sword_owned%
@@ -292,7 +290,7 @@ TYPE "%cd%\data\assets\ui\axes.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select an AXE to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -308,14 +306,13 @@ GOTO :INVALID_INPUT
 :BLACKSMITH_INSPECT_GREAT_AXE
 CLS
 SET RETURN=BLACKSMITH_INSPECT_GREAT_AXE
-MODE con: cols=111 lines=18
+MODE con: cols=111 lines=21
 ECHO.
 TYPE "%cd%\data\assets\ui\great_axe.txt"
 ECHO.
 ECHO Showing detailed information for the Great Axe.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_great_axe_damage%
-ECHO ^| STAMINA USAGE: %windhelm.item_great_axe_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_great_axe_category%
 ECHO ^| DAMAGE TYPE: %windhelm.item_great_axe_damage_type%
 ECHO ^| OWNED: %player.item_great_axe_owned%
@@ -359,9 +356,9 @@ TYPE "%cd%\data\assets\ui\maces.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| Select a SWORD to purchase.
+ECHO ^| Select a MACE to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| MACE: %vendor.blacksmith_mace_stock% STOCKED, PRICE: %vendor.blacksmith_mace_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -382,14 +379,13 @@ ECHO.
 ECHO Showing detailed information for the Great Axe.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_mace_damage%
-ECHO ^| STAMINA USAGE: %windhelm.item_mace_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_mace_category%
 ECHO ^| DAMAGE TYPE: %windhelm.item_mace_damage_type%
 ECHO ^| OWNED: %player.item_mace_owned%
 ECHO ^| PRICE: %vendor.blacksmith_mace_price%
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
-ECHO +--------------------------------------------------------------------------------------------------+
+ECHO +-------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_BUY_MACE
 IF /I "%CH%" == "Q" GOTO :BLACKSMITH_CATEGORY_MACES
@@ -426,11 +422,11 @@ TYPE "%cd%\data\assets\ui\bows.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| Select a SWORD to purchase.
+ECHO ^| Select a BOW to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| MACE: %vendor.blacksmith_wooden_bow_stock% STOCKED, PRICE: %vendor.blacksmith_wooden_bow_price% LUNIS
+ECHO ^| WOODEN BOW: %vendor.blacksmith_wooden_bow_stock% STOCKED, PRICE: %vendor.blacksmith_wooden_bow_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / WOODEN BOW ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -442,14 +438,13 @@ GOTO :INVALID_INPUT
 :BLACKSMITH_INSPECT_BOW
 CLS
 SET RETURN=BLACKSMITH_INSPECT_BOW
-MODE con: cols=111 lines=18
+MODE con: cols=111 lines=21
 ECHO.
 TYPE "%cd%\data\assets\ui\wooden_bow.txt"
 ECHO.
 ECHO Showing detailed information for the Wooden Bow.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_wooden_bow_damage%
-ECHO ^| STAMINA USAGE: %windhelm.item_wooden_bow_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_wooden_bow_category%
 ECHO ^| DAMAGE TYPE: %windhelm.item_wooden_bow_damage_type%
 ECHO ^| OWNED: %player.item_wooden_bow_owned%
@@ -493,7 +488,7 @@ TYPE "%cd%\data\assets\ui\armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select a CATEGORY of armor to view.
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -515,7 +510,7 @@ TYPE "%cd%\data\assets\ui\light_armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +-----------------------------------------------------------------------------------------------------------------+
 ECHO ^| Select an ARMOR SET to purchase.
 ECHO +-----------------------------------------------------------------------------------------------------------------+
@@ -615,7 +610,7 @@ TYPE "%cd%\data\assets\ui\medium_armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Select an ARMOR SET to purchase.
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
@@ -715,7 +710,7 @@ TYPE "%cd%\data\assets\ui\heavy_armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +-----------------------------------------------------------------------------------------------------------------+
 ECHO ^| Select an ARMOR SET to purchase.
 ECHO +-----------------------------------------------------------------------------------------------------------------+
