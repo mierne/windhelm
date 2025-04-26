@@ -303,7 +303,7 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| Druids are powerful mages who devote their life to nature. Due to their strong relationship with the Goddess of Nature,
 ECHO ^| Druids are granted +100 MAGICKA, however the devotion costs them -30 HEALTH.
 ECHO ^| Starting stats: HEALTH: 70 ^| MAGICKA: 200
-ECHO ^| Starting skills: DAMAGE: 2 ^| MAGICKA 6 ^| SPEECH: 2 ^| ATHLETICS: 2 ^| REFLEX: 2 ^| INTELLIGENCE: 2
+ECHO ^| Starting skills: DAMAGE: 2 ^| MAGICKA 8 ^| SPEECH: 2 ^| ATHLETICS: 2 ^| REFLEX: 2 ^| INTELLIGENCE: 2
 ECHO ^| Starting magic skills: ALTERATION: 6 ^| DESTRUCTION: 2     ^| RESTORATION: 6
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
@@ -336,7 +336,7 @@ IF /I "%CH%" == "Q" GOTO :CHOOSE_CLASS
 GOTO :INVALID_INPUT
 
 :SORCERER_CHOSEN_PREVIEW
-MODE con: cols=120 lines=24
+MODE con: cols=123 lines=24
 SET RETURN=SORCERER_CHOSEN_PREVIEW
 CLS
 ECHO.
@@ -344,14 +344,14 @@ TYPE "%cd%\data\assets\ui\sorcerer.txt"
 ECHO.
 ECHO.
 ECHO Choose the SORCERER class?
-ECHO +----------------------------------------------------------------------------------------------------------------------+
+ECHO +-------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Sorcerers are born with a strong connection to the magical world and as a result start with increased MAGICKA.
-ECHO ^| Sorcerers are granted +100 MAGICKA. Their devotion has cost them 25 HEALTH. Druids also start with higher average
-ECHO ^| magical skills than others.
+ECHO ^| Sorcerers are granted +100 MAGICKA. Their devotion has cost them 25 HEALTH. Sorcerer's start with slightly above average
+ECHO ^| magicka.
 ECHO ^| Starting stats: HEALTH: 100 ^| MAGICKA: 200
 ECHO ^| Starting skills: DAMAGE: 2  ^| MAGICKA: 6
 ECHO ^| Starting magica skills: ALTERATION: 12 ^| DESTRUCTION: 8 ^| RESTORATION: 12
-ECHO +----------------------------------------------------------------------------------------------------------------------+
+ECHO +-------------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :SORCERER_CHOSEN
