@@ -45,6 +45,7 @@ SET /A EE=%RANDOM% %%50
 IF %EE% LEQ 50 (
     SET currentEnemy=Bandit
     CALL "%winLoc%\data\Combat Engine\scripts\evie.bat"
+    TITLE (WINDHELM) - EXPLORATION ENGINE ^| %player.name% the %player.race% %player.class%!
     GOTO :VENTURE_IRIDESCENT_FOREST
 ) ELSE (
     REM In the future, random items may be discovered.
@@ -60,6 +61,8 @@ IF %player.iridescent_ab_defeated% EQU 1 (
     IF %player.level% GEQ 5 (
         SET currentEnemy="Abyss Guardian"
         CALL "%winLoc%\data\Combat Engine\scripts\evie.bat"
+        TITLE (WINDHELM) - EXPLORATION ENGINE ^| %player.name% the %player.race% %player.class%!
+        GOTO :VENTURE_IRIDESCENT_FOREST
     ) ELSE (
         SET displayMessage=Your level is too low for this encounter.
         GOTO :VENTURE_IRIDESCENT_FOREST
@@ -67,11 +70,12 @@ IF %player.iridescent_ab_defeated% EQU 1 (
 )
 
 :VENTURE_WINDHELM_EXTERIOR
-MODE con: cols=105 lines=19
+MODE con: cols=105 lines=17
 SET RETURN=VENTURE_WINDHELM_EXTERIOR
 CLS
 ECHO.
-REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
+TYPE "%winLoc%\data\assets\ui\exterior.txt"
+ECHO.
 ECHO.
 ECHO What is it you wish to do, %player.name%?
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -86,19 +90,19 @@ IF /I "%CH%" == "Q" GOTO :MAIN
 GOTO :INVALID_INPUT
 
 :WE_TRAVELING_MERCHANT
-MODE con: cols=105 lines=19
+MODE con: cols=100 lines=16
 SET RETURN=WE_TRAVELING_MERCHANT
 SET displayMessage=...
 CLS
 ECHO.
-REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
+TYPE "%cd%\data\assets\npcs\merchant.txt"
 ECHO.
 ECHO You approach the merchant's wagon, which has been temporarily transformed into a market stall.
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / VIEW WARES ] ^| [Q / BACK ] ^| %displayMessage%
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :TM_VIEW_ITEMS
 IF /I "%CH%" == "Q" GOTO :MAIN
@@ -106,10 +110,10 @@ GOTO :INVALID_INPUT
 
 :TM_VIEW_ITEMS
 TITLE (Rockwinn Plaza) - Alchemist ^| %player.name% the %player.race% %player.class%
-MODE con: cols=100 lines=22
+MODE con: cols=100 lines=20
 SET RETURN=VENDOR_ALCHEMIST
 ECHO.
-TYPE "%cd%\data\assets\npcs\alchemist.txt"
+TYPE "%cd%\data\assets\npcs\merchant.txt"
 ECHO.
 ECHO.
 ECHO What can I do for you, Shard?
@@ -135,7 +139,7 @@ IF %vendor.travmerch_xp_tonic_stock% LSS 1 (
         SET displayMessage=Sorry, you can't afford that item.
         GOTO :TM_VIEW_ITEMS
     ) ELSE (
-        SET /A player.coins=!player.coins! -%vendor.travmrech_xp_tonic_price%
+        SET /A player.coins=!player.coins! -%vendor.travmerch_xp_tonic_price%
         SET /A player.item_tonic_xp_owned=!player.item_tonic_xp_owned! +1
         SET /A vendor.travmerch_xp_tonic_stock=!vendor.travmerch_xp_tonic_stock! -1
         SET displayMessage=Purchased 1 XP Tonic for %vendor.travmerch_xp_tonic_price%.
