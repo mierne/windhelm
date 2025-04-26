@@ -18,7 +18,7 @@ IF EXIST "%cd%\data\player\savedata.txt" (
 
 REM Warns the Player that an existing save has been found and asks if they wish to overwrite it.
 :overwrite_saveQ
-MODE con: cols=95 lines=20
+MODE con: cols=97 lines=14
 SET RETURN=overwrite_saveQ
 CLS
 ECHO.
@@ -26,7 +26,7 @@ TYPE "%cd%\data\assets\ui\overwrite_save.txt"
 ECHO.
 ECHO.
 ECHO WARNING! An existing save has been detected. Do you wish to overwrite this existing save?
-ECHO +---------------------------------------------------------------------------------------------+
+ECHO +-----------------------------------------------------------------------------------------------+
 SET /P CH="Y/N"
 IF /I "%CH%" == "Y" GOTO :ENTER_NAME
 IF /I "%CH%" == "N" GOTO :NO_OVERWRITE
@@ -38,7 +38,7 @@ SET OSQ=1
 GOTO :EOF
 
 :ENTER_NAME
-MODE con: cols=120 lines=22
+MODE con: cols=120 lines=13
 SET OSQ=0
 CLS
 ECHO.
@@ -51,7 +51,7 @@ SET /P player.name=
 GOTO :CHOOSE_PRONOUN
 
 :CHOOSE_PRONOUN
-MODE con: cols=120 lines=20
+MODE con: cols=120 lines=18
 SET RETURN=CHOOSE_PRONOUN
 CLS
 ECHO.
@@ -156,12 +156,12 @@ IF %player.pronouns_change_req% EQU 1 GOTO :EOF
 GOTO :CHOOSE_RACE
 
 :CHOOSE_RACE
-MODE con: cols=120 lines=20
+MODE con: cols=120 lines=17
 SET SLOPr=INIT
 SET RETURN=CHOOSE_RACE
 CLS
 ECHO.
-TYPE "%cd%\data\assets\ui\your_race.txt"
+TYPE "%cd%\data\assets\ui\race.txt"
 ECHO.
 ECHO Choose a race for %player.name%. Select a race to learn more.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
@@ -178,7 +178,7 @@ IF /I "%CH%" == "4" GOTO :MORE_NEMMAR
 GOTO :INVALID_INPUT
 
 :MORE_HUMAN
-REM MODE con: cols=125 lines=22
+MODE con: cols=120 lines=20
 SET RETURN=MORE_HUMAN
 CLS
 ECHO.
@@ -186,7 +186,7 @@ TYPE "%cd%\data\assets\ui\human.txt"
 ECHO.
 ECHO Choose the HUMAN race?
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| Humans, a race of tall, fair-skinned are a people who have settled in most places in NAME-IN-PROGRESS, though
+ECHO ^| Humans, a race of tall, fair-skinned people who have settled in most places in NAME-IN-PROGRESS, though
 ECHO ^| they are native to the northern lands of Fulkwinn. A strong and intelligent people, 
 ECHO ^| humans have enjoyed ruling most of NIP for most of their civilized existence.
 ECHO ^| This RACE gets the following bonuses:
@@ -204,10 +204,11 @@ SET player.race=human
 GOTO :CHOOSE_CLASS
 
 :MORE_FAEL
+MODE con: cols=120 lines=17
 SET RETURN=MORE_FAEL
 CLS
 ECHO.
-TYPE "%cd%\data\assets\ui\human.txt"
+TYPE "%cd%\data\assets\ui\fael.txt"
 ECHO.
 ECHO Choose the FAEL race?
 ECHO +----------------------------------------------------------------------------------------------------------------------+
@@ -226,10 +227,11 @@ SET player.race=fael
 GOTO :CHOOSE_RACE
 
 :MORE_FRAWEN
+MODE con: cols=120 lines=18
 SET RETURN=MORE_FRAWEN
 CLS
 ECHO.
-TYPE "%cd%\data\assets\ui\human.txt"
+TYPE "%cd%\data\assets\ui\frawen.txt"
 ECHO.
 ECHO Choose the FRAWEN race?
 ECHO +----------------------------------------------------------------------------------------------------------------------+
@@ -249,12 +251,13 @@ SET player.race=frawen
 GOTO :CHOOSE_CLASS
 
 :MORE_NEMMAR
+MODE con: cols=120 lines=18
 SET RETURN=MORE_NEMMAR
 CLS
 ECHO.
-TYPE "%cd%\data\assets\ui\human.txt"
+TYPE "%cd%\data\assets\ui\nemmar.txt"
 ECHO.
-ECHO Choose the HUMAN race?
+ECHO Choose the NEMMAR race?
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| The Nemmar are a cat-like people with strong eyesight, powerful smell and sharp claws. They're native to warmer
 ECHO ^| climates and thus a rare sight so far north in Windhelm.
@@ -272,7 +275,7 @@ SET player.race=nemmar
 GOTO :CHOOSE_CLASS
 
 :CHOOSE_CLASS
-MODE con: cols=120 lines=20
+MODE con: cols=120 lines=19
 SET RETURN=CHOOSE_CLASS
 CLS
 ECHO.
@@ -291,7 +294,7 @@ IF /I "%CH%" == "D" GOTO :DRUID_CHOSEN_PREVIEW
 GOTO :INVALID_INPUT
 
 :DRUID_CHOSEN_PREVIEW
-MODE con: cols=125 lines=22
+MODE con: cols=125 lines=20
 SET RETURN=DRUID_CHOSEN_PREVIEW
 CLS
 ECHO.
@@ -304,7 +307,7 @@ ECHO ^| Druids are powerful mages who devote their life to nature. Due to their 
 ECHO ^| Druids are granted +100 MAGICKA, however the devotion costs them -30 HEALTH.
 ECHO ^| Starting stats: HEALTH: 70 ^| MAGICKA: 200
 ECHO ^| Starting skills: DAMAGE: 2 ^| MAGICKA 8 ^| SPEECH: 2 ^| ATHLETICS: 2 ^| REFLEX: 2 ^| INTELLIGENCE: 2
-ECHO ^| Starting magic skills: ALTERATION: 6 ^| DESTRUCTION: 2     ^| RESTORATION: 6
+ECHO ^| Starting magic skills: ALTERATION: 6 ^| DESTRUCTION: 2 ^| RESTORATION: 6
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 ECHO [1 / CHOOSE ] ^| [Q / BACK]
 SET /P CH=">"
@@ -313,7 +316,7 @@ IF /I "%CH%" == "Q" GOTO :CHOOSE_CLASS
 GOTO :INVALID_INPUT
 
 :WARRIOR_CHOSEN_PREVIEW
-MODE con: cols=120 lines=23
+MODE con: cols=120 lines=21
 SET RETURN=WARRIOR_CHOSEN_PREVIEW
 CLS
 ECHO.
@@ -336,7 +339,7 @@ IF /I "%CH%" == "Q" GOTO :CHOOSE_CLASS
 GOTO :INVALID_INPUT
 
 :SORCERER_CHOSEN_PREVIEW
-MODE con: cols=123 lines=24
+MODE con: cols=123 lines=21
 SET RETURN=SORCERER_CHOSEN_PREVIEW
 CLS
 ECHO.
@@ -433,7 +436,7 @@ GOTO :CHOOSE_ORIGIN
 
 REM Allows the Player to choose an origin for their character. In the future this will determine endings available to the Player.
 :CHOOSE_ORIGIN
-MODE con: cols=120 lines=20
+MODE con: cols=120 lines=16
 SET RETURN=CHOOSE_ORIGIN
 CLS
 ECHO.
@@ -442,22 +445,22 @@ ECHO.
 ECHO Choose an origin for %player.name%. Select an origin to learn more about it.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1] Forest Origin  : You've awoken in a forest clearing, head pounding and no memories.
-ECHO ^| [2] Injured Origin : Your eyes open and you find yourself in a medical tent, you aren't sure where.
+ECHO ^| [2] Cabin Origin   : You're awoken by a distant howl. Sitting up you find yourself alone in an abandoned cabin.
 ECHO ^| [3] Inn Origin     : You've come to on a bed in a local inn. You're unsure of how you got here.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :VIEW_FOREST_ORIGIN
-IF /I "%CH%" == "2" GOTO :VIEW_INJURED_ORIGIN
+IF /I "%CH%" == "2" GOTO :VIEW_CABIN_ORIGIN
 IF /I "%CH%" == "3" GOTO :VIEW_INN_ORIGIN
 GOTO :INVALID_INPUT
 
 REM Describe this origin story in more depth. Certainly needs a rewrite to make the provided bonuses make sense.
 :VIEW_FOREST_ORIGIN
-MODE con: cols=120 lines=24
+MODE con: cols=120 lines=23
 SET RETURN=VIEW_FOREST_ORIGIN
 CLS
 ECHO.
-TYPE "%cd%\data\assets\ui\forest_origin.txt"
+TYPE "%cd%\data\assets\ui\origin.txt"
 ECHO.
 ECHO.
 ECHO Choose the FOREST origin? NOTE: Origins impact the starting max value of your skills and available endings.
@@ -471,15 +474,73 @@ ECHO ^| memories are fading, and quick. You grab onto one before it slips away. 
 ECHO ^|
 ECHO ^| The 'Forest Origin' provides the Player with +2 to INTELLIGENCE.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO [1 / CHOOSE ] ^| [Q / BACK]
+ECHO [1 / PROCEED TO WINDHELM... ] ^| [Q / BACK]
 SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :FORST_ORIGIN_SELECTED
+IF /I "%CH%" == "1" GOTO :FOREST_ORIGIN_SELECTED
 IF /I "%CH%" == "Q" GOTO :CHOOSE_ORIGIN
 GOTO :INVALID_INPUT
 
-:FORST_ORIGIN_SELECTED
+:VIEW_CABIN_ORIGIN
+MODE con: cols=120 lines=22
+SET RETURN=VIEW_CABIN_ORIGIN
+CLS
+ECHO.
+TYPE "%cd%\data\assets\ui\origin.txt"
+ECHO.
+ECHO.
+ECHO Choose the CABIN origin? NOTE: Origins impact the starting max value of your skills and available endings.
+ECHO +----------------------------------------------------------------------------------------------------------------------+
+ECHO ^| You're awkoen by a distant, fading howl. You sit up in a hurry, wide awake now. You soon realize you're surrounded
+ECHO ^| by the comforting walls of an old abandoned cabin. You're unsure of how you got here or even who you are.
+ECHO ^| Your memories are vague, more feelings than actual memories. You try to hold on but they slip through your fingers.
+ECHO ^| Only a faint, distant pain remains. Before it all slipped away, however, you managed to cling to one thing.
+ECHO ^| Your name. Your name is %player.name%.
+ECHO ^|
+ECHO ^| The 'Cabin Origin' provides the Player with +2 to DAMAGE.
+ECHO +----------------------------------------------------------------------------------------------------------------------+
+ECHO [1 / PROCEED TO WINDHELM... ] ^| [Q / BACK]
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :CABIN_ORIGIN_SELECTED
+IF /I "%CH%" == "Q" GOTO :CHOOSE_ORIGIN
+GOTO :INVALID_INPUT
+
+:VIEW_INN_ORIGIN
+MODE con: cols=120 lines=22
+SET RETURN=VIEW_INN_ORIGIN
+CLS
+ECHO.
+TYPE "%cd%\data\assets\ui\origin.txt"
+ECHO.
+ECHO.
+ECHO Choose the INN origin? NOTE: Origins impact the starting max value of your skills and available endings.
+ECHO +----------------------------------------------------------------------------------------------------------------------+
+ECHO ^| You awaken on an uncomfortable, hard surface. Sitting up and gathering your bearings you conlcude you find yourself
+ECHO ^| in an Inn, though you are unsure of which or even where it is. Feeling the weightlessness of your pockets you
+ECHO ^| assume your silver tongue landed you the miserable spot which you slept. You think to yourself you should leave
+ECHO ^| sooner rather than later. Before you're able to take a single step you realize something. You have no idea who you
+ECHO ^| are. The only thing that remains is.. Your name. Your name is %player.name%.
+ECHO ^|
+ECHO ^| The 'Inn Origin' provides the Player with +2 to SPEECH.
+ECHO +----------------------------------------------------------------------------------------------------------------------+
+ECHO [1 / PROCEED TO WINDHELM... ] ^| [Q / BACK]
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :INN_ORIGIN_SELECTED
+IF /I "%CH%" == "Q" GOTO :CHOOSE_ORIGIN
+GOTO :INVALID_INPUT
+
+:FOREST_ORIGIN_SELECTED
 SET /A player.skill_intelligence=!player.skill_intelligence! +2
 SET player.origin=Forest Origin
+GOTO :SAVE_DATA
+
+:CABIN_ORIGIN_SELECTED
+SET /A player.skill_damage=!player.skill_damage! +2
+SET player.origin=Cabin Origin
+GOTO :SAVE_DATA
+
+:INN_ORIGIN_SELECTED
+SET /A player.skill_speech=!player.skill_speech! +2
+SET player.origin=Inn Origin
 GOTO :SAVE_DATA
 
 :INVALID_INPUT
@@ -489,6 +550,7 @@ GOTO :%RETURN%
 
 REM Saves data and exits.
 :SAVE_DATA
+SET displayMessage=...
 SET SLOPr=SAVE
 CALL "%cd%\data\functions\SLOP.bat"
 GOTO :EOF
