@@ -1,4 +1,3 @@
-if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 @ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION
 REM Copyright (C) 2021-2025 Mierne <ahoy@mierne.net>
 REM    This program is free software: you can redistribute it and/or modify
@@ -59,10 +58,6 @@ ECHO.
 TYPE "%winLoc%\data\assets\ui\about.txt"
 ECHO     Version %windhelm.vn%
 ECHO ========================================================================================================================
-ECHO This is an UNSTABLE build. Check the github page for more information.
-ECHO.
-ECHO Windhelm Version %windhelm.vn%
-ECHO This is a STABLE build. Check the github page for more information.
 ECHO.
 ECHO Delve into the powerful, mysterious Iridescent Forest of the Kindgom of Fulkwinn and it's equally powerful castle,
 ECHO Windhelm^^! Discover shards of your past and rebuild your identity, or forge a new one. Your destiny is yours to control
