@@ -51,7 +51,7 @@ IF %player.level% EQU 1 (
         SET /A player.level=!player.level! +1
         SET player.awarded_points=0
         SET displayMessage=Level up^! You've reached level five.
-        GOTO :EOF
+        GOTO :LEVEL_FIVE_REWARD
     ) ELSE (
         REM Level up not possible.
         GOTO :EOF
@@ -115,7 +115,7 @@ IF %player.level% EQU 1 (
     REM Level three level up check & logic.
     IF %player.xp% GEQ 24000 (
         SET /A player.xp=!player.xp! -24000
-        SET player.xp_required=24000
+        SET player.xp_required=35000
         SET /A player.level=!player.level! +1
         SET player.awarded_points=0
         SET displayMessage=Level up^! You've reached level ten.
@@ -124,11 +124,46 @@ IF %player.level% EQU 1 (
         REM Level up not possible.
         SET displayMessage=Cannot level up.
         GOTO :EOF
+    ) 
+) ELSE IF %player.level% EQU 10 (
+    IF %player.xp% GEQ 35000 (
+        SET /A player.xp=!player.xp! -35000
+        SET player.xp_required=60000
+        SET /A player.level=!player.level! +1
+        SET player.awarded_points=0
+        SET displayMessage=Level up^! You've reached level 11.
+        GOTO :EOF
+    ) ELSE (
+        SET displayMessage=Cannot level up.
+        GOTO :EOF
     )
+) ELSE IF %player.level% EQU 11 (
+    IF %player.xp% GEQ 60000 (
+        SET /A player.xp=!player.xp! -60000
+        SET player.xp_required=120000
+        SET /A player.level=!player.level! +1
+        SET player.awarded_points=0
+        SET displayMessage=Level up^! You've reached level 12.
+    ) ELSE (
+        SET displayMessage=Cannot level up.
+        GOTO :EOF
+    )
+) ELSE IF %player.level% EQU 12 (
+    SET displayMessage=You've reached the maximum level.
+    GOTO :EOF
+) ELSE (
+    REM Error
+    ECHO LEVELER.BAT has encountered an error.
+    PAUSE
+    EXIT /B
 )
 
+:LEVEL_FIVE_REWARD
+SET player.level_up_points=6
+GOTO :LEVEL_UP_SKILLS
+
 :LEVEL_TEN_REWARD
-SET player.level_up_points=4
+SET player.level_up_points=12
 GOTO :LEVEL_UP_SKILLS
 
 REM Awards the player a set number of points and allows them to increase skills.
@@ -143,23 +178,21 @@ ECHO.
 ECHO Which skill would you like to improve? Each improvement costs 2 points.
 ECHO %displayMessage%
 ECHO +----------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player_health% ^| STM: %player_stamina% ^| ATK: %player_damage% ^| AMR: %player_armor% ^| MGK: %player_magicka% ^| COINS: %player_coins% ^| XP: %player_xp% ^| LUNIS: %player_lunis%
+ECHO ^| HP: %player_health% ^| ATK: %player_damage% ^| AMR: %player_armor% ^| MGK: %player_magicka% ^| COINS: %player_coins% ^| XP: %player_xp% ^| LUNIS: %player_lunis%
 ECHO +----------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE:  %player.skill_damage%,  COST:  6 LEVELS  ^| ATHLETICS: %player.skill_athletics%
 ECHO ^| SPEECH:  %player.skill_speech%,  COST:  9 LEVELS  ^| INTELLIGENCE: %player.skill_intelligence%
-ECHO ^| STAMINA: %player.skill_stamina%,  COST: 12 LEVELS ^|
 ECHO ^| MAGICKA: %player.skill_magicka%,  COST: 20 LEVELS ^|
 ECHO +----------------------------------------------------------------------------------------------------------------+
-ECHO + [1 / IMPROVE DAMAGE ] ^| [2 / IMPROVE SPEECH ] ^| [3 / IMPROVE STAMINA ] ^| [4 / IMPROVE MAGICKA ] ^| [5 / IMPROVE ATHLETICS ] ^ [6 / IMPROVE INTELLIGENCE ] ^| [E / DONE ]
+ECHO + [1 / IMPROVE DAMAGE ] ^| [2 / IMPROVE SPEECH ] ^| [3 / IMPROVE MAGICKA ] ^| [4 / IMPROVE ATHLETICS ] ^ [5 / IMPROVE INTELLIGENCE ] ^| [Q / DONE ]
 ECHO +----------------------------------------------------------------------------------------------------------------+
-CHOICE /C 123456E /N /M ">"
-IF ERRORLEVEL 7 GOTO :EOF
-IF ERRORLEVEL 6 GOTO :SKILLS_IMPROVE_INTELLIGENCE
-IF ERRORLEVEL 5 GOTO :SKILLS_IMPROVE_ATHLETICS
-IF ERRORLEVEL 4 GOTO :SKILLS_IMPROVE_MAGICKA
-IF ERRORLEVEL 3 GOTO :SKILLS_IMPROVE_STAMINA
-IF ERRORLEVEL 2 GOTO :SKILLS_IMPROVE_SPEECH
-IF ERRORLEVEL 1 GOTO :SKILLS_IMPROVE_DAMAGE
+SET /P CH=">"
+IF /I "CH" == "1" GOTO :SKILLS_IMPROVE_DAMAGE
+IF /I "CH" == "2" GOTO :SKILLS_IMPROVE_SPEECH
+IF /I "CH" == "3" GOTO :SKILLS_IMPROVE_MAGICKA
+IF /I "CH" == "4" GOTO :SKILLS_IMPROVE_ATHLETICS
+IF /I "CH" == "5" GOTO :SKILLS_IMPROVE_INTELLIGENCE
+IF /I "CH" == "Q" GOTO :AUTOSAVE
 
 REM Attempt to improve the damage skill.
 :SKILLS_IMPROVE_DAMAGE
@@ -197,26 +230,6 @@ IF %player.skill_speech% EQU 10 (
         SET /A player.skill_speech=!player.skill_speech! +1
         SET /A player.level_up_points=!player.level_up_points! -1
         SET displayMessage=Increased speech skill by 1 for two points.
-        GOTO :LEVEL_UP_SKILLS
-    )
-)
-
-REM Attempt to improve the stamina skill.
-:SKILLS_IMPROVE_STAMINA
-IF %player.skill_stamina% EQU 10 (
-    REM This skill is at the maximum level.
-    SET displayMessage=This skill is already at the maximum level^!
-    GOTO :LEVEL_UP_SKILLS
-) ELSE (
-    REM Improve the skill level.
-    IF %player.level_up_points% LSS %windhelm.damage_skill_base_cost_level% (
-        REM Player does not have enough level up points for this.
-        SET displayMessage=You do not have enough points for this.
-        GOTO :LEVEL_UP_SKILLS
-    ) ELSE (
-        SET /A player.skill_stamina=!player.skill_stamina! +1
-        SET /A player.level_up_points=!player.level_up_points! -1
-        SET displayMessage=Increased stamina skill by 1 for two points.
         GOTO :LEVEL_UP_SKILLS
     )
 )
@@ -280,3 +293,8 @@ IF %player.skill_athletics% EQU 10 (
         GOTO :LEVEL_UP_SKILLS
     )
 )
+
+:AUTOSAVE
+SET SLOPr=SAVE
+CALL "%winLoc%\data\functions\SLOP.bat"
+GOTO :EOF

@@ -1,4 +1,5 @@
 TITLE (Rockwinn Plaza) - Rockwinn Plaza ^| %player.name% the %player.race% %player.class%
+SETLOCAL ENABLEDELAYEDEXPANSION
 SET refunded=false
 SET refundPrice=0
 
@@ -12,9 +13,9 @@ ECHO.
 ECHO You enter the bustling street, inspecting each vendors stall closely.
 ECHO %displayMessage%
 ECHO +------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +------------------------------------------------------------------------------------------------------------+
-ECHO + [1 / ALCHEMIST ] ^| [2 / BLACKSMITH ] ^| [3 / WIZARD ] ^| [Q / LEAVE ]                    +
+ECHO + [1 / ALCHEMIST ] ^| [2 / BLACKSMITH ] ^| [3 / WIZARD ] ^| [Q / LEAVE ]                                        +
 ECHO +------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :VENDOR_ALCHEMIST
@@ -34,23 +35,77 @@ ECHO.
 ECHO What can I do for you, Shard?
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HEALING TONIC: %vendor.alchemist.health_tonic_stock% STOCKED, PRICE: %vendor.alchemist.healing_tonic_price% LUNIS
-ECHO ^| STAMINA TONIC: %vendor.alchemist.stamina_tonic_stock% STOCKED, PRICE: %vendor.alchemist.stamina_tonic_price% LUNIS
+ECHO ^| HEALING TONIC: %vendor.alchemist.health_tonic_stock% STOCKED, PRICE: %vendor.alchemist.health_tonic_price% LUNIS
 ECHO ^| MAGICKA TONIC: %vendor.alchemist.magicka_tonic_stock% STOCKED, PRICE: %vendor.alchemist.magicka_tonic_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO + [1 / HEALING TONIC ] ^| [2 / STAMINA TONIC ] ^| [3 / MAGICKA TONIC ] ^| [Q / GO BACK ]              +
+ECHO + [1 / HEALING TONIC ] ^| [2 / MAGICKA TONIC ] ^| [Q / GO BACK ]                                     +
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :ALCHEMIST_BUY_HEALING_TONIC
-IF /I "%CH%" == "2" GOTO :ALCHEMIST_BUY_STAMINA_TONIC
-IF /I "%CH%" == "3" GOTO :ALCHEMIST_BUY_MAGICKA_TONIC
+IF /I "%CH%" == "2" GOTO :ALCHEMIST_BUY_MAGICKA_TONIC
 IF /I "%CH%" == "Q" GOTO :MAIN
 GOTO :INVALID_INPUT
 
+:ALCHEMIST_BUY_HEALING_TONIC
+CLS
+SET RETURN=ALCHEMIST_BUY_HEALING_TONIC
+MODE con: cols=103 lines=19
+ECHO.
+TYPE "%cd%\data\assets\ui\health_tonic.txt"
+ECHO.
+ECHO Showing detailed information for the Healing Tonic.
+ECHO +-----------------------------------------------------------------------------------------------------+
+ECHO ^| AMOUNT: %player.item_tonic_healing_owned%
+ECHO ^| MODIFIER: +%windhelm.item_tonic_healing_modifier% HP
+ECHO ^| CATEGORY: %windhelm.item_tonic_healing_category%
+ECHO ^| TYPE: %windhelm.item_tonic_healing_type%
+ECHO +-----------------------------------------------------------------------------------------------------+
+ECHO [E / PURCHASE (%vendor.alchemist.health_tonic_price% LUNIS) ] ^| [Q / BACK ]
+SET /P CH=">"
+IF /I "%CH%" == "E" GOTO :ALCHEMIST_CONFIRM_HEALING_TONIC
+IF /I "%CH%" == "Q" GOTO :VENDOR_ALCHEMIST
+GOTO :INVALID_INPUT
+
+:ALCHEMIST_CONFIRM_HEALING_TONIC
+IF %vendor.alchemist.health_tonic_stock% LSS 1 (
+    SET displayMessage=Sorry, I'm sold out of that one.
+    GOTO :VENDOR_ALCHEMIST
+) ELSE (
+    IF %player.coins% LSS %vendor.alchemist.health_tonic_price% (
+        SET displayMessage=You can't afford that Tonic.
+        GOTO :VENDOR_ALCHEMIST
+    ) ELSE (
+        SET /A player.coins=!player.coins! -%vendor.alchemist.health_tonic_price%
+        SET /A player.item_tonic_healing_owned=!player.item_tonic_healing_owned! +1
+        SET /A vendor.alchemist.health_tonic_stock=!vendor.alchemist.health_tonic_stock! -1
+        SET displayMessage=Purchased 1 Health Tonic for %vendor.alchemist.health_tonic_price%.
+        GOTO :VENDOR_ALCHEMIST
+    )
+)
+
 REM Purchase Magicka Tonic
 :ALCHEMIST_BUY_MAGICKA_TONIC
+SET RETURN=ALCHEMIST_BUY_MAGICKA_TONIC
+MODE con: cols=115 lines=22
+ECHO.
+TYPE "%cd%\data\assets\ui\magicka_tonic.txt"
+ECHO.
+ECHO Showing detailed information for the Magicka Tonic.
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO ^| AMOUNT: %player.item_tonic_magicka_owned%
+ECHO ^| MODIFIER: +%windhelm.item_tonic_magicka_modifier% HP
+ECHO ^| CATEGORY: %windhelm.item_tonic_magicka_category%
+ECHO ^| TYPE: %windhelm.item_tonic_magicka_type%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO [E / PURCHASE (%vendor.alchemist.magicka_tonic_price% LUNIS) ] ^| [Q / BACK ]
+SET /P CH=">"
+IF /I "%CH%" == "E" GOTO :ALCHEMIST_CONFIRM_MAGICKA_TONIC
+IF /I "%CH%" == "Q" GOTO :VENDOR_ALCHEMIST
+GOTO :INVALID_INPUT
+
+:ALCHEMIST_CONFIRM_MAGICKA_TONIC
 IF %vendor.alchemist.magicka_tonic_stock% LSS 1 (
     SET displayMessage=Sorry, we're sold out of that Tonic.
     GOTO :VENDOR_ALCHEMIST
@@ -67,42 +122,6 @@ IF %vendor.alchemist.magicka_tonic_stock% LSS 1 (
     )
 )
 
-REM Purchase Stamina Tonic
-:ALCHEMIST_BUY_STAMINA_TONIC
-IF %vendor.alchemist.stamina_tonic_stock% LSS 1 (
-    SET displayMessage=Sorry, we're sold out of that Tonic.
-    GOTO :VENDOR_ALCHEMIST
-) ELSE (
-    IF %player.coins% LSS %vendor.alchemist_stamina_tonic_price% (
-        SET displayMessage=Sorry, you can't afford that Tonic.
-        GOTO :VENDOR_ALCHEMIST
-    ) ELSE (
-        SET /A player.coins=!player.coins! -%vendor.alchemist.stamina_tonic_price%
-        SET /A player.item_tonic_stamina_owned=!player.item_tonic_stamina_owned! +1
-        SET /A vendor.alchemist_stamina_tonic_stock=!vendor.alchemist_stamina_tonic_stock! -1
-        SET displayMessage=Purchased 1 Stamina Tonic for %vendor.alchemist_stamina_tonic_price%.
-        GOTO :VENDOR_ALCHEMIST
-    )
-)
-
-REM Purchase Healing Tonic
-:ALCHEMIST_BUY_STAMINA_TONIC
-IF %vendor.alchemist.healing_tonic_stock% LSS 1 (
-    SET displayMessage=Sorry, we're sold out of that Tonic.
-    GOTO :VENDOR_ALCHEMIST
-) ELSE (
-    IF %player.coins% LSS %vendor.alchemist_healing_tonic_price% (
-        SET displayMessage=Sorry, you can't afford that Tonic.
-        GOTO :VENDOR_ALCHEMIST
-    ) ELSE (
-        SET /A player.coins=!player.coins! -%vendor.alchemist.healing_tonic_price%
-        SET /A player.item_tonic_healing_owned=!player.item_tonic_healing_owned! +1
-        SET /A vendor.alchemist_healing_tonic_stock=!vendor.alchemist_healing_tonic_stock! -1
-        SET displayMessage=Purchased 1 Healing Tonic for %vendor.alchemist_healing_tonic_price%.
-        GOTO :VENDOR_ALCHEMIST
-    )
-)
-
 REM Blacksmith Vendor.
 :VENDOR_BLACKSMITH
 TITLE (Rockwinn Plaza) - Blacksmith ^| %player.name% the %player.race% %player.class%
@@ -114,7 +133,7 @@ TYPE "%cd%\data\assets\npcs\blacksmith.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +-----------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +-----------------------------------------------------------------------------------------------------------+
 ECHO ^| Select a TYPE of item to view.
 ECHO +-----------------------------------------------------------------------------------------------------------+
@@ -136,7 +155,7 @@ TYPE "%cd%\data\assets\ui\weapons.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select a CATEGORY of weapon to view.
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -159,7 +178,7 @@ TYPE "%cd%\data\assets\ui\swords.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select a SWORD to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -177,14 +196,13 @@ GOTO :INVALID_INPUT
 :BLACKSMITH_INSPECT_LONG_SWORD
 CLS
 SET RETURN=BLACKSMITH_INSPECT_LONG_SWORD
-MODE con: cols=101 lines=21
+MODE con: cols=101 lines=24
 ECHO.
 TYPE "%cd%\data\assets\ui\long_sword.txt"
 ECHO.
 ECHO Inspecting the Long Sword.
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_long_sword_damage%
-ECHO ^| STAMINA USAGE: %windhelm.item_long_sword_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_long_sword_category%
 ECHO ^| DAMAGE TYPE: %windhelm.item_long_sword_damage_type%
 ECHO ^| OWNED: %player.item_long_sword_owned%
@@ -222,14 +240,13 @@ IF %vendor.blacksmith_long_sword_stock% LEQ 0 (
 :BLACKSMITH_INSPECT_SHORT_SWORD
 CLS
 SET RETURN=BLACKSMITH_INSPECT_SHORT_SWORD
-MODE con: cols=111 lines=18
+MODE con: cols=111 lines=22
 ECHO.
 TYPE "%cd%\data\assets\ui\short_sword.txt"
 ECHO.
 ECHO Showing detailed information for the Short Sword.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_short_sword_damage%
-ECHO ^| STAMINA USAGE: %windhelm.item_short_sword_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_short_sword_category%
 ECHO ^| DAMAGE TYPE: %windhelm.item_short_sword_damage_type%
 ECHO ^| OWNED: %player.item_short_sword_owned%
@@ -273,7 +290,7 @@ TYPE "%cd%\data\assets\ui\axes.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select an AXE to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -289,14 +306,13 @@ GOTO :INVALID_INPUT
 :BLACKSMITH_INSPECT_GREAT_AXE
 CLS
 SET RETURN=BLACKSMITH_INSPECT_GREAT_AXE
-MODE con: cols=111 lines=18
+MODE con: cols=111 lines=21
 ECHO.
 TYPE "%cd%\data\assets\ui\great_axe.txt"
 ECHO.
 ECHO Showing detailed information for the Great Axe.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_great_axe_damage%
-ECHO ^| STAMINA USAGE: %windhelm.item_great_axe_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_great_axe_category%
 ECHO ^| DAMAGE TYPE: %windhelm.item_great_axe_damage_type%
 ECHO ^| OWNED: %player.item_great_axe_owned%
@@ -340,9 +356,9 @@ TYPE "%cd%\data\assets\ui\maces.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| Select a SWORD to purchase.
+ECHO ^| Select a MACE to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| MACE: %vendor.blacksmith_mace_stock% STOCKED, PRICE: %vendor.blacksmith_mace_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -363,14 +379,13 @@ ECHO.
 ECHO Showing detailed information for the Great Axe.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_mace_damage%
-ECHO ^| STAMINA USAGE: %windhelm.item_mace_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_mace_category%
 ECHO ^| DAMAGE TYPE: %windhelm.item_mace_damage_type%
 ECHO ^| OWNED: %player.item_mace_owned%
 ECHO ^| PRICE: %vendor.blacksmith_mace_price%
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
-ECHO +--------------------------------------------------------------------------------------------------+
+ECHO +-------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_BUY_MACE
 IF /I "%CH%" == "Q" GOTO :BLACKSMITH_CATEGORY_MACES
@@ -407,11 +422,11 @@ TYPE "%cd%\data\assets\ui\bows.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| Select a SWORD to purchase.
+ECHO ^| Select a BOW to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| MACE: %vendor.blacksmith_wooden_bow_stock% STOCKED, PRICE: %vendor.blacksmith_wooden_bow_price% LUNIS
+ECHO ^| WOODEN BOW: %vendor.blacksmith_wooden_bow_stock% STOCKED, PRICE: %vendor.blacksmith_wooden_bow_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / WOODEN BOW ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -423,14 +438,13 @@ GOTO :INVALID_INPUT
 :BLACKSMITH_INSPECT_BOW
 CLS
 SET RETURN=BLACKSMITH_INSPECT_BOW
-MODE con: cols=111 lines=18
+MODE con: cols=111 lines=21
 ECHO.
 TYPE "%cd%\data\assets\ui\wooden_bow.txt"
 ECHO.
 ECHO Showing detailed information for the Wooden Bow.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_wooden_bow_damage%
-ECHO ^| STAMINA USAGE: %windhelm.item_wooden_bow_stamina_usage%
 ECHO ^| CATEGORY: %windhelm.item_wooden_bow_category%
 ECHO ^| DAMAGE TYPE: %windhelm.item_wooden_bow_damage_type%
 ECHO ^| OWNED: %player.item_wooden_bow_owned%
@@ -474,7 +488,7 @@ TYPE "%cd%\data\assets\ui\armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select a CATEGORY of armor to view.
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -496,7 +510,7 @@ TYPE "%cd%\data\assets\ui\light_armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +-----------------------------------------------------------------------------------------------------------------+
 ECHO ^| Select an ARMOR SET to purchase.
 ECHO +-----------------------------------------------------------------------------------------------------------------+
@@ -537,13 +551,13 @@ IF %vendor.blacksmith_cactus_armor_stock% LEQ 0 (
     SET displayMessage=Sorry, we're sold out of this set.
     GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
 ) ELSE (
-    IF %player.coins% LSS %vendor.blacksmith_cactus_armor_stock% (
+    IF %player.coins% LSS %vendor.blacksmith_cactus_armor_price% (
         SET displayMessage=Sorry, you can't afford this weapon.
         GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
     ) ELSE (
         SET /A player.item_cactus_armor_owned=!player.item_cactus_armor_owned! +1
         SET /A vendor.blacksmith_cactus_armor_stock=!vendor.blacksmith_cactus_armor_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_cactus_armor_price%
+        SET /A player.coins=!player.coins! -%vendor.blacksmith_cactus_armor_price%
         SET displayMessage=Purchased 1 Cactus Armor set for %vendor.blacksmith_cactus_armor_price%.
         GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
     )
@@ -575,13 +589,13 @@ IF %vendor.blacksmith_guard_armor_stock% LEQ 0 (
     SET displayMessage=Sorry, we're sold out of this set.
     GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
 ) ELSE (
-    IF %player.coins% LSS %vendor.blacksmith_guard_armor_stock% (
+    IF %player.coins% LSS %vendor.blacksmith_guard_armor_price% (
         SET displayMessage=Sorry, you can't afford this weapon.
         GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
     ) ELSE (
         SET /A player.item_guard_armor_owned=!player.item_guard_armor_owned! +1
         SET /A vendor.blacksmith_guard_armor_stock=!vendor.blacksmith_guard_armor_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_guard_armor_price%
+        SET /A player.coins=!player.coins! -%vendor.blacksmith_guard_armor_price%
         SET displayMessage=Purchased 1 Guard Armor set for %vendor.blacksmith_guard_armor_price%.
         GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
     )
@@ -596,7 +610,7 @@ TYPE "%cd%\data\assets\ui\medium_armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Select an ARMOR SET to purchase.
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
@@ -637,13 +651,13 @@ IF %vendor.blacksmith_stone_armor_stock% LEQ 0 (
     SET displayMessage=Sorry, we're sold out of this set.
     GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
 ) ELSE (
-    IF %player.coins% LSS %vendor.blacksmith_stone_armor_stock% (
+    IF %player.coins% LSS %vendor.blacksmith_stone_armor_price% (
         SET displayMessage=Sorry, you can't afford this weapon.
         GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
     ) ELSE (
         SET /A player.item_stone_armor_owned=!player.item_stone_armor_owned! +1
         SET /A vendor.blacksmith_stone_armor_stock=!vendor.blacksmith_stone_armor_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_stone_armor_price%
+        SET /A player.coins=!player.coins! -%vendor.blacksmith_stone_armor_price%
         SET displayMessage=Purchased 1 Stone Armor set for %vendor.blacksmith_stone_armor_price%.
         GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
     )
@@ -675,13 +689,13 @@ IF %vendor.blacksmith_iron_armor_stock% LEQ 0 (
     SET displayMessage=Sorry, we're sold out of this set.
     GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
 ) ELSE (
-    IF %player.coins% LSS %vendor.blacksmith_iron_armor_stock% (
+    IF %player.coins% LSS %vendor.blacksmith_iron_armor_price% (
         SET displayMessage=Sorry, you can't afford this weapon.
         GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
     ) ELSE (
         SET /A player.item_iron_armor_owned=!player.item_iron_armor_owned! +1
         SET /A vendor.blacksmith_iron_armor_stock=!vendor.blacksmith_iron_armor_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_iron_armor_price%
+        SET /A player.coins=!player.coins! -%vendor.blacksmith_iron_armor_price%
         SET displayMessage=Purchased 1 Iron Armor set for %vendor.blacksmith_iron_armor_price%.
         GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
     )
@@ -696,7 +710,7 @@ TYPE "%cd%\data\assets\ui\heavy_armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +-----------------------------------------------------------------------------------------------------------------+
 ECHO ^| Select an ARMOR SET to purchase.
 ECHO +-----------------------------------------------------------------------------------------------------------------+
@@ -737,13 +751,13 @@ IF %vendor.blacksmith_steel_armor_stock% LEQ 0 (
     SET displayMessage=Sorry, we're sold out of this set.
     GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
 ) ELSE (
-    IF %player.coins% LSS %vendor.blacksmith_steel_armor_stock% (
+    IF %player.coins% LSS %vendor.blacksmith_steel_armor_price% (
         SET displayMessage=Sorry, you can't afford this weapon.
         GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
     ) ELSE (
         SET /A player.item_steel_armor_owned=!player.item_steel_armor_owned! +1
         SET /A vendor.blacksmith_steel_armor_stock=!vendor.blacksmith_steel_armor_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_steel_armor_price%
+        SET /A player.coins=!player.coins! -%vendor.blacksmith_steel_armor_price%
         SET displayMessage=Purchased 1 Iron Armor set for %vendor.blacksmith_steel_armor_price%.
         GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
     )
@@ -776,13 +790,13 @@ IF %vendor.blacksmith_scale_armor_stock% LEQ 0 (
     SET displayMessage=Sorry, we're sold out of this set.
     GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
 ) ELSE (
-    IF %player.coins% LSS %vendor.blacksmith_scale_armor_stock% (
+    IF %player.coins% LSS %vendor.blacksmith_scale_armor_price% (
         SET displayMessage=Sorry, you can't afford this weapon.
         GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
     ) ELSE (
         SET /A player.item_scale_armor_owned=!player.item_scale_armor_owned! +1
         SET /A vendor.blacksmith_scale_armor_stock=!vendor.blacksmith_scale_armor_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_scale_armor_price%
+        SET /A player.coins=!player.coins! -%vendor.blacksmith_scale_armor_price%
         SET displayMessage=Purchased 1 Scale Armor set for %vendor.blacksmith_scale_armor_price%.
         GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
     )
