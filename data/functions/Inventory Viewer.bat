@@ -72,7 +72,7 @@ ECHO +--------------------------------------------------------------------------
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :INSPECT_LONG_SWORD
 IF /I "%CH%" == "2" GOTO :INSPECT_SHORT_SWORD
-IF /I "%CH%" == "3" GOTO :VIEW_TYPE_WEAPONS
+IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 
@@ -203,7 +203,7 @@ IF NOT "%player.weapon_equipped%" == "Short Sword" (
 
 REM Displays weapons in the "axes" category.
 :VIEW_CATEGORY_AXES
-MODE con: cols=100 lines=20
+MODE con: cols=100 lines=21
 CLS
 SET RETURN=VIEW_CATEGORY_AXES
 ECHO.
@@ -286,7 +286,7 @@ IF NOT "%player.weapon_equipped%" == "Great Axe" (
 
 REM Displays weapons in the "maces" category.
 :VIEW_CATEGORY_MACES
-MODE con: cols=100 lines=20
+MODE con: cols=100 lines=21
 CLS
 SET RETURN=VIEW_CATEGORY_MACES
 ECHO.
@@ -369,7 +369,7 @@ IF NOT "%player.weapon_equipped%" == "Mace" (
 
 REM Displays weapons in the "bows" category.
 :VIEW_CATEGORY_BOWS
-MODE con: cols=100 lines=20
+MODE con: cols=100 lines=21
 CLS
 SET RETURN=VIEW_CATEGORY_BOWS
 ECHO.
@@ -387,7 +387,7 @@ ECHO ^| [1 / WOODEN BOW (%player.item_wooden_bow_owned%) ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :INSPECT_WOODEN_BOW
-IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_BOWS
+IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 REM Displays detailed information of the specific weapon.
@@ -647,7 +647,7 @@ REM Displays detailed information of the specific armor.
 :INSPECT_IRON_ARMOR
 CLS
 SET RETURN=INSPECT_IRON_ARMOR
-MODE con: cols=100 lines=19
+MODE con: cols=100 lines=20
 ECHO.
 TYPE "%cd%\data\assets\ui\iron_armor.txt"
 ECHO.
@@ -788,7 +788,7 @@ REM Displays detailed information of the specific armor.
 :INSPECT_STEEL_ARMOR
 CLS
 SET RETURN=INSPECT_STEEL_ARMOR
-MODE con: cols=106 lines=19
+MODE con: cols=108 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\steel_armor.txt"
 ECHO.
@@ -848,7 +848,7 @@ REM Displays detailed information of the specific armor.
 :INSPECT_SCALE_ARMOR
 CLS
 SET RETURN=INSPECT_SCALE_ARMOR
-MODE con: cols=105 lines=19
+MODE con: cols=107 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\scale_armor.txt"
 ECHO.
@@ -990,7 +990,7 @@ REM Displays detailed information of the specific tonic.
 :INSPECT_TONIC_MAGICKA
 CLS
 SET RETURN=INSPECT_TONIC_MAGICKA
-MODE con: cols=115 lines=21
+MODE con: cols=115 lines=22
 ECHO.
 TYPE "%cd%\data\assets\ui\magicka_tonic.txt"
 ECHO.
@@ -1037,6 +1037,50 @@ IF %player.item_tonic_magicka_owned% LEQ 0 (
             GOTO :VIEW_TYPE_TONICS
         )
     )
+)
+
+:INSPECT_TONIC_XP
+CLS
+SET RETURN=INSPECT_TONIC_XP
+MODE con: cols=115 lines=22
+ECHO.
+TYPE "%cd%\data\assets\ui\xp_tonic.txt"
+ECHO.
+ECHO Showing detailed information for the XP Tonic.
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO ^| AMOUNT: %player.item_tonic_xp_owned%
+ECHO ^| MODIFIER: %windhelm.item_tonic_xp_modifier%
+ECHO ^| CATEGORY: %windhelm.item_tonic_xp_category%
+ECHO ^| TYPE: %windhelm.item_tonic_xp_type%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO [E / CONSUME ] ^| [U / DISCARD ] ^| [Q / BACK ]
+SET /P CH=">"
+IF /I "%CH%" == "E" GOTO :CONSUME_TONIC_XP
+IF /I "%CH%" == "U" GOTO :DISCARD_TONIC_XP
+IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_TONICS
+GOTO :INVALID_INPUT
+
+:DISCARD_TONIC_XP
+REM Check if the Player has the item to discard.
+IF %player.item_tonic_xp_owned% LEQ 0 (
+    REM Player does not have any of this tonic to discard.
+    SET displayMessage=You do not have this item.
+    GOTO :INSPECT_TONIC_XP
+) ELSE (
+    SET /A player.item_tonic_xp_owned=!player.item_tonic_xp_owned! -1
+    SET displayMessage=Discarded 1 xp Tonic.
+    GOTO :INSPECT_TONIC_XP
+)
+
+:CONSUME_TONIC_XP
+IF %player.item_tonic_xp_owned% LEQ 0 (
+    SET displayMessage=You do not have any of this Tonic to consume.
+    GOTO :VIEW_TYPE_TONICS
+) ELSE (
+    SET /A player.xp=!player.xp! +%windhelm.item_tonic_xp_modifier%
+    SET /A player.item_tonic_xp_owned=!player.item_tonic_xp_owned! -1
+    SET displayMessage=Consumed 1 XP Tonic for +%windhelm.item_tonic_xp_modifier% XP.
+    GOTO :VIEW_TYPE_TONICS
 )
 
 :INVALID_INPUT
