@@ -61,6 +61,9 @@ ECHO     Version %windhelm.vn%
 ECHO ========================================================================================================================
 ECHO This is an UNSTABLE build. Check the github page for more information.
 ECHO.
+ECHO Windhelm Version %windhelm.vn%
+ECHO This is a STABLE build. Check the github page for more information.
+ECHO.
 ECHO Delve into the powerful, mysterious Iridescent Forest of the Kindgom of Fulkwinn and it's equally powerful castle,
 ECHO Windhelm^^! Discover shards of your past and rebuild your identity, or forge a new one. Your destiny is yours to control
 ECHO alone. Take on the threats of the Iridescent Forest, defending it from those that wish it harm.

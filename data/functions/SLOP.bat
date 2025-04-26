@@ -11,6 +11,7 @@ SET refundItem=0
 SET refundPrice=0
 SET itemStored=false
 SET player.message=...
+
 SET windhelm.inventory_call=passive
 REM Other values
 SET windhelm.vn=STABLE-0.3.0-250426

@@ -78,11 +78,13 @@ IF %PA% GEQ 84 (
     REM Critical hit
     SET displayMessage=PLAYER HIT - placeholder
     SET /A player.health=!player.health! -%enemy.damage%*2
+    SET /A enemy.stamina=!enemy.stamina! -13
     GOTO :EBS
 ) ELSE IF %PA% GEQ 31 (
     REM Normal Attack 2
     SET displayMessage=PLAYER HIT - placeholder
     SET /A player.health=!player.health! -%enemy.damage%
+    SET /A enemy.stamina=!enemy.stamina! -13
     GOTO :EBS
 ) ELSE IF %PA% LEQ 30 (
     REM Player attack misses.
@@ -113,7 +115,6 @@ IF %PA% GEQ 70 (
 ) ELSE (
     REM Error handling
 )
-
 
 :PLAYER_INVENTORY
 REM REDESIGN PLAYER INVENTORY ACCESS
