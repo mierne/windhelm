@@ -45,7 +45,6 @@ SET /A EE=%RANDOM% %%50
 IF %EE% LEQ 50 (
     SET currentEnemy=Bandit
     CALL "%winLoc%\data\Combat Engine\scripts\evie.bat"
-    TITLE (WINDHELM) - EXPLORATION ENGINE ^| %player.name% the %player.race% %player.class%!
     GOTO :VENTURE_IRIDESCENT_FOREST
 ) ELSE (
     REM In the future, random items may be discovered.
@@ -61,7 +60,6 @@ IF %player.iridescent_ab_defeated% EQU 1 (
     IF %player.level% GEQ 5 (
         SET currentEnemy="Abyss Guardian"
         CALL "%winLoc%\data\Combat Engine\scripts\evie.bat"
-        TITLE (WINDHELM) - EXPLORATION ENGINE ^| %player.name% the %player.race% %player.class%!
         GOTO :VENTURE_IRIDESCENT_FOREST
     ) ELSE (
         SET displayMessage=Your level is too low for this encounter.
