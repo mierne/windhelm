@@ -16,6 +16,7 @@ REM    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 SET winLoc=%~dp0
 SET windhelm.ut=Abyssal
 SET SLOPr=INIT
+SET asint=0
 CALL "%winLoc%\data\functions\SLOP.bat"
 
 :SETTINGS_LOADER
@@ -60,9 +61,6 @@ TYPE "%winLoc%\data\assets\ui\about.txt"
 ECHO     Version %windhelm.vn%
 ECHO ========================================================================================================================
 ECHO This is an UNSTABLE build. Check the github page for more information.
-ECHO.
-ECHO Windhelm Version %windhelm.vn%
-ECHO This is a STABLE build. Check the github page for more information.
 ECHO.
 ECHO Delve into the powerful, mysterious Iridescent Forest of the Kindgom of Fulkwinn and it's equally powerful castle,
 ECHO Windhelm^^! Discover shards of your past and rebuild your identity, or forge a new one. Your destiny is yours to control
@@ -184,6 +182,8 @@ TITLE (Windhelm - %windhelm.ut%) Castle Gate ^| %player.name% the %player.race% 
 MODE con: cols=101 lines=18
 IF %player.xp% LSS 0 SET player.xp=0
 IF %player.health% LSS 0 set player.health=0
+SET /A asint=!asint! +1
+IF %asint% GEQ 10 GOTO :AUTOSAVE
 CLS
 SET RETURN=dashboard
 ECHO.
@@ -429,5 +429,6 @@ GOTO :%RETURN%
 :AUTOSAVE
 SET SLOPr=SAVE
 SET displayMessage=Game saved.
+SET asint=0
 CALL "%cd%\data\functions\SLOP.bat"
 GOTO :dashboard
