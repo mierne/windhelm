@@ -1,20 +1,12 @@
 TITLE (SLoP) - Intialization
-REM A.K.A: Save, Load, order (and initialization) Program
+REM Save, Load, order (and initialization) Program
 
-REM non-changing variables
+REM Variables needed to make Windhelm work are loaded here.
 :BASE_SET
-REM Other Variables
-REM Placeholder values
-SET CE7CALL=0
-SET refunded=false
-SET refundItem=0
-SET refundPrice=0
-SET itemStored=false
 SET player.message=...
-
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=STABLE-0.3.0-250426
+SET windhelm.vn=UNSTABLE-0.4.0-250509
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
@@ -95,6 +87,8 @@ SET windhelm.item_tonic_xp_name=XP Tonic
 SET windhelm.item_tonic_xp_modifier=200
 SET windhelm.item_tonic_xp_type=consumable
 SET windhelm.item_tonic_xp_category=tonics
+REM Effect data
+REM Imbue data
 
 :callCheck
 IF %SLOPr% == SAVE (
@@ -145,6 +139,13 @@ ECHO %player.magicSchool_DestructionSkill%
 ECHO %player.magicSchool_RestorationSkill%
 ECHO %player.ruins_unlocked%
 ECHO %player.bandits_slain%
+ECHO %player.total_deaths%
+ECHO %player.iridescent_ab_defeated%
+ECHO %player.quests_primary_quest%
+ECHO %player.quests_secondary_quest%
+ECHO %player.quests_completed%
+ECHO %player.quests_slay_5_bandits_completed%
+ECHO %player.bandits_slain%
 ECHO %player.catalogue_unlocked%
 ECHO %player.catalogue_locked%
 ECHO %player.catalogue_bandit_encountered%
@@ -170,9 +171,6 @@ ECHO %player.item_wooden_bow_owned%
 ECHO %player.item_tonic_healing_owned%
 ECHO %player.item_tonic_magicka_owned%
 ECHO %player.item_tonic_xp_owned%
-ECHO %player.bandits_slain%
-ECHO %player.total_deaths%
-ECHO %player.iridescent_ab_defeated%
 ECHO %vendor.blacksmith_long_sword_price%
 ECHO %vendor.blacksmith_short_sword_price%
 ECHO %vendor.blacksmith_great_axe_price%
@@ -243,6 +241,12 @@ SET /P player.magicSchool_DestructionSkill=
 SET /P player.magicSchool_RestorationSkill=
 SET /P player.ruins_unlocked=
 SET /P player.bandits_slain=
+SET /P player.total_deaths=
+SET /P player.iridescent_ab_defeated=
+SET /P player.quests_primary_quest=
+SET /P player.quests_secondary_quest=
+SET /P player.quests_completed=
+SET /P player.quests_slay_5_bandits_completed=
 SET /P player.catalogue_unlocked=
 SET /P player.catalogue_locked=
 SET /P player.catalogue_bandit_encountered=
@@ -268,9 +272,6 @@ SET /P player.item_wooden_bow_owned=
 SET /P player.item_tonic_healing_owned=
 SET /P player.item_tonic_magicka_owned=
 SET /P player.item_tonic_xp_owned=
-SET /P player.bandits_slain=
-SET /P player.total_deaths=
-SET /P player.iridescent_ab_defeated=
 SET /P vendor.blacksmith_long_sword_price=
 SET /P vendor.blacksmith_short_sword_price=
 SET /P vendor.blacksmith_great_axe_price=
@@ -345,8 +346,15 @@ SET player.magicSchool_DestructionSkill=2
 SET player.magicSchool_RestorationSkill=2
 REM Location unlocks
 SET player.ruins_unlocked=0
-REM STAT TRACKING
+REM Player statistics tracking
 SET player.bandits_slain=0
+SET player.total_deaths=0
+SET player.iridescent_ab_defeated=0
+REM Player quest tracking
+SET player.quests_primary_quest="No active quest."
+SET player.quests_secondary_quest="No active quest."
+SET player.quests_completed=0
+SET player.quests_slay_5_bandits_completed=0
 REM Misc
 SET player.pronouns_change_req=0
 REM Player beasitary
@@ -360,12 +368,10 @@ SET player.catalogue_abyss_guardian=???
 SET player.catalogue_wandering_trader=???
 GOTO :PLAYER_INIT_INVENTORY
 
-REM Equipment slots
 :PLAYER_INIT_INVENTORY
 SET player.armor_equipped=EMPTY
 SET player.weapon_equipped=EMPTY
 SET player.spell_equipped=EMPTY
-REM Default Player inventory
 SET player.item_cactus_armor_owned=0
 SET player.item_guard_armor_owned=0
 SET player.item_stone_armor_owned=0
@@ -380,10 +386,6 @@ SET player.item_wooden_bow_owned=0
 SET player.item_tonic_healing_owned=0
 SET player.item_tonic_magicka_owned=0
 SET player.item_tonic_xp_owned=0
-REM Player statistics tracking
-SET player.bandits_slain=0
-SET player.total_deaths=0
-SET player.iridescent_ab_defeated=0
 GOTO :INIT_MERCHANTS
 
 REM Setup Merchant inventories & Prices
