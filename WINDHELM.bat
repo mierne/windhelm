@@ -14,7 +14,7 @@ REM    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 :WIN_INIT
 SET winLoc=%~dp0
-SET windhelm.ut=Abyssal
+SET windhelm.ut=Nightfall
 SET SLOPr=INIT
 SET asint=0
 CALL "%winLoc%\data\functions\SLOP.bat"
@@ -39,7 +39,7 @@ ECHO.
 TYPE "%winLoc%\data\assets\ui\main.txt"
 ECHO.
 ECHO.
-ECHO Pre-Alpha Version %windhelm.vn% "Abyssal"
+ECHO Pre-Alpha Version %windhelm.vn% "Nightfall"
 ECHO ========================================================================================================================
 ECHO                   [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [Q / QUIT ]
 ECHO.
