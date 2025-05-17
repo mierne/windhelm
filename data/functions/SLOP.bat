@@ -6,7 +6,8 @@ REM Variables needed to make Windhelm work are loaded here.
 SET player.message=...
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=UNSTABLE-0.4.0-250509
+SET windhelm.vn=UNSTABLE-0.4.0-250516
+SET windhelm.enable_stability_warning=1
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
