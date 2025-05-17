@@ -1,5 +1,26 @@
 REM Allows the Player to level up skills with skill points which are rewarded every X levels. (Undetermined as of now.)
 
+REM Set skill level costs
+IF %player.level% EQU 5 (
+    REM Adjust skill level costs.
+    SET /A windhelm.skill_damage_level_cost=!windhelm.skill_damage_level_cost! +4
+    SET /A windhelm.skill_speech_level_cost=!windhelm.skill_speech_level_cost! +4
+    SET /A windhelm.skill_athletics_level_cost=!windhelm.skill_athletics_level_cost! +4
+    SET /A windhelm.skill_intelligence_level_cost=!windhelm.skill_intelligence_level_cost! +4
+    SET /A windhelm.skill_destruction_level_cost=!windhelm.skill_destruction_level_cost! +4
+    SET /A windhelm.skill_restoration_level_cost=!windhelm.skill_restoration_level_cost! +4
+) ELSE IF %player.level% EQU 10 (
+    SET /A windhelm.skill_damage_level_cost=!windhelm.skill_damage_level_cost! +4
+    SET /A windhelm.skill_speech_level_cost=!windhelm.skill_speech_level_cost! +4
+    SET /A windhelm.skill_athletics_level_cost=!windhelm.skill_athletics_level_cost! +4
+    SET /A windhelm.skill_intelligence_level_cost=!windhelm.skill_intelligence_level_cost! +4
+    SET /A windhelm.skill_destruction_level_cost=!windhelm.skill_destruction_level_cost! +4
+    SET /A windhelm.skill_restoration_level_cost=!windhelm.skill_restoration_level_cost! +4
+) ELSE (
+    REM Player level not within defined requirements.
+    GOTO :PLAYER_LEVEL_UP_LOGIC
+)
+
 :PLAYER_LEVEL_UP_LOGIC
 IF %player.level% EQU 1 (
     REM Level two level up check & logic.
@@ -160,11 +181,14 @@ IF %player.level% EQU 1 (
 
 :LEVEL_FIVE_REWARD
 SET player.level_up_points=6
-GOTO :LEVEL_UP_SKILLS
+GOTO :SKILL_POINT_COSTS_SCALER
 
 :LEVEL_TEN_REWARD
 SET player.level_up_points=12
-GOTO :LEVEL_UP_SKILLS
+GOTO :SKILL_POINT_COSTS_SCALER
+
+:SKILL_POINT_COSTS_SCALER
+
 
 REM Awards the player a set number of points and allows them to increase skills.
 :LEVEL_UP_SKILLS
@@ -178,21 +202,23 @@ ECHO.
 ECHO Which skill would you like to improve? Each improvement costs 2 points.
 ECHO %displayMessage%
 ECHO +----------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player_health% ^| ATK: %player_damage% ^| AMR: %player_armor% ^| MGK: %player_magicka% ^| COINS: %player_coins% ^| XP: %player_xp% ^| LUNIS: %player_lunis%
+ECHO ^| HP: %player.health% ^| ATK: %player.damage% ^| DEF: %player.armor% ^| MGK: %player.magicka% ^| LUNIS: %player.coins% ^| XP: %player.xp%/%player.xp_required%
 ECHO +----------------------------------------------------------------------------------------------------------------+
-ECHO ^| DAMAGE:  %player.skill_damage%,  COST:  6 LEVELS  ^| ATHLETICS: %player.skill_athletics%
-ECHO ^| SPEECH:  %player.skill_speech%,  COST:  9 LEVELS  ^| INTELLIGENCE: %player.skill_intelligence%
-ECHO ^| MAGICKA: %player.skill_magicka%,  COST: 20 LEVELS ^|
+ECHO ^| DAMAGE:  %player.skill_damage%,  COST: %windhelm.skill_damage_level_cost% ^| ATHLETICS: %player.skill_athletics%, COST: %windhelm.skill_athletics_level_cost%
+ECHO ^| SPEECH:  %player.skill_speech%,  COST: %windhelm.skill_speech_level_cost%^| INTELLIGENCE: %player.skill_intelligence%, COST: %windhelm.skill_intelligence_level_cost%
+ECHO ^| DESTRUCTION: %player.skill_destruction%, COST: %windhelm.skill_destruction_level_cost% ^| RESTORATION: %player.skill_restoration%, COST: %windhelm.skill_restoration_level_cost%
 ECHO +----------------------------------------------------------------------------------------------------------------+
-ECHO + [1 / IMPROVE DAMAGE ] ^| [2 / IMPROVE SPEECH ] ^| [3 / IMPROVE MAGICKA ] ^| [4 / IMPROVE ATHLETICS ] ^ [5 / IMPROVE INTELLIGENCE ] ^| [Q / DONE ]
+ECHO + [1 / DAMAGE ] ^| [2 / SPEECH ] ^| [3 / DESTRUCTION ] ^| [ 4 / RESTORATION ] ^| [5 / ATHLETICS ]
+ECHO + [6 / INTELLIGENCE ] ^| [Q / DONE ]
 ECHO +----------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "CH" == "1" GOTO :SKILLS_IMPROVE_DAMAGE
-IF /I "CH" == "2" GOTO :SKILLS_IMPROVE_SPEECH
-IF /I "CH" == "3" GOTO :SKILLS_IMPROVE_MAGICKA
-IF /I "CH" == "4" GOTO :SKILLS_IMPROVE_ATHLETICS
-IF /I "CH" == "5" GOTO :SKILLS_IMPROVE_INTELLIGENCE
-IF /I "CH" == "Q" GOTO :AUTOSAVE
+IF /I "%CH%" == "1" GOTO :SKILLS_IMPROVE_DAMAGE
+IF /I "%CH%" == "2" GOTO :SKILLS_IMPROVE_SPEECH
+IF /I "%CH%" == "3" GOTO :SKILLS_IMPROVE_DESTRUCTIOIN
+IF /I "%CH%" == "4" GOTO :SKILLS_IMPROVE_RESTORATION
+IF /I "%CH%" == "5" GOTO :SKILLS_IMPROVE_ATHLETICS
+IF /I "%CH%" == "6" GOTO :SKILLS_IMPROVE_INTELLIGENCE
+IF /I "%CH%" == "Q" GOTO :AUTOSAVE
 
 REM Attempt to improve the damage skill.
 :SKILLS_IMPROVE_DAMAGE
@@ -202,14 +228,14 @@ IF %player.skill_damage% EQU 10 (
     GOTO :LEVEL_UP_SKILLS
 ) ELSE (
     REM Improve the skill level.
-    IF %player.level_up_points% LSS %windhelm.damage_skill_base_cost_level% (
+    IF %player.level_up_points% LSS %windhelm.skill_damage_level_cost% (
         REM Player does not have enough level up points for this.
         SET displayMessage=You do not have enough points for this.
         GOTO :LEVEL_UP_SKILLS
     ) ELSE (
         SET /A player.skill_damage=!player.skill_damage! +1
-        SET /A player.level_up_points=!player.level_up_points! -1
-        SET displayMessage=Increased damage skill by 1 for two points.
+        SET /A player.level_up_points=!player.level_up_points! -%windhelm.skill_damage_level_cost%
+        SET displayMessage=Increased damage skill by 1 for %windhelm.skill_damage_level_cost% points.
         GOTO :LEVEL_UP_SKILLS
     )
 )
@@ -222,34 +248,46 @@ IF %player.skill_speech% EQU 10 (
     GOTO :LEVEL_UP_SKILLS
 ) ELSE (
     REM Improve the skill level.
-    IF %player.level_up_points% LSS %windhelm.speech_skill_base_cost_level% (
+    IF %player.level_up_points% LSS %windhelm.skill_speech_level_cost% (
         REM Player does not have enough level up points for this.
         SET displayMessage=You do not have enough points for this.
         GOTO :LEVEL_UP_SKILLS
     ) ELSE (
         SET /A player.skill_speech=!player.skill_speech! +1
-        SET /A player.level_up_points=!player.level_up_points! -1
-        SET displayMessage=Increased speech skill by 1 for two points.
+        SET /A player.level_up_points=!player.level_up_points! -%windhelm.skill_speech_level_cost%
+        SET displayMessage=Increased speech skill by 1 for %windhelm.skill_speech_level_cost% points.
         GOTO :LEVEL_UP_SKILLS
     )
 )
 
-REM Attempt to improve the magicka skill.
-:SKILLS_IMPROVE_MAGICKA
-IF %player.skill_magicka% EQU 10 (
-    REM This skill is at the maximum level.
+:SKILLS_IMPROVE_DESTRUCTIOIN
+IF %player.skill_destruction% EQU 10 (
     SET displayMessage=This skill is already at the maximum level^!
     GOTO :LEVEL_UP_SKILLS
 ) ELSE (
-    REM Improve the skill level.
-    IF %player.level_up_points% LSS %windhelm.damage_skill_base_cost_level% (
-        REM Player does not have enough level up points for this.
-        SET displayMessage=You do not have enough points for this.
+    IF %player.level_up_points% LSS %windhelm.skill_destruction_level_cost% (
+        SET displayMessage=You do not have enough points.
         GOTO :LEVEL_UP_SKILLS
     ) ELSE (
-        SET /A player.skill_magicka=!player.skill_magicka! +1
-        SET /A player.level_up_points=!player.level_up_points! -1
-        SET displayMessage=Increased danage skill by 1 for two points.
+        SET /A player.skill_destruction=!player.skill_destruction! +1
+        SET /A player.level_up_points=!player.level_up_points! -%windhelm.skill_destruction_level_cost%
+        SET displayMessage=Increased 'Destruction' skill by +1 for %windhelm.skill_destruction_level_cost% points.
+        GOTO :LEVEL_UP_SKILLS
+    )
+)
+
+:SKILLS_IMPROVE_RESTORATION
+IF %player.skill_restoration% EQU 10 (
+    SET displayMessage=This skill is already at the maximum level^!
+    GOTO :LEVEL_UP_SKILLS
+) ELSE (
+    IF %player.level_up_points% LSS %windhelm.skill_restoration_level_cost% (
+        SET displayMessage=You do not have enough points.
+        GOTO :LEVEL_UP_SKILLS
+    ) ELSE (
+        SET /A player.skill_restoration=!player.skill_restoration! +1
+        SET /A player.level_up_points=!player.level_up_points! -%windhelm.skill_restoration_level_cost%
+        SET displayMessage=Increased 'Restoration' skill by +1 for %windhelm.skill_restoration_level_cost% points.
         GOTO :LEVEL_UP_SKILLS
     )
 )
@@ -262,14 +300,14 @@ IF %player.skill_intelligence% EQU 10 (
     GOTO :LEVEL_UP_SKILLS
 ) ELSE (
     REM Improve the skill level.
-    IF %player.level_up_points% LSS %windhelm.damage_skill_base_cost_level% (
+    IF %player.level_up_points% LSS %windhelm.skill_intelligence_level_cost% (
         REM Player does not have enough level up points for this.
         SET displayMessage=You do not have enough points for this.
         GOTO :LEVEL_UP_SKILLS
     ) ELSE (
         SET /A player.skill_intelligence=!player.skill_intelligence! +1
-        SET /A player.level_up_points=!player.level_up_points! -1
-        SET displayMessage=Increased danage skill by 1 for two points.
+        SET /A player.level_up_points=!player.level_up_points! -%windhelm.skill_intelligence_level_cost
+        SET displayMessage=Increased 'Intelligence' skill by +1 for %windhelm.skill_intelligence_level_cost% points.
         GOTO :LEVEL_UP_SKILLS
     )
 )
@@ -282,14 +320,14 @@ IF %player.skill_athletics% EQU 10 (
     GOTO :LEVEL_UP_SKILLS
 ) ELSE (
     REM Improve the skill level.
-    IF %player.level_up_points% LSS %windhelm.damage_skill_base_cost_level% (
+    IF %player.level_up_points% LSS %windhelm.skill_athletics_level_cost% (
         REM Player does not have enough level up points for this.
         SET displayMessage=You do not have enough points for this.
         GOTO :LEVEL_UP_SKILLS
     ) ELSE (
         SET /A player.skill_athletics=!player.skill_athletics! +1
-        SET /A player.level_up_points=!player.level_up_points! -1
-        SET displayMessage=Increased danage skill by 1 for two points.
+        SET /A player.level_up_points=!player.level_up_points! -%windhelm.skill_athletics_level_cost%
+        SET displayMessage=Increased 'Athletics' skill by +1 for %windhelm.skill_athletics_level_cost% points.
         GOTO :LEVEL_UP_SKILLS
     )
 )
