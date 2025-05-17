@@ -60,7 +60,7 @@ ECHO.
 TYPE "%winLoc%\data\assets\ui\about.txt"
 ECHO     Version %windhelm.vn%
 ECHO ========================================================================================================================
-ECHO This is an UNSTABLE build. Check the github page for more information.
+IF %windhelm.enable_stability_warning% EQU 1 ECHO This is an UNSTABLE build. Check the github page for more information.
 ECHO.
 ECHO Delve into the powerful, mysterious Iridescent Forest of the Kindgom of Fulkwinn and it's equally powerful castle,
 ECHO Windhelm^^! Discover shards of your past and rebuild your identity, or forge a new one. Your destiny is yours to control
@@ -279,7 +279,8 @@ CALL "%winLoc%\data\functions\ciac.bat"
 GOTO :AUTOSAVE
 
 :exploration_engine
-CALL "%winLoc%\data\Exploration Engine\exploration_engine.bat"
+SET PE_CALL=Exploration_Engine
+CALL "%winLoc%\data\functions\Pulse Engine.bat"
 GOTO :AUTOSAVE
 
 :catalogue
