@@ -6,7 +6,7 @@ REM Variables needed to make Windhelm work are loaded here.
 SET player.message=...
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=UNSTABLE-0.4.0-250516
+SET windhelm.vn=UNSTABLE-0.4.0-250517
 SET windhelm.enable_stability_warning=1
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
@@ -34,6 +34,11 @@ SET windhelm.item_great_axe_damage=17
 SET windhelm.item_great_axe_type=weapon
 SET windhelm.item_great_axe_category=axes
 SET windhelm.item_great_axe_damage_type=physical
+SET windhelm.item_hand_axe_name=Hand Axe
+SET windhelm.item_hand_axe_damage=13
+SET windhelm.item_hand_axe_type=weapon
+SET windhelm.item_hand_axe_category=axes
+SET windhelm.item_hand_axe_damage_type=physical
 SET windhelm.item_mace_name=mace
 SET windhelm.item_mace_damage=12
 SET windhelm.item_mace_type=weapon
@@ -44,6 +49,27 @@ SET windhelm.item_wooden_bow_damage=15
 SET windhelm.item_wooden_bow_type=weapon
 SET windhelm.item_wooden_bow_category=bows
 SET windhelm.item_wooden_bow_damage_type=physical
+SET windhelm.item_oracle_hjraldir_name=Oracle of Hjraldir
+SET windhelm.item_oracle_hjraldir_atk_modifier=+2
+SET windhelm.item_oracle_hjraldir_type=Staff
+SET windhelm.item_oracle_hjraldir_category=Staves
+SET windhelm.item_oracle_hjraldir_damage_type=magical
+REM Special weapon item data
+REM Spell data
+SET windhelm.spell_firebolt_name=Firebolt
+SET windhelm.spell_firebolt_damage=15
+SET windhelm.spell_firebolt_modifier=0
+SET windhelm.spell_firebolt_mgk_cost=-50
+SET windhelm.spell_firebolt_type=spell
+SET windhelm.spell_firebolt_school=Destruction
+SET windhelm.spell_firebolt_damage_type=magical
+SET windhelm.spell_healing_hands_name=Healing Hands
+SET windhelm.spell_healing_hands_damage=0
+SET windhelm.spell_healing_hands_modifier=+25
+SET windhelm.spell_healing_hands_mgk_cost=-30
+SET windhelm.spell_healing_hands_type=spell
+SET windhelm.spell_healing_hands_school=Restoration
+SET windhelm.spell_healing_hands_damage_type=magical
 REM Armor item data
 SET windhelm.item_cactus_armor_name=Cactus Armor
 SET windhelm.item_cactus_armor_prot=3
