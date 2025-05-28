@@ -1,4 +1,20 @@
-REM Pulse Engine Version Pre-Alpha-1.0-250516
+if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
+REM Pulse Engine Version Pre-Alpha-1.0-250527
+
+REM Level selection indicator
+SET IFOR.LEVEL1_SELECTED=1
+SET IFOR.LEVEL2_SELECTED=0
+SET IFOR.LEVEL3_SELECTED=0
+SET IFOR.LEVEL4_SELECTED=0
+SET IFOR.SELECTED_LEVEL=Level 1
+SET IFOR.ECOUNT=%pulse.ifor_level_1_ecount%
+SET IFOR.PLAYER_CLEARED=False
+SET IFOR.FINAL_LEVEL=False
+IF %player.ifor_cleared_level1% == True (
+    SET IFOR.PLAYER_CLEARED=True
+) ELSE (
+    SET IFOR.PLAYER_CLEARED=False
+)
 
 REM Determine the reason Pulse Engine was called
 :CALL_REASON
@@ -32,51 +48,206 @@ IF /I "%CH%" == "3" GOTO :VENTURE_ROCKWINN_PLAZA
 IF /I "%CH%" == "Q" GOTO :AUTOSAVE
 GOTO :INVALID_INPUT
 
+
+
 :VENTURE_IRIDESCENT_FOREST
-MODE con: cols=105 lines=17
+MODE con: cols=140 lines=30
+TITLE (Windhelm - %windhelm.ut%) Iridescent Forest ^| %player.name% the %player.race% %player.class%
 SET RETURN=VENTURE_IRIDESCENT_FOREST
 CLS
+ECHO                                    /                 \
+ECHO ----------------------------------/ IRIDESCENT FOREST \-------------------------------------------------------------------------------------
+ECHO                                   \-------------------/
+ECHO -----------------------------------\     %IFOR.SELECTED_LEVEL%     /
+ECHO                                     \               /
+IF %IFOR.LEVEL1_SELECTED% EQU 1 (
+    ECHO         ^>^| 1 ^|^<                      \             /
+) ELSE (
+    ECHO              1                       \             /
+)
+ECHO                                       ^|--------------------------\ AREA BOSS DEFEATED: %pulse.ifor_area_boss_defeated%
+ECHO                                                                   \ ENEMIES: %IFOR.ECOUNT% ^| CLEARED: %IFOR.player_cleared%
+IF %IFOR.LEVEL3_SELECTED% EQU 1 (
+    ECHO                                                                    ^|------------------------------------------------------------------------
+    ECHO -----------\
+    ECHO             \                                                                            
+    ECHO              ^|---------------\                                                                ^>^| 3 ^|^<
+) ELSE (
+    ECHO                                                                    ^|------------------------------------------------------------------------
+    ECHO -----------\
+    ECHO             \                                                                            
+    ECHO              ^|---------------\                                                                   3
+)
+IF %IFOR.LEVEL4_SELECTED% EQU 1 (
+    ECHO                               \                                                                                            ^>^| 4 ^|^<
+) ELSE (
+    ECHO                               \                                                                                                4
+)
+IF %IFOR.LEVEL2_SELECTED% EQU 1 (
+    ECHO                                \
+    ECHO                                 \            ^>^| 2 ^|^<                          ^|-------------------------------------------------------------
+    ECHO                                  \                                           /
+    ) ELSE (
+    ECHO                                \
+    ECHO                                 \               2                             ^|-------------------------------------------------------------
+    ECHO                                  \                                           /
+    
+)
+ECHO                                   ^|-----------------------------------------/ ^> %displayMessage% ^<
 ECHO.
-TYPE "%winLoc%\data\assets\ui\venture.txt"
-ECHO.
-ECHO What is it you wish to do, %player.name%?
-ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
-ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / ADVENTURE ] ^| [2 / AREA BOSS ] ^| [Q / BACK ] ^| %displayMessage%
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO Where do you wish to go? %player.name%?
+ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| ATK: %player.damage% ^| DEF: %player.armor% ^| MGK: %player.magicka% ^| LUNIS: %player.coins%
+ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [Q / BACK ]
+ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :IFOR_ADVENTURE
-IF /I "%CH%" == "2" GOTO :IFOR_CHALLENGE_AREA_BOSS
+IF /I "%CH%" == "1" GOTO :IFOR_SELECT_NEXT
+IF /I "%CH%" == "2" GOTO :IFOR_SELECT_PREVIOUS
+IF /I "%CH%" == "3" GOTO :IFOR_ADVENTURE
+IF /I "%CH%" == "4" GOTO :IFOR_SEARCH_CURRENT
+IF /I "%CH%" == "5" GOTO :IFOR_USE_ITEM_CURRENT
 IF /I "%CH%" == "Q" GOTO :MAIN
 GOTO :INVALID_INPUT
 
-:IFOR_ADVENTURE
-SET /A EE=%RANDOM% %%50
-IF %EE% LEQ 50 (
-    SET currentEnemy=Bandit
-    CALL :PE_COMBAT_ENGINE
-    GOTO :VENTURE_IRIDESCENT_FOREST
+:IFOR_SELECT_NEXT
+IF %IFOR.LEVEL1_SELECTED% EQU 1 (
+    SET IFOR.LEVEL1_SELECTED=0
+    SET IFOR.LEVEL2_SELECTED=1
+    SET IFOR.SELECTED_LEVEL=Level 2
+    SET IFOR.ECOUNT=%pulse.ifor_level_2_ecount%
+    SET IFOR.FINAL_LEVEL=False
+    IF %player.ifor_cleared_level2% == True (
+        SET IFOR.PLAYER_CLEARED=True
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    ) ELSE (
+        SET IFOR.PLAYER_CLEARED=False
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    )
+) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
+    SET IFOR.LEVEL2_SELECTED=0
+    SET IFOR.LEVEL3_SELECTED=1
+    SET IFOR.SELECTED_LEVEL=Level 3
+    SET IFOR.ECOUNT=%pulse.ifor_level_3_ecount%
+    SET IFOR.FINAL_LEVEL=False
+    IF %player.ifor_cleared_level3% == True (
+        SET IFOR.PLAYER_CLEARED=True
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    ) ELSE (
+        SET IFOR.PLAYER_CLEARED=False
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    )
+) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
+    SET IFOR.LEVEL3_SELECTED=0
+    SET IFOR.LEVEL4_SELECTED=1
+    SET IFOR.SELECTED_LEVEL=Level 4
+    SET IFOR.ECOUNT=%pulse.ifor_level_4_ecount%
+    SET IFOR.FINAL_LEVEL=True
+    IF %player.ifor_cleared_level4% == True (
+        SET IFOR.PLAYER_CLEARED=True
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    ) ELSE (
+        SET IFOR.PLAYER_CLEARED=False
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    )
 ) ELSE (
-    REM In the future, random items may be discovered.
-    SET displayMessage=You didn't find anything of interest.
+    SET displayMessage=Cannot go any further forward.
     GOTO :VENTURE_IRIDESCENT_FOREST
 )
 
-:IFOR_CHALLENGE_AREA_BOSS
-IF %player.iridescent_ab_defeated% EQU 1 (
-    SET displayMessage=You have already defeated this great foe.
-    GOTO :VENTURE_IRIDESCENT_FOREST
-) ELSE (
-    IF %player.level% GEQ 5 (
-        SET currentEnemy="Abyss Guardian"
-        GOTO :PE_COMBAT_ENGINE
+:IFOR_SELECT_PREVIOUS
+IF %IFOR.LEVEL4_SELECTED% EQU 1 (
+    SET IFOR.LEVEL4_SELECTED=0
+    SET IFOR.LEVEL3_SELECTED=1
+    SET IFOR.SELECTED_LEVEL=Level 3
+    SET IFOR.ECOUNT=%pulse.ifor_level_3_ecount%
+    SET IFOR.FINAL_LEVEL=False
+    IF %player.ifor_cleared_level3% == True (
+        SET IFOR.PLAYER_CLEARED=True
         GOTO :VENTURE_IRIDESCENT_FOREST
     ) ELSE (
-        SET displayMessage=Your level is too low for this encounter.
+        SET IFOR.PLAYER_CLEARED=False
         GOTO :VENTURE_IRIDESCENT_FOREST
     )
+) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
+    SET IFOR.LEVEL3_SELECTED=0
+    SET IFOR.LEVEL2_SELECTED=1
+    SET IFOR.SELECTED_LEVEL=Level 2
+    SET IFOR.ECOUNT=%pulse.ifor_level_2_ecount%
+    SET IFOR.FINAL_LEVEL=False
+    IF %player.ifor_cleared_level2% == True (
+        SET IFOR.PLAYER_CLEARED=True
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    ) ELSE (
+        SET IFOR.PLAYER_CLEARED=False
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    )
+) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
+    SET IFOR.LEVEL2_SELECTED=0
+    SET IFOR.LEVEL1_SELECTED=1
+    SET IFOR.SELECTED_LEVEL=Level 1
+    SET IFOR.ECOUNT=%pulse.ifor_level_1_ecount%
+    SET IFOR.FINAL_LEVEL=False
+    IF %player.ifor_cleared_level1% == True (
+        SET IFOR.PLAYER_CLEARED=True
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    ) ELSE (
+        SET IFOR.PLAYER_CLEARED=False
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    )
+) ELSE (
+    SET displayMessage=Cannot go back any further.
+    GOTO :VENTURE_IRIDESCENT_FOREST
 )
+
+:IFOR_ADVENTURE
+REM Check if the previous level has been cleared
+IF %IFOR.LEVEL2_SELECTED% EQU 1 (
+    IF %player.ifor_cleared_level1% == False (
+        GOTO :IFOR_CLEAR_PREVIOUS
+    ) ELSE (
+        GOTO :IFOR_AB_CHECK
+    )
+) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
+    IF %player.ifor_cleared_level2% == False (
+        GOTO :IFOR_CLEAR_PREVIOUS
+    ) ELSE (
+        GOTO :IFOR_AB_CHECK
+    )
+) ELSE IF %IFOR.LEVEL4_SELECTED% EQU 1 (
+    IF %player.ifor_cleared_level3% == False (
+        GOTO :IFOR_CLEAR_PREVIOUS
+    ) ELSE (
+        GOTO :IFOR_AB_CHECK
+    )
+)
+
+REM Needs to check if selected level contains a boss foe.
+:IFOR_AB_CHECK
+IF %IFOR.LEVEL4_SELECTED% EQU 1 (
+    SET currentEnemy="Abyssal Guardian"
+    GOTO :PE_COMBAT_ENGINE
+) ELSE (
+    GOTO :IFOR_FOE_ENCOUNTER
+)
+
+:IFOR_FOE_ENCOUNTER
+SET /A EE=%RANDOM% %%50
+IF %EE% LEQ 50 (
+    SET currentEnemy=Bandit
+    GOTO :PE_COMBAT_ENGINE
+) ELSE (
+    REM Do nothing, more foes to come in the future.
+    GOTO :VENTURE_IRIDESCENT_FOREST
+)
+
+:IFOR_SEARCH_CURRENT
+set displayMessage=Not implemented.
+GOTO :VENTURE_IRIDESCENT_FOREST
+
+:IFOR_CLEAR_PREVIOUS
+SET displayMessage=The way is blocked... You must clear the previous level.
+GOTO :VENTURE_IRIDESCENT_FOREST
 
 :VENTURE_WINDHELM_EXTERIOR
 MODE con: cols=105 lines=17
