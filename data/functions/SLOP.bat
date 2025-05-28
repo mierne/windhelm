@@ -6,18 +6,18 @@ REM Variables needed to make Windhelm work are loaded here.
 SET player.message=...
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=UNSTABLE-0.4.0-250517
+SET windhelm.vn=UNSTABLE-0.4.0-250527
 SET windhelm.enable_stability_warning=1
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
 REM Level up skill costs base
-SET windhelm.damage_skill_base_cost_level=2
-SET windhelm.magicka_skill_base_cost_level=2
-SET windhelm.intelligence_skill_base_cost_level=2
-REM Reflex scales with athletics, for future reference. That's why it's excluded here.
-SET windhelm.damage_athletics_base_cost_level=2
-SET windhelm.damage_speech_base_cost_level=2
+SET windhelm.skill_damage_level_cost=6
+SET windhelm.skill_speech_level_cost=9
+SET windhelm.skill_athletics_level_cost=10
+SET windhelm.skill_intelligence_level_cost=10
+SET windhelm.skill_destruction_level_cost=20
+SET windhelm.skill_restoration_level_cost=20
 REM Weapon item data
 SET windhelm.item_long_sword_name=Long Sword
 SET windhelm.item_long_sword_damage=8
@@ -116,6 +116,12 @@ SET windhelm.item_tonic_xp_type=consumable
 SET windhelm.item_tonic_xp_category=tonics
 REM Effect data
 REM Imbue data
+REM Pulse Engine level data
+SET pulse.ifor_area_boss_defeated=False
+SET pulse.ifor_level_1_ecount=1
+SET pulse.ifor_level_2_ecount=3
+SET pulse.ifor_level_3_ecount=4
+SET pulse.ifor_level_4_ecount=1
 
 :callCheck
 IF %SLOPr% == SAVE (
@@ -160,6 +166,8 @@ ECHO %player.skill_magicka%
 ECHO %player.skill_speech%
 ECHO %player.skill_athletics%
 ECHO %player.skill_intelligence%
+ECHO %player.skill_destruction%
+ECHO %player.skill_restoration%
 ECHO %player.reputation%
 ECHO %player.magicSchool_AlterationSkill%
 ECHO %player.magicSchool_DestructionSkill%
@@ -172,7 +180,6 @@ ECHO %player.quests_primary_quest%
 ECHO %player.quests_secondary_quest%
 ECHO %player.quests_completed%
 ECHO %player.quests_slay_5_bandits_completed%
-ECHO %player.bandits_slain%
 ECHO %player.catalogue_unlocked%
 ECHO %player.catalogue_locked%
 ECHO %player.catalogue_bandit_encountered%
@@ -181,6 +188,12 @@ ECHO %player.catalogue_wandering_trader_encountered%
 ECHO %player.catalogue_bandit%
 ECHO %player.catalogue_abyss_guardian%
 ECHO %player.catalogue_wandering_trader%
+ECHO %player.ifor_cleared_level1%
+ECHO %player.ifor_cleared_level2%
+ECHO %player.ifor_cleared_level3%
+ECHO %player.ifor_cleared_level4%
+ECHO %player.ifor_level2_secret_unlocked%
+ECHO %player.ifor_cleared_boss%
 ECHO %player.armor_equipped%
 ECHO %player.weapon_equipped%
 ECHO %player.spell_equipped%
@@ -229,6 +242,11 @@ ECHO %vendor.alchemist.health_tonic_price%
 ECHO %vendor.alchemist.magicka_tonic_price%
 ECHO %vendor.alchemist.health_tonic_stock%
 ECHO %vendor.alchemist.magicka_tonic_stock%
+ECHO %pulse.ifor_area_boss_defeated%
+ECHO %pulse.ifor_level_1_ecount%
+ECHO %pulse.ifor_level_2_ecount%
+ECHO %pulse.ifor_level_3_ecount%
+ECHO %pulse.ifor_level_4_ecount%
 )>"%cd%\data\player\savedata.txt"
 GOTO :EOF
 
@@ -262,6 +280,8 @@ SET /P player.skill_magicka=
 SET /P player.skill_speech=
 SET /P player.skill_athletics=
 SET /P player.skill_intelligence=
+SET /P player.skill_destruction=
+SET /P player.skill_restoration=
 SET /P player.reputation=
 SET /P player.magicSchool_AlterationSkill=
 SET /P player.magicSchool_DestructionSkill=
@@ -282,6 +302,12 @@ SET /P player.catalogue_wandering_trader_encountered=
 SET /P player.catalogue_bandit=
 SET /P player.catalogue_abyss_guardian=
 SET /P player.catalogue_wandering_trader=
+SET /P player.ifor_cleared_level1=
+SET /P player.ifor_cleared_level2=
+SET /P player.ifor_cleared_level3=
+SET /P player.ifor_cleared_level4=
+SET /P player.ifor_level2_secret_unlocked=
+SET /P player.ifor_cleared_boss=
 SET /P player.armor_equipped=
 SET /P player.weapon_equipped=
 SET /P player.spell_equipped=
@@ -330,6 +356,11 @@ SET /P vendor.alchemist.health_tonic_price=
 SET /P vendor.alchemist.magicka_tonic_price=
 SET /P vendor.alchemist.health_tonic_stock=
 SET /P vendor.alchemist.magicka_tonic_stock=
+SET /P pulse.ifor_area_boss_defeated=
+SET /P pulse.ifor_level_1_ecount=
+SET /P pulse.ifor_level_2_ecount=
+SET /P pulse.ifor_level_3_ecount=
+SET /P pulse.ifor_level_4_ecount=
 )<"%cd%\data\player\savedata.txt"
 GOTO :EOF
 
@@ -367,6 +398,8 @@ SET player.skill_magicka=2
 SET player.skill_speech=2
 SET player.skill_athletics=2
 SET player.skill_intelligence=2
+SET player.skill_destruction=2
+SET player.skill_restoration=2
 SET player.reputation=2
 SET player.magicSchool_AlterationSkill=2
 SET player.magicSchool_DestructionSkill=2
@@ -393,6 +426,13 @@ SET player.catalogue_wandering_trader_encountered=0
 SET player.catalogue_bandit=???
 SET player.catalogue_abyss_guardian=???
 SET player.catalogue_wandering_trader=???
+REM Player exploration data
+SET player.ifor_cleared_level1=False
+SET player.ifor_cleared_level2=False
+SET player.ifor_cleared_level3=False
+SET player.ifor_cleared_level4=False
+SET player.ifor_level2_secret_unlocked=0
+SET player.ifor_cleared_boss=0
 GOTO :PLAYER_INIT_INVENTORY
 
 :PLAYER_INIT_INVENTORY
