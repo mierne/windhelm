@@ -129,7 +129,7 @@ IF NOT "%player.weapon_equipped%" == "Long Sword" (
     GOTO :INSPECT_LONG_SWORD
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped="EMPTY"
+    SET player.weapon_equipped=EMPTY
     SET player.damage=5
     SET displayMessage=Unequipped the Long Sword.
     GOTO :INSPECT_LONG_SWORD
@@ -189,7 +189,7 @@ IF NOT "%player.weapon_equipped%" == "Short Sword" (
     GOTO :INSPECT_SHORT_SWORD
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped="EMPTY"
+    SET player.weapon_equipped=EMPTY
     SET player.damage=5
     SET displayMessage=Unequipped the Short Sword.
     GOTO :INSPECT_SHORT_SWORD
@@ -272,7 +272,7 @@ IF NOT "%player.weapon_equipped%" == "Great Axe" (
     GOTO :INSPECT_GREAT_AXE
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped="EMPTY"
+    SET player.weapon_equipped=EMPTY
     SET player.damage=5
     SET displayMessage=Unequipped the Great Axe.
     GOTO :INSPECT_GREAT_AXE
@@ -355,7 +355,7 @@ IF NOT "%player.weapon_equipped%" == "Mace" (
     GOTO :INSPECT_MACE
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped="EMPTY"
+    SET player.weapon_equipped=EMPTY
     SET player.damage=5
     SET displayMessage=Unequipped the Mace.
     GOTO :INSPECT_MACE
@@ -438,7 +438,7 @@ IF NOT "%player.weapon_equipped%" == "Wooden Bow" (
     GOTO :INSPECT_WOODEN_BOW
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped="EMPTY"
+    SET player.weapon_equipped=EMPTY
     SET player.damage=5
     SET displayMessage=Unequipped the Wooden Bow.
     GOTO :INSPECT_WOODEN_BOW
