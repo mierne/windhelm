@@ -6,7 +6,7 @@ REM Variables needed to make Windhelm work are loaded here.
 SET player.message=...
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=UNSTABLE-0.4.0-250527
+SET windhelm.vn=UNSTABLE-0.4.0-2500605
 SET windhelm.enable_stability_warning=1
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
@@ -25,7 +25,7 @@ SET windhelm.item_long_sword_type=weapon
 SET windhelm.item_long_sword_category=swords
 SET windhelm.item_long_sword_damage_type=physical
 SET windhelm.item_short_sword_name=Short Sword
-SET windhelm.item_short_sword_damage=4
+SET windhelm.item_short_sword_damage=5
 SET windhelm.item_short_sword_type=weapon
 SET windhelm.item_short_sword_category=swords
 SET windhelm.item_short_sword_damage_type=physical
@@ -188,6 +188,10 @@ ECHO %player.catalogue_wandering_trader_encountered%
 ECHO %player.catalogue_bandit%
 ECHO %player.catalogue_abyss_guardian%
 ECHO %player.catalogue_wandering_trader%
+ECHO %player.ifor_level_1_searched%
+ECHO %player.ifor_level_2_searched%
+ECHO %player.ifor_level_3_searched%
+ECHO %player.ifor_level_4_searched%
 ECHO %player.ifor_cleared_level1%
 ECHO %player.ifor_cleared_level2%
 ECHO %player.ifor_cleared_level3%
@@ -302,6 +306,10 @@ SET /P player.catalogue_wandering_trader_encountered=
 SET /P player.catalogue_bandit=
 SET /P player.catalogue_abyss_guardian=
 SET /P player.catalogue_wandering_trader=
+SET /P player.ifor_level_1_searched=
+SET /p player.ifor_level_2_searched=
+SET /p player.ifor_level_3_searched=
+SET /p player.ifor_level_4_searched=
 SET /P player.ifor_cleared_level1=
 SET /P player.ifor_cleared_level2=
 SET /P player.ifor_cleared_level3=
@@ -377,7 +385,7 @@ GOTO :PLAYER_INIT_STATS
 :PLAYER_INIT_STATS
 SET player.health=100
 SET player.magicka=100
-SET player.damage=5
+SET player.damage=3
 SET player.damage_heavy=10
 SET player.armor=0
 SET player.class=NONE
@@ -433,6 +441,10 @@ SET player.ifor_cleared_level3=False
 SET player.ifor_cleared_level4=False
 SET player.ifor_level2_secret_unlocked=0
 SET player.ifor_cleared_boss=0
+SET player.ifor_level_1_searched=0
+SET player.ifor_level_2_searched=0
+SET player.ifor_level_3_searched=0
+SET player.ifor_level_4_searched=0
 GOTO :PLAYER_INIT_INVENTORY
 
 :PLAYER_INIT_INVENTORY
