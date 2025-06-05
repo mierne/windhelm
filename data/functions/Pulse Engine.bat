@@ -48,10 +48,8 @@ IF /I "%CH%" == "3" GOTO :VENTURE_ROCKWINN_PLAZA
 IF /I "%CH%" == "Q" GOTO :AUTOSAVE
 GOTO :INVALID_INPUT
 
-
-
 :VENTURE_IRIDESCENT_FOREST
-MODE con: cols=140 lines=30
+MODE con: cols=140 lines=27
 TITLE (Windhelm - %windhelm.ut%) Iridescent Forest ^| %player.name% the %player.race% %player.class%
 SET RETURN=VENTURE_IRIDESCENT_FOREST
 CLS
@@ -242,7 +240,64 @@ IF %EE% LEQ 50 (
 )
 
 :IFOR_SEARCH_CURRENT
-set displayMessage=Not implemented.
+REM Check of this sublevel has been searched.
+IF %IFOR.LEVEL1_SELECTED% EQU 1 (
+    IF %player.ifor_level_1_searched% EQU 1 (
+        GOTO :IFORSC_LS
+    ) ELSE (
+        SET player.ifor_level_1_searched=1
+        GOTO :IFORSC_EC
+    )
+) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
+    IF %player.ifor_level_2_searched% EQU 1 (
+        GOTO :IFORSC_LS
+    ) ELSE (
+        SET player.ifor_level_2_searched=1
+        GOTO :IFORSC_EC
+    )
+) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
+    IF %player.ifor_level_3_searched% EQU 1 (
+        GOTO :IFORSC_LS
+    ) ELSE (
+        SET player.ifor_level_3_searched=1
+        GOTO :IFORSC_EC
+    )
+) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
+    IF %player.ifor_level_4_searched% EQU 1 (
+        GOTO :IFORSC_LS
+    ) ELSE (
+        SET player.ifor_level_4_searched=1
+        GOTO :IFORSC_EC
+    )
+) ELSE (
+    REM Error handle this later. Please don't forget.
+    PAUSE
+)
+
+:IFORSC_LS
+SET displayMessage=You've already searched this level.
+GOTO :VENTURE_IRIDESCENT_FOREST
+
+:IFORSC_EC
+SET /A ER=%RANDOM% %%40
+IF %IFOR.ECOUNT% GTR 0 (
+    REM Enemies have NOT been cleared from this room. Encounter risk
+    IF %ER% GEQ 20 (
+        REM Check level for enemy type
+        SET displayMessage=You encountered an enemy while exploring this level.
+        GOTO :IFOR_AB_CHECK
+    ) ELSE (
+        REM No encounter
+    )
+    GOTO :IFORSC_LOGIC
+) ELSE (
+    GOTO :IFORSC_LOGIC
+)
+
+REM IRIDESCENT FOREST - SUBLEVEL SEARCHING
+:IFORSC_LOGIC
+SET PELH=IFOR_SUBLEVEL
+CALL "%winLoc%\data\functions\Loot Handler.bat"
 GOTO :VENTURE_IRIDESCENT_FOREST
 
 :IFOR_CLEAR_PREVIOUS
