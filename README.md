@@ -1,3 +1,6 @@
+# ⚠️ NOTICE ⚠️
+Project is currently on hiatus. There is no estimated date for development to resume at this time.
+
 <div align="center">
   
   ![](https://badgen.net/badge/icon/windows?icon=windows&label) ![](https://badgen.net/github/release/mierne/windhelm/)
