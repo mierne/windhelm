@@ -1,17 +1,27 @@
-# ⚠️ NOTICE ⚠️
-Project is currently on hiatus. There is no estimated date for development to resume at this time.
-
 <div align="center">
   
   ![](https://badgen.net/badge/icon/windows?icon=windows&label) ![](https://badgen.net/github/release/mierne/windhelm/)
   ##### Originally created by Mierne
 </div>
 
-# About Windhelm unstable
-This branch is in active development and changes often. As a result, attempting to use this version of Windhelm will result in unexpected behaviour.
+# About Windhelm
+Delve into the powerful, mysterious Iridescent Forest of the Kingdom of Fulkwinn and it's equally powerful castle - Windhelm.
+Discover shards of your past, rebuild your identity or forge a new one. Take on the threats to the Iridescent Forest, defending it from those who wish it harm.
+Use soul memories to learn about the world around you and potentially form new allies.
 
-## Downloading
-Thank you for your interest in Windhelm! You may download this branch as a .zip or use the releases tab.
+## Game Mechanics
+It is important to note that the listed changes are not in their final state and may not make it into the final product regardless.<br/>
+As of Windhelm's [Pre-Alpha 0.3.0-250426 release](https://github.com/mierne/windhelm/releases/tag/0.3.0-250426):
+- Unique starting classes
+- Unique character origin stories which impact available dialogue and endings
+- An in-game economy
+- Player levels and tier rewards
+- In-depth combat system
+
+## Content Warning
+Windhelm features content that may not be suitable to all audiences for the following reasons:
+- Discussions or depictions of Self Harm and death
+- Graphic wording describing violent actions
 
 ## Contributing
-Contributions are welcome and even encouraged! Windhelm is an open source project licensed under [GPL-3.0-or-later](https://www.gnu.org/licenses/gpl-3.0-standalone.html).
+Windhelm is an open-source project licensed under GNU GPLv3. Contributions are welcome. If you discover an issue, please open an issue and follow the stated guidelines.
