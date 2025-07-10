@@ -18,10 +18,5 @@ As of Windhelm's [Pre-Alpha 0.3.0-250426 release](https://github.com/mierne/wind
 - Player levels and tier rewards
 - In-depth combat system
 
-## Content Warning
-Windhelm features content that may not be suitable to all audiences for the following reasons:
-- Discussions or depictions of Self Harm and death
-- Graphic wording describing violent actions
-
 ## Contributing
 Windhelm is an open-source project licensed under GNU GPLv3. Contributions are welcome. If you discover an issue, please open an issue and follow the stated guidelines.
