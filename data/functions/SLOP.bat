@@ -122,6 +122,10 @@ SET pulse.ifor_level_1_ecount=1
 SET pulse.ifor_level_2_ecount=3
 SET pulse.ifor_level_3_ecount=4
 SET pulse.ifor_level_4_ecount=1
+set pulse.amcr_area_boss_defeated=False
+set pulse.amcr_level_1_ecount=1
+set pulse.amcr_level_2_ecount=5
+set pulse.amcr_level_3_ecount=1
 
 :callCheck
 IF %SLOPr% == SAVE (
@@ -251,8 +255,15 @@ ECHO %pulse.ifor_level_1_ecount%
 ECHO %pulse.ifor_level_2_ecount%
 ECHO %pulse.ifor_level_3_ecount%
 ECHO %pulse.ifor_level_4_ecount%
+ECHO %player.amcr_cleared_level1%
+ECHO %player.amcr_cleared_level2%
+ECHO %player.amcr_cleared_level3%
+ECHO %player.amcr_level_1_searched%
+ECHO %player.amcr_level_2_searched%
+ECHO %player.amcr_level_3_searched%
+ECHO %player.amcr_nightfall_cleared%
 )>"%cd%\data\player\savedata.txt"
-GOTO :EOF
+GOTO :loadData
 
 :loadData
 (
@@ -369,6 +380,13 @@ SET /P pulse.ifor_level_1_ecount=
 SET /P pulse.ifor_level_2_ecount=
 SET /P pulse.ifor_level_3_ecount=
 SET /P pulse.ifor_level_4_ecount=
+SET /P player.amcr_cleared_level1=
+SET /P player.amcr_cleared_level2=
+SET /P player.amcr_cleared_level3=
+SET /P player.amcr_level_1_searched=
+SET /P player.amcr_level_2_searched=
+SET /P player.amcr_level_3_searched=
+SET /P player.amcr_nightfall_cleared=
 )<"%cd%\data\player\savedata.txt"
 GOTO :EOF
 
@@ -445,6 +463,14 @@ SET player.ifor_level_1_searched=0
 SET player.ifor_level_2_searched=0
 SET player.ifor_level_3_searched=0
 SET player.ifor_level_4_searched=0
+SET player.pe_abgu_cleared=0
+SET player.amcr_cleared_level1=False
+SET player.amcr_cleared_level2=False
+SET player.amcr_cleared_level3=False
+SET player.amcr_level_1_searched=0
+SET player.amcr_level_2_searched=0
+SET player.amcr_level_3_searched=0
+SET player.amcr_nightfall_cleared=0
 GOTO :PLAYER_INIT_INVENTORY
 
 :PLAYER_INIT_INVENTORY

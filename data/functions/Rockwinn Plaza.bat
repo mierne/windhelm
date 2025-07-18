@@ -1,5 +1,4 @@
 TITLE (Rockwinn Plaza) - Rockwinn Plaza ^| %player.name% the %player.race% %player.class%
-SETLOCAL ENABLEDELAYEDEXPANSION
 SET refunded=false
 SET refundPrice=0
 

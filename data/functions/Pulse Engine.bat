@@ -1,5 +1,5 @@
 if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
-REM Pulse Engine Version Pre-Alpha-1.0-250527
+REM Pulse Engine Version Pre-Alpha-1.0-250621
 
 REM Level selection indicator
 SET IFOR.LEVEL1_SELECTED=1
@@ -10,6 +10,14 @@ SET IFOR.SELECTED_LEVEL=Level 1
 SET IFOR.ECOUNT=%pulse.ifor_level_1_ecount%
 SET IFOR.PLAYER_CLEARED=False
 SET IFOR.FINAL_LEVEL=False
+
+SET AMCR.LEVEL1_SELECTED=1
+SET AMCR.LEVEL2_SELECTED=0
+SET AMCR.LEVEL3_SELECTED=0
+SET AMCR.SELECTED_LEVEL=Level 1
+SET AMCR.ECOUNT=%pulse.amcr_level_1_ecount%
+SET AMCR.PLAYER_CLEARED=False
+SET AMCR.FINAL_LEVEL=False
 IF %player.ifor_cleared_level1% == True (
     SET IFOR.PLAYER_CLEARED=True
 ) ELSE (
@@ -48,6 +56,7 @@ IF /I "%CH%" == "3" GOTO :VENTURE_ROCKWINN_PLAZA
 IF /I "%CH%" == "Q" GOTO :AUTOSAVE
 GOTO :INVALID_INPUT
 
+REM Iridscent Forest Level 1 - Sublevels 1-4
 :VENTURE_IRIDESCENT_FOREST
 MODE con: cols=140 lines=27
 TITLE (Windhelm - %windhelm.ut%) Iridescent Forest ^| %player.name% the %player.race% %player.class%
@@ -105,7 +114,7 @@ IF /I "%CH%" == "2" GOTO :IFOR_SELECT_PREVIOUS
 IF /I "%CH%" == "3" GOTO :IFOR_ADVENTURE
 IF /I "%CH%" == "4" GOTO :IFOR_SEARCH_CURRENT
 IF /I "%CH%" == "5" GOTO :IFOR_USE_ITEM_CURRENT
-IF /I "%CH%" == "Q" GOTO :MAIN
+IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
 :IFOR_SELECT_NEXT
@@ -148,7 +157,13 @@ IF %IFOR.LEVEL1_SELECTED% EQU 1 (
         SET IFOR.PLAYER_CLEARED=False
         GOTO :VENTURE_IRIDESCENT_FOREST
     )
+) ELSE IF %IFOR.LEVEL4_SELECTED% EQU 1 (
+    IF %player.pe_abgu_cleared% EQU 1 (
+        REM Iridescent Forest Level 2 - Autmular Crypt
+        GOTO :AMCR_EXPLORE
+    )
 ) ELSE (
+    REM Check if this Area's boss has been cleared
     SET displayMessage=Cannot go any further forward.
     GOTO :VENTURE_IRIDESCENT_FOREST
 )
@@ -304,6 +319,75 @@ GOTO :VENTURE_IRIDESCENT_FOREST
 SET displayMessage=The way is blocked... You must clear the previous level.
 GOTO :VENTURE_IRIDESCENT_FOREST
 
+:AMCR_EXPLORE
+MODE con: cols=140 lines=27
+TITLE (Windhelm - %windhelm.ut%) Autmular Crypt ^| %player.name% the %player.race% %player.class%
+SET RETURN=AMCR_EXPLORE
+CLS
+ECHO                                    /                 \
+ECHO ----------------------------------/ AUTMULAR    CRYPT \-------------------------------------------------------------------------------------
+ECHO                                   \-------------------/
+ECHO -----------------------------------\     %AMCR.SELECTED_LEVEL%     /
+
+
+
+
+
+
+
+
+
+ECHO                                     \               /
+IF %IFOR.LEVEL1_SELECTED% EQU 1 (
+    ECHO         ^>^| 1 ^|^<                      \             /
+) ELSE (
+    ECHO              1                       \             /
+)
+ECHO                                       ^|--------------------------\ AREA BOSS DEFEATED: %pulse.ifor_area_boss_defeated%
+ECHO                                                                   \ ENEMIES: %IFOR.ECOUNT% ^| CLEARED: %IFOR.player_cleared%
+IF %IFOR.LEVEL3_SELECTED% EQU 1 (
+    ECHO                                                                    ^|------------------------------------------------------------------------
+    ECHO -----------\
+    ECHO             \                                                                            
+    ECHO              ^|---------------\                                                                ^>^| 3 ^|^<
+) ELSE (
+    ECHO                                                                    ^|------------------------------------------------------------------------
+    ECHO -----------\
+    ECHO             \                                                                            
+    ECHO              ^|---------------\                                                                   3
+)
+IF %IFOR.LEVEL4_SELECTED% EQU 1 (
+    ECHO                               \                                                                                            ^>^| 4 ^|^<
+) ELSE (
+    ECHO                               \                                                                                                4
+)
+IF %IFOR.LEVEL2_SELECTED% EQU 1 (
+    ECHO                                \
+    ECHO                                 \            ^>^| 2 ^|^<                          ^|-------------------------------------------------------------
+    ECHO                                  \                                           /
+    ) ELSE (
+    ECHO                                \
+    ECHO                                 \               2                             ^|-------------------------------------------------------------
+    ECHO                                  \                                           /
+    
+)
+ECHO                                   ^|-----------------------------------------/ ^> %displayMessage% ^<
+ECHO.
+ECHO Where do you wish to go? %player.name%?
+ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| ATK: %player.damage% ^| DEF: %player.armor% ^| MGK: %player.magicka% ^| LUNIS: %player.coins%
+ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [Q / BACK ]
+ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :IFOR_SELECT_NEXT
+IF /I "%CH%" == "2" GOTO :IFOR_SELECT_PREVIOUS
+IF /I "%CH%" == "3" GOTO :IFOR_ADVENTURE
+IF /I "%CH%" == "4" GOTO :IFOR_SEARCH_CURRENT
+IF /I "%CH%" == "5" GOTO :IFOR_USE_ITEM_CURRENT
+IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
+GOTO :INVALID_INPUT
+
 :VENTURE_WINDHELM_EXTERIOR
 MODE con: cols=105 lines=17
 SET RETURN=VENTURE_WINDHELM_EXTERIOR
@@ -321,7 +405,7 @@ ECHO +--------------------------------------------------------------------------
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER
 IF /I "%CH%" == "2" GOTO :WE_TRAVELING_MERCHANT
-IF /I "%CH%" == "Q" GOTO :MAIN
+IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
 :WE_TRAVELING_MERCHANT
@@ -340,7 +424,7 @@ ECHO ^| [1 / VIEW WARES ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :TM_VIEW_ITEMS
-IF /I "%CH%" == "Q" GOTO :MAIN
+IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
 :TM_VIEW_ITEMS
@@ -412,7 +496,7 @@ IF %WE% LEQ 15 (
 
 :VENTURE_ROCKWINN_PLAZA
 CALL "%winLoc%\data\functions\Rockwinn Plaza.bat"
-GOTO :MAIN
+GOTO :PE_EXPLORATION_ENGINE
 
 :WE_WANDER_ENCOUNTER_1
 MODE con: cols=105 lines=19
@@ -430,7 +514,7 @@ ECHO ^| [1 / APPROACH ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1
-IF /I "%CH%" == "Q" GOTO :MAIN
+IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
 :WE_WANDER_ENCOUNTER_1_INT1
@@ -450,7 +534,7 @@ ECHO +--------------------------------------------------------------------------
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH1
 IF /I "%CH%" == "2" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH2
-IF /I "%CH%" == "Q" GOTO :MAIN
+IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
 :WE_WANDER_ENCOUNTER_1_INT1_CH1
@@ -734,6 +818,7 @@ IF "%currentEnemy%" == "Bandit" (
     GOTO :VICTORY_REWARDS
 ) ELSE IF "%currentEnemy%" == "Abyssal Guardian" (
     SET /A player.iridescent_ab_defeated=1
+    SET player.pe_abgu_cleared=1
     GOTO :BOSS_DEFEAT_REWARDS
     REM GOTO :VICTORY_REWARDS
 ) ELSE (
@@ -878,6 +963,7 @@ SET enemy.damage=%enemy.damage_base%
 GOTO :PE_EXPLORATION_ENGINE
 
 :AUTOSAVE
+goto :eof
 SET SLOPr=save
 CALL "%winLoc%\data\functions\SLOP.bat"
 GOTO :EOF
