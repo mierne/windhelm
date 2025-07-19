@@ -106,7 +106,7 @@ ECHO Where do you wish to go? %player.name%?
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| ATK: %player.damage% ^| DEF: %player.armor% ^| MGK: %player.magicka% ^| LUNIS: %player.coins%
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [Q / BACK ]
+ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [6 / NEXT ZONE ] ^| [Q / BACK ]
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :IFOR_SELECT_NEXT
@@ -114,6 +114,7 @@ IF /I "%CH%" == "2" GOTO :IFOR_SELECT_PREVIOUS
 IF /I "%CH%" == "3" GOTO :IFOR_ADVENTURE
 IF /I "%CH%" == "4" GOTO :IFOR_SEARCH_CURRENT
 IF /I "%CH%" == "5" GOTO :IFOR_USE_ITEM_CURRENT
+IF /I "%CH%" == "6" GOTO :IFOR_CHECK_AREA_BOSS
 IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
@@ -158,14 +159,10 @@ IF %IFOR.LEVEL1_SELECTED% EQU 1 (
         GOTO :VENTURE_IRIDESCENT_FOREST
     )
 ) ELSE IF %IFOR.LEVEL4_SELECTED% EQU 1 (
-    IF %player.pe_abgu_cleared% EQU 1 (
-        REM Iridescent Forest Level 2 - Autmular Crypt
-        GOTO :AMCR_EXPLORE
-    )
-) ELSE (
-    REM Check if this Area's boss has been cleared
     SET displayMessage=Cannot go any further forward.
     GOTO :VENTURE_IRIDESCENT_FOREST
+) ELSE (
+    REM Error Handler should save the day here.
 )
 
 :IFOR_SELECT_PREVIOUS
@@ -319,6 +316,14 @@ GOTO :VENTURE_IRIDESCENT_FOREST
 SET displayMessage=The way is blocked... You must clear the previous level.
 GOTO :VENTURE_IRIDESCENT_FOREST
 
+:IFOR_CHECK_AREA_BOSS
+IF %player.pe_abgu_cleared% EQU 0 (
+    GOTO :AMCR_EXPLORE
+) ELSE (
+    SET displayMessage=Cannot pass. You must first defeat the boss here.
+    GOTO :VENTURE_IRIDESCENT_FOREST
+)
+
 :AMCR_EXPLORE
 MODE con: cols=140 lines=27
 TITLE (Windhelm - %windhelm.ut%) Autmular Crypt ^| %player.name% the %player.race% %player.class%
@@ -343,8 +348,8 @@ IF %IFOR.LEVEL1_SELECTED% EQU 1 (
 ) ELSE (
     ECHO              1                       \             /
 )
-ECHO                                       ^|--------------------------\ AREA BOSS DEFEATED: %pulse.ifor_area_boss_defeated%
-ECHO                                                                   \ ENEMIES: %IFOR.ECOUNT% ^| CLEARED: %IFOR.player_cleared%
+ECHO                                       ^|--------------------------\ AREA BOSS DEFEATED: %pulse.amcr_area_boss_defeated%
+ECHO                                                                   \ ENEMIES: %AMCR.ECOUNT% ^| CLEARED: %AMCR.PLAYER_CLEARED%
 IF %IFOR.LEVEL3_SELECTED% EQU 1 (
     ECHO                                                                    ^|------------------------------------------------------------------------
     ECHO -----------\
@@ -377,7 +382,7 @@ ECHO Where do you wish to go? %player.name%?
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| ATK: %player.damage% ^| DEF: %player.armor% ^| MGK: %player.magicka% ^| LUNIS: %player.coins%
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [Q / BACK ]
+ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [6 / BACK ] ^| [Q / BACK ]
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :IFOR_SELECT_NEXT
