@@ -67,18 +67,13 @@ ECHO Windhelm^^! Discover shards of your past and rebuild your identity, or forg
 ECHO alone. Take on the threats of the Iridescent Forest, defending it from those that wish it harm.
 ECHO Use soul memories to unlock special abilites and form strong bonds to other shards.
 ECHO ========================================================================================================================
-ECHO [1 / GITHUB PAGE ] ^| [Q / RETURN ]
+ECHO [1 / GITHUB PAGE ] ^| [2 / WEB PAGE ] ^| [Q / RETURN ]
 ECHO.
 ECHO Copyright (C) 2021-2025 Mierne ^<ahoy@mierne.net^> licensed under GNU GPLv3
 SET /P CH=">"
-IF /I "%CH%" == "1" START https://www.github.com/mierne/windhelm
+IF /I "%CH%" == "1" START https://www.github.com/mierne/windhelm && GOTO :ABOUT
+IF /I "%CH%" == "2" START https://mierne.net/windhelm.html && GOTO :ABOUT
 IF /I "%CH%" == "Q" GOTO :START
-REM Workaround for opening the link and avoiding an invalid input warning
-IF "%CH%" == "1" (
-    GOTO :ABOUT
-) ELSE (
-    GOTO :INVALID_INPUT
-)
 
 :SETTINGS
 TITLE (Windhelm - %windhelm.ut%) ^| Settings Menu.
@@ -189,7 +184,7 @@ SET RETURN=dashboard
 ECHO.
 TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
-ECHO %displayMessage%
+ECHO %displayMessage% %player.ifor_level_1_searched%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
