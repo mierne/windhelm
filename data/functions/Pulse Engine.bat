@@ -24,6 +24,9 @@ IF %player.ifor_cleared_level1% == True (
     SET IFOR.PLAYER_CLEARED=False
 )
 
+
+
+
 REM Determine the reason Pulse Engine was called
 :CALL_REASON
 IF %PE_CALL% == Exploration_Engine (
@@ -61,6 +64,7 @@ REM Iridscent Forest Level 1 - Sublevels 1-4
 MODE con: cols=140 lines=27
 TITLE (Windhelm - %windhelm.ut%) Iridescent Forest ^| %player.name% the %player.race% %player.class%
 SET RETURN=VENTURE_IRIDESCENT_FOREST
+SET PE.ZONE_ACTIVE=VENTURE_IRIDESCENT_FOREST
 CLS
 ECHO                                    /                 \
 ECHO ----------------------------------/ IRIDESCENT FOREST \-------------------------------------------------------------------------------------
@@ -109,106 +113,14 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [6 / NEXT ZONE ] ^| [Q / BACK ]
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :IFOR_SELECT_NEXT
-IF /I "%CH%" == "2" GOTO :IFOR_SELECT_PREVIOUS
+IF /I "%CH%" == "1" GOTO :ZONE_SELECT_NEXT
+IF /I "%CH%" == "2" GOTO :ZONE_SELECT_LAST
 IF /I "%CH%" == "3" GOTO :IFOR_ADVENTURE
 IF /I "%CH%" == "4" GOTO :IFOR_SEARCH_CURRENT
 IF /I "%CH%" == "5" GOTO :IFOR_USE_ITEM_CURRENT
 IF /I "%CH%" == "6" GOTO :IFOR_CHECK_AREA_BOSS
 IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
-
-:IFOR_SELECT_NEXT
-IF %IFOR.LEVEL1_SELECTED% EQU 1 (
-    SET IFOR.LEVEL1_SELECTED=0
-    SET IFOR.LEVEL2_SELECTED=1
-    SET IFOR.SELECTED_LEVEL=Level 2
-    SET IFOR.ECOUNT=%pulse.ifor_level_2_ecount%
-    SET IFOR.FINAL_LEVEL=False
-    IF %player.ifor_cleared_level2% == True (
-        SET IFOR.PLAYER_CLEARED=True
-        GOTO :VENTURE_IRIDESCENT_FOREST
-    ) ELSE (
-        SET IFOR.PLAYER_CLEARED=False
-        GOTO :VENTURE_IRIDESCENT_FOREST
-    )
-) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
-    SET IFOR.LEVEL2_SELECTED=0
-    SET IFOR.LEVEL3_SELECTED=1
-    SET IFOR.SELECTED_LEVEL=Level 3
-    SET IFOR.ECOUNT=%pulse.ifor_level_3_ecount%
-    SET IFOR.FINAL_LEVEL=False
-    IF %player.ifor_cleared_level3% == True (
-        SET IFOR.PLAYER_CLEARED=True
-        GOTO :VENTURE_IRIDESCENT_FOREST
-    ) ELSE (
-        SET IFOR.PLAYER_CLEARED=False
-        GOTO :VENTURE_IRIDESCENT_FOREST
-    )
-) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
-    SET IFOR.LEVEL3_SELECTED=0
-    SET IFOR.LEVEL4_SELECTED=1
-    SET IFOR.SELECTED_LEVEL=Level 4
-    SET IFOR.ECOUNT=%pulse.ifor_level_4_ecount%
-    SET IFOR.FINAL_LEVEL=True
-    IF %player.ifor_cleared_level4% == True (
-        SET IFOR.PLAYER_CLEARED=True
-        GOTO :VENTURE_IRIDESCENT_FOREST
-    ) ELSE (
-        SET IFOR.PLAYER_CLEARED=False
-        GOTO :VENTURE_IRIDESCENT_FOREST
-    )
-) ELSE IF %IFOR.LEVEL4_SELECTED% EQU 1 (
-    SET displayMessage=Cannot go any further forward.
-    GOTO :VENTURE_IRIDESCENT_FOREST
-) ELSE (
-    REM Error Handler should save the day here.
-)
-
-:IFOR_SELECT_PREVIOUS
-IF %IFOR.LEVEL4_SELECTED% EQU 1 (
-    SET IFOR.LEVEL4_SELECTED=0
-    SET IFOR.LEVEL3_SELECTED=1
-    SET IFOR.SELECTED_LEVEL=Level 3
-    SET IFOR.ECOUNT=%pulse.ifor_level_3_ecount%
-    SET IFOR.FINAL_LEVEL=False
-    IF %player.ifor_cleared_level3% == True (
-        SET IFOR.PLAYER_CLEARED=True
-        GOTO :VENTURE_IRIDESCENT_FOREST
-    ) ELSE (
-        SET IFOR.PLAYER_CLEARED=False
-        GOTO :VENTURE_IRIDESCENT_FOREST
-    )
-) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
-    SET IFOR.LEVEL3_SELECTED=0
-    SET IFOR.LEVEL2_SELECTED=1
-    SET IFOR.SELECTED_LEVEL=Level 2
-    SET IFOR.ECOUNT=%pulse.ifor_level_2_ecount%
-    SET IFOR.FINAL_LEVEL=False
-    IF %player.ifor_cleared_level2% == True (
-        SET IFOR.PLAYER_CLEARED=True
-        GOTO :VENTURE_IRIDESCENT_FOREST
-    ) ELSE (
-        SET IFOR.PLAYER_CLEARED=False
-        GOTO :VENTURE_IRIDESCENT_FOREST
-    )
-) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
-    SET IFOR.LEVEL2_SELECTED=0
-    SET IFOR.LEVEL1_SELECTED=1
-    SET IFOR.SELECTED_LEVEL=Level 1
-    SET IFOR.ECOUNT=%pulse.ifor_level_1_ecount%
-    SET IFOR.FINAL_LEVEL=False
-    IF %player.ifor_cleared_level1% == True (
-        SET IFOR.PLAYER_CLEARED=True
-        GOTO :VENTURE_IRIDESCENT_FOREST
-    ) ELSE (
-        SET IFOR.PLAYER_CLEARED=False
-        GOTO :VENTURE_IRIDESCENT_FOREST
-    )
-) ELSE (
-    SET displayMessage=Cannot go back any further.
-    GOTO :VENTURE_IRIDESCENT_FOREST
-)
 
 :IFOR_ADVENTURE
 REM Check if the previous level has been cleared
@@ -328,6 +240,7 @@ IF %player.pe_abgu_cleared% EQU 0 (
 MODE con: cols=140 lines=27
 TITLE (Windhelm - %windhelm.ut%) Autmular Crypt ^| %player.name% the %player.race% %player.class%
 SET RETURN=AMCR_EXPLORE
+SET PE.ZONE_ACTIVE=AMCR_EXPLORE
 CLS
 ECHO                                    /                 \
 ECHO ----------------------------------/ AUTMULAR    CRYPT \-------------------------------------------------------------------------------------
@@ -343,14 +256,14 @@ ECHO -----------------------------------\     %AMCR.SELECTED_LEVEL%     /
 
 
 ECHO                                     \               /
-IF %IFOR.LEVEL1_SELECTED% EQU 1 (
+IF %AMCR.LEVEL1_SELECTED% EQU 1 (
     ECHO         ^>^| 1 ^|^<                      \             /
 ) ELSE (
     ECHO              1                       \             /
 )
 ECHO                                       ^|--------------------------\ AREA BOSS DEFEATED: %pulse.amcr_area_boss_defeated%
 ECHO                                                                   \ ENEMIES: %AMCR.ECOUNT% ^| CLEARED: %AMCR.PLAYER_CLEARED%
-IF %IFOR.LEVEL3_SELECTED% EQU 1 (
+IF %AMCR.LEVEL3_SELECTED% EQU 1 (
     ECHO                                                                    ^|------------------------------------------------------------------------
     ECHO -----------\
     ECHO             \                                                                            
@@ -361,12 +274,7 @@ IF %IFOR.LEVEL3_SELECTED% EQU 1 (
     ECHO             \                                                                            
     ECHO              ^|---------------\                                                                   3
 )
-IF %IFOR.LEVEL4_SELECTED% EQU 1 (
-    ECHO                               \                                                                                            ^>^| 4 ^|^<
-) ELSE (
-    ECHO                               \                                                                                                4
-)
-IF %IFOR.LEVEL2_SELECTED% EQU 1 (
+IF %AMCR.LEVEL2_SELECTED% EQU 1 (
     ECHO                                \
     ECHO                                 \            ^>^| 2 ^|^<                          ^|-------------------------------------------------------------
     ECHO                                  \                                           /
@@ -385,13 +293,234 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [6 / BACK ] ^| [Q / BACK ]
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :IFOR_SELECT_NEXT
-IF /I "%CH%" == "2" GOTO :IFOR_SELECT_PREVIOUS
-IF /I "%CH%" == "3" GOTO :IFOR_ADVENTURE
-IF /I "%CH%" == "4" GOTO :IFOR_SEARCH_CURRENT
-IF /I "%CH%" == "5" GOTO :IFOR_USE_ITEM_CURRENT
+IF /I "%CH%" == "1" GOTO :ZONE_SELECT_NEXT
+IF /I "%CH%" == "2" GOTO :ZONE_SELECT_LAST
+IF /I "%CH%" == "3" GOTO :AMCR_ADVENTURE
+IF /I "%CH%" == "4" GOTO :AMCR_SEARCH_CURRENT
+IF /I "%CH%" == "5" GOTO :PE_USE_ITEM_CURRENT
+IF /I "%CH%" == "6" GOTO :VENTURE_IRIDESCENT_FOREST
 IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
+
+:AMCR_ADVENTURE
+REM Check if the selected sublevel has an encounter or set of encounters
+IF %AMCR.LEVEL2_SELECTED% EQU 1 (
+    REM Play the travel animation
+    CALL "%winLoc%\data\assets\ui\animated\ANI_travel.bat"
+    IF %pulse.amcr_hidden_merchant_visits% GEQ 5 (
+        SET displayMessage=Whoever was here, is gone now.
+        GOTO :AMCR_EXPLORE
+    )
+    GOTO :AMCR_ENCOUNTER_L2
+) ELSE (
+    CALL "%winLoc%\data\assets\ui\animated\ANI_travel.bat"
+    SET displayMessage=Nothing of interest.
+    GOTO :AMCR_EXPLORE
+)
+
+:AMCR_ENCOUNTER_L2
+SET /A pulse.amcr_hidden_merchant_visits=!pulse.amcr_hidden_merchant_visits! +1
+TITLE (Autmular Crypt) - Hidden Merchant ^| %player.name% the %player.race% %player.class%
+MODE con: cols=100 lines=22
+SET RETURN=AMCR_ENCOUNTER_L2
+ECHO.
+TYPE "%cd%\data\assets\npcs\generic_merchant.txt"
+ECHO.
+ECHO.
+ECHO Thank you for saving me, kind Shard... Discounts, just for you!
+ECHO %displayMessage%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| LONG SWORD: %pulse.amcr_hidden_merchant_longsowrd_stock% STOCKED, PRICE: %pulse.amcr_hidden_merchant_longsowrd_price% LUNIS
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO + [1 / LONG SWORD ] ^| [Q / GO BACK ]                                                            +
+ECHO +--------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :AMCR_HM_BUY_LONGSWORD
+IF /I "%CH%" == "Q" GOTO :AMCR_EXPLORE
+GOTO :INVALID_INPUT
+
+:AMCR_HM_BUY_LONGSWORD
+SET VENDOR.ITEM=INSPECT_LONGSWORD
+SET VENDOR.VENDOR=%pulse.amcr_hidden_merchant_longsowrd_stock%
+SET windhelm.global_item_price=%pulse.amcr_hidden_merchant_longsowrd_price%
+SET windhelm.global_item_stock=%pulse.amcr_hidden_merchant_longsowrd_stock%
+
+
+REM Unified Zone Exploration - UZE
+:ZONE_SELECT_NEXT
+IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
+    REM Sublevel selection for the Iridescent Forest
+    IF %IFOR.LEVEL1_SELECTED% EQU 1 (
+        SET IFOR.LEVEL1_SELECTED=0
+        SET IFOR.LEVEL2_SELECTED=1
+        SET IFOR.SELECTED_LEVEL=Level 2
+        SET IFOR.ECOUNT=%pulse.ifor_level_2_ecount%
+        SET IFOR.FINAL_LEVEL=False
+        IF %player.ifor_cleared_level2% == True (
+            SET IFOR.PLAYER_CLEARED=True
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        ) ELSE (
+            SET IFOR.PLAYER_CLEARED=False
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        )
+    ) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
+        SET IFOR.LEVEL2_SELECTED=0
+        SET IFOR.LEVEL3_SELECTED=1
+        SET IFOR.SELECTED_LEVEL=Level 3
+        SET IFOR.ECOUNT=%pulse.ifor_level_3_ecount%
+        SET IFOR.FINAL_LEVEL=False
+        IF %player.ifor_cleared_level3% == True (
+            SET IFOR.PLAYER_CLEARED=True
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        ) ELSE (
+            SET IFOR.PLAYER_CLEARED=False
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        )
+    ) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
+        SET IFOR.LEVEL3_SELECTED=0
+        SET IFOR.LEVEL4_SELECTED=1
+        SET IFOR.SELECTED_LEVEL=Level 4
+        SET IFOR.ECOUNT=%pulse.ifor_level_4_ecount%
+        SET IFOR.FINAL_LEVEL=True
+        IF %player.ifor_cleared_level4% == True (
+            SET IFOR.PLAYER_CLEARED=True
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        ) ELSE (
+            SET IFOR.PLAYER_CLEARED=False
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        )
+    ) ELSE IF %IFOR.LEVEL4_SELECTED% EQU 1 (
+        SET displayMessage=Cannot go any further forward.
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    ) ELSE (
+        SET errorType=sublevel
+        CALL "%winLoc%\data\functions\Error Handler.bat"
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    )
+) ELSE IF %PE.ZONE_ACTIVE% == AMCR_EXPLORE (
+    REM Sublevel selection for the Autumular Crypt
+    IF %AMCR.LEVEL1_SELECTED% EQU 1 (
+        SET AMCR.LEVEL1_SELECTED=0
+        SET AMCR.LEVEL2_SELECTED=1
+        SET AMCR.SELECTED_LEVEL=Level 2
+        SET AMCR.ECOUNT=%pulse.amcr_level_2_ecount%
+        SET AMCR.FINAL_LEVEL=False
+        IF %player.amcr_cleared_level2% == True (
+            SET AMCR.PLAYER_CLEARED=True
+            GOTO :AMCR_EXPLORE
+        ) ELSE (
+            SET AMCR.PLAYER_CLEARED=False
+            GOTO :AMCR_EXPLORE
+        )
+    ) ELSE IF %AMCR.LEVEL2_SELECTED% EQU 1 (
+        SET AMCR.LEVEL2_SELECTED=0
+        SET AMCR.LEVEL3_SELECTED=1
+        SET AMCR.SELECTED_LEVEL=Level 3
+        SET AMCR.ECOUNT=%pulse.amcr_level_3_ecount%
+        SET AMCR.FINAL_LEVEL=False
+        IF %player.amcr_cleared_level3% == True (
+            SET AMCR.PLAYER_CLEARED=True
+            GOTO :AMCR_EXPLORE
+        ) ELSE (
+            SET AMCR.PLAYER_CLEARED=False
+            GOTO :AMCR_EXPLORE
+        )
+    ) ELSE IF %AMCR.LEVEL3_SELECTED% EQU 1 (
+        SET displayMessage=Cannot go any further forward.
+        GOTO :AMCR_EXPLORE
+    ) ELSE (
+        SET errorType=sublevel
+        CALL "%winLoc%\data\functions\Error Handler.bat"
+    )
+) ELSE (
+    SET errorType=areazone
+    SET callingScript=Pulse Engine.bat
+    SET errorCause=Invalid zone selection
+    SET scriptLine=352
+    CALL "%winLoc%\data\functions\Error Handler.bat"
+)
+
+:ZONE_SELECT_LAST
+IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
+        IF %IFOR.LEVEL4_SELECTED% EQU 1 (
+        SET IFOR.LEVEL4_SELECTED=0
+        SET IFOR.LEVEL3_SELECTED=1
+        SET IFOR.SELECTED_LEVEL=Level 3
+        SET IFOR.ECOUNT=%pulse.ifor_level_3_ecount%
+        SET IFOR.FINAL_LEVEL=False
+        IF %player.ifor_cleared_level3% == True (
+            SET IFOR.PLAYER_CLEARED=True
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        ) ELSE (
+            SET IFOR.PLAYER_CLEARED=False
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        )
+    ) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
+        SET IFOR.LEVEL3_SELECTED=0
+        SET IFOR.LEVEL2_SELECTED=1
+        SET IFOR.SELECTED_LEVEL=Level 2
+        SET IFOR.ECOUNT=%pulse.ifor_level_2_ecount%
+        SET IFOR.FINAL_LEVEL=False
+        IF %player.ifor_cleared_level2% == True (
+            SET IFOR.PLAYER_CLEARED=True
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        ) ELSE (
+            SET IFOR.PLAYER_CLEARED=False
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        )
+    ) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
+        SET IFOR.LEVEL2_SELECTED=0
+        SET IFOR.LEVEL1_SELECTED=1
+        SET IFOR.SELECTED_LEVEL=Level 1
+        SET IFOR.ECOUNT=%pulse.ifor_level_1_ecount%
+        SET IFOR.FINAL_LEVEL=False
+        IF %player.ifor_cleared_level1% == True (
+            SET IFOR.PLAYER_CLEARED=True
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        ) ELSE (
+            SET IFOR.PLAYER_CLEARED=False
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        )
+    ) ELSE (
+        SET displayMessage=Cannot go back any further.
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    )
+) ELSE IF %PE.ZONE_ACTIVE% == AMCR_EXPLORE (
+    IF %AMCR.LEVEL3_SELECTED% EQU 1 (
+        SET AMCR.LEVEL3_SELECTED=0
+        SET AMCR.LEVEL2_SELECTED=1
+        SET AMCR.SELECTED_LEVEL=Level 2
+        SET AMCR.ECOUNT=%pulse.amcr_level_2_ecount%
+        SET AMCR.FINAL_LEVEL=False
+        IF %player.amcr_cleared_level2% == True (
+            SET AMCR.PLAYER_CLEARED=True
+            GOTO :AMCR_EXPLORE
+        ) ELSE (
+            SET AMCR.PLAYER_CLEARED=False
+            GOTO :AMCR_EXPLORE
+        )
+    ) ELSE IF %AMCR.LEVEL2_SELECTED% EQU 1 (
+        SET AMCR.LEVEL2_SELECTED=0
+        SET AMCR.LEVEL1_SELECTED=1
+        SET AMCR.SELECTED_LEVEL=Level 1
+        SET AMCR.ECOUNT=%pulse.amcr_level_1_ecount%
+        SET AMCR.FINAL_LEVEL=False
+        IF %player.amcr_cleared_level1% == True (
+            SET AMCR.PLAYER_CLEARED=True
+            GOTO :AMCR_EXPLORE
+        ) ELSE (
+            SET AMCR.PLAYER_CLEARED=False
+            GOTO :AMCR_EXPLORE
+        )
+    ) ELSE (
+        SET displayMessage=Cannot go back any further.
+        GOTO :AMCR_EXPLORE
+    )
+) ELSE (
+    REM Error Handler
+)
 
 :VENTURE_WINDHELM_EXTERIOR
 MODE con: cols=105 lines=17
