@@ -6,7 +6,7 @@ REM Variables needed to make Windhelm work are loaded here.
 SET player.message=...
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=UNSTABLE-0.4.0-250719
+SET windhelm.vn=UNSTABLE-0.4.0-250721
 SET windhelm.enable_stability_warning=1
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
@@ -122,10 +122,22 @@ SET pulse.ifor_level_1_ecount=1
 SET pulse.ifor_level_2_ecount=3
 SET pulse.ifor_level_3_ecount=4
 SET pulse.ifor_level_4_ecount=1
-set pulse.amcr_area_boss_defeated=False
-set pulse.amcr_level_1_ecount=1
-set pulse.amcr_level_2_ecount=5
-set pulse.amcr_level_3_ecount=1
+SET pulse.amcr_area_boss_defeated=False
+SET pulse.amcr_level_1_ecount=1
+SET pulse.amcr_level_2_ecount=5
+SET pulse.amcr_level_3_ecount=1
+REM Script paths
+SET wait="%winLoc%\data\scripts\wait.vbs"
+REM Global Modules placeholder values
+SET windhelm.global_item_price=0
+SET windhelm.global_item_stock=0
+SET windhelm.global_item_damage=0
+SET windhelm.global_item_modifier=20
+SET windhelm.global_item_prot=0
+SET windhelm.global_item_type=none
+SET windhelm.global_item_category=none
+SET windhelm.global_item_name=none
+
 
 :callCheck
 IF %SLOPr% == SAVE (
@@ -250,6 +262,9 @@ ECHO %vendor.alchemist.health_tonic_price%
 ECHO %vendor.alchemist.magicka_tonic_price%
 ECHO %vendor.alchemist.health_tonic_stock%
 ECHO %vendor.alchemist.magicka_tonic_stock%
+ECHO %pulse.amcr_hidden_merchant_visits%
+ECHO %pulse.amcr_hidden_merchant_longsowrd_price%
+ECHO %pulse.amcr_hidden_merchant_longsowrd_stock%
 ECHO %pulse.ifor_area_boss_defeated%
 ECHO %pulse.ifor_level_1_ecount%
 ECHO %pulse.ifor_level_2_ecount%
@@ -375,6 +390,9 @@ SET /P vendor.alchemist.health_tonic_price=
 SET /P vendor.alchemist.magicka_tonic_price=
 SET /P vendor.alchemist.health_tonic_stock=
 SET /P vendor.alchemist.magicka_tonic_stock=
+SET /P pulse.amcr_hidden_merchant_visits=
+SET /P pulse.amcr_hidden_merchant_longsowrd_price=
+SET /P pulse.amcr_hidden_merchant_longsowrd_stock=
 SET /P pulse.ifor_area_boss_defeated=
 SET /P pulse.ifor_level_1_ecount=
 SET /P pulse.ifor_level_2_ecount=
@@ -541,6 +559,10 @@ REM Traveling Merchant Stock
 SET vendor.travmerch_xp_tonic_stock=6
 REM Traveling Merchant Prices
 SET vendor.travmerch_xp_tonic_price=400
+REM Autmular Hidden Merchant
+SET pulse.amcr_hidden_merchant_visits=0
+SET pulse.amcr_hidden_merchant_longsowrd_price=120
+SET pulse.amcr_hidden_merchant_longsowrd_stock=6
 IF %SLOPr% == INIT (
     GOTO :EOF
 ) ELSE (
