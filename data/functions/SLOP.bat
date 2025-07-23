@@ -137,7 +137,14 @@ SET windhelm.global_item_prot=0
 SET windhelm.global_item_type=none
 SET windhelm.global_item_category=none
 SET windhelm.global_item_name=none
+SET windhelm.transition_delay=300
 
+:SETTINGS_LOADER
+(
+SET /P windhelm.theme_color=
+SET /P windhelm.transition_delay=
+)<"%winLoc%\data\settings.txt"
+GOTO :callCheck
 
 :callCheck
 IF %SLOPr% == SAVE (
