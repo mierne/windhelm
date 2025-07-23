@@ -19,14 +19,8 @@ SET SLOPr=INIT
 SET asint=0
 CALL "%winLoc%\data\functions\SLOP.bat"
 
-:SETTINGS_LOADER
-(
-SET /P setColor=
-)<"%winLoc%\data\settings.txt"
-GOTO :setCheck
-
-:setCheck
-color %setColor%
+:windhelm_game_configurer
+color %windhelm.theme_color%
 SET displayMessage=...
 GOTO :START
 
@@ -72,7 +66,7 @@ ECHO.
 ECHO Copyright (C) 2021-2025 Mierne ^<ahoy@mierne.net^> licensed under GNU GPLv3
 SET /P CH=">"
 IF /I "%CH%" == "1" START https://www.github.com/mierne/windhelm && GOTO :ABOUT
-IF /I "%CH%" == "2" START https://mierne.net/windhelm.html && GOTO :ABOUT
+IF /I "%CH%" == "2" START https://mierne.net/windhelm && GOTO :ABOUT
 IF /I "%CH%" == "Q" GOTO :START
 
 :SETTINGS
@@ -84,10 +78,11 @@ ECHO.
 TYPE "%cd%\data\assets\ui\settings.txt"
 ECHO.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / CHANGE THEME ] ^| [Q / EXIT ]                                                                +
+ECHO ^| [1 / CHANGE THEME ] ^| [2 / TRANSITION CONFIGURATION ] ^| [Q / EXIT ]                              +
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :theme_select
+IF /I "%CH%" == "2" GOTO :TRANS_CONFIG
 IF /I "%CH%" == "Q" GOTO :START
 GOTO :INVALID_INPUT
 
@@ -125,8 +120,8 @@ SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :THEME_CUSTOM_HELP
 IF /I "%CH%" == "Q" GOTO :SETTINGS
 COLOR %CH%
-SET setColor=%CH%
-GOTO :THEME_SAVE
+SET windhelm.theme_color=%CH%
+GOTO :SAVE_SETTINGS
 
 :THEME_CUSTOM_HELP
 ECHO Opening CMD with command COLOR /?
@@ -135,22 +130,48 @@ PAUSE
 GOTO :CUSTOM_COLOR
 
 :0E
-set setColor=0E
+set windhelm.theme_color=0E
 color 0E
 set displayMessage=Color 0E applied.
-GOTO :THEME_SAVE
+GOTO :SAVE_SETTINGS
 
 :1F
-set setColor=1F
+set windhelm.theme_color=1F
 COLOR 1F
 set displayMessage=Color 1F applied.
-GOTO :THEME_SAVE
+GOTO :SAVE_SETTINGS
 
-:THEME_SAVE
+:TRANS_CONFIG
+MODE con: cols=100 lines=15
+CLS
+SET RETURN=TRANS_CONFIG
+ECHO.
+TYPE "%cd%\data\assets\ui\delay_config.txt"
+ECHO.
+ECHO %displayMessage% ^| The current delay is: %windhelm.transition_delay%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / DEFAULT (300MS) ] ^| [C / CUSTOM ] ^| [Q / EXIT ]                                             +
+ECHO +--------------------------------------------------------------------------------------------------+
+SET /P CH=">"
+IF /I "%CH%" == "1" GOTO :TC_DEFAULT
+IF /I "%CH%" == "C" GOTO :TC_CUSTOM
+IF /I "%CH%" == "Q" GOTO :SETTINGS
+GOTO :INVALID_INPUT
+
+:TC_DEFAULT
+SET windhelm.transition_delay=300
+GOTO :SAVE_SETTINGS
+
+:TC_CUSTOM
+SET /P TCT="Set a custom transition animation delay (in ms): "
+SET windhelm.transition_delay=%TCT%
+GOTO :SAVE_SETTINGS
+
+:SAVE_SETTINGS
 (
-ECHO %setColor%
+ECHO %windhelm.theme_color%
+ECHO %windhelm.transition_delay%
 )>"%winLoc%\data\settings.txt"
-SET displayMessage=Color %setColor% applied.
 GOTO :%RETURN%
 
 :NEW_GAME
