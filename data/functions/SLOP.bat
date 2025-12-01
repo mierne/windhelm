@@ -6,7 +6,7 @@ REM Variables needed to make Windhelm work are loaded here.
 SET player.message=...
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=UNSTABLE-0.4.0-250721
+SET windhelm.vn=UNSTABLE-0.4.0-251130
 SET windhelm.enable_stability_warning=1
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
@@ -211,16 +211,16 @@ ECHO %player.catalogue_wandering_trader_encountered%
 ECHO %player.catalogue_bandit%
 ECHO %player.catalogue_abyss_guardian%
 ECHO %player.catalogue_wandering_trader%
-ECHO %player.ifor_level_1_searched%
-ECHO %player.ifor_level_2_searched%
-ECHO %player.ifor_level_3_searched%
-ECHO %player.ifor_level_4_searched%
 ECHO %player.ifor_cleared_level1%
 ECHO %player.ifor_cleared_level2%
 ECHO %player.ifor_cleared_level3%
 ECHO %player.ifor_cleared_level4%
 ECHO %player.ifor_level2_secret_unlocked%
 ECHO %player.ifor_cleared_boss%
+ECHO %player.ifor_level_1_searched%
+ECHO %player.ifor_level_2_searched%
+ECHO %player.ifor_level_3_searched%
+ECHO %player.ifor_level_4_searched%
 ECHO %player.armor_equipped%
 ECHO %player.weapon_equipped%
 ECHO %player.spell_equipped%
@@ -339,16 +339,16 @@ SET /P player.catalogue_wandering_trader_encountered=
 SET /P player.catalogue_bandit=
 SET /P player.catalogue_abyss_guardian=
 SET /P player.catalogue_wandering_trader=
-SET /P player.ifor_level_1_searched=
-SET /p player.ifor_level_2_searched=
-SET /p player.ifor_level_3_searched=
-SET /p player.ifor_level_4_searched=
 SET /P player.ifor_cleared_level1=
 SET /P player.ifor_cleared_level2=
 SET /P player.ifor_cleared_level3=
 SET /P player.ifor_cleared_level4=
 SET /P player.ifor_level2_secret_unlocked=
 SET /P player.ifor_cleared_boss=
+SET /P player.ifor_level_1_searched=
+SET /p player.ifor_level_2_searched=
+SET /p player.ifor_level_3_searched=
+SET /p player.ifor_level_4_searched=
 SET /P player.armor_equipped=
 SET /P player.weapon_equipped=
 SET /P player.spell_equipped=
@@ -478,10 +478,10 @@ SET player.catalogue_bandit=???
 SET player.catalogue_abyss_guardian=???
 SET player.catalogue_wandering_trader=???
 REM Player exploration data
-SET player.ifor_cleared_level1=False
-SET player.ifor_cleared_level2=False
-SET player.ifor_cleared_level3=False
-SET player.ifor_cleared_level4=False
+SET player.ifor_cleared_level1=0
+SET player.ifor_cleared_level2=0
+SET player.ifor_cleared_level3=0
+SET player.ifor_cleared_level4=0
 SET player.ifor_level2_secret_unlocked=0
 SET player.ifor_cleared_boss=0
 SET player.ifor_level_1_searched=0
@@ -489,9 +489,9 @@ SET player.ifor_level_2_searched=0
 SET player.ifor_level_3_searched=0
 SET player.ifor_level_4_searched=0
 SET player.pe_abgu_cleared=0
-SET player.amcr_cleared_level1=False
-SET player.amcr_cleared_level2=False
-SET player.amcr_cleared_level3=False
+SET player.amcr_cleared_level1=0
+SET player.amcr_cleared_level2=0
+SET player.amcr_cleared_level3=0
 SET player.amcr_level_1_searched=0
 SET player.amcr_level_2_searched=0
 SET player.amcr_level_3_searched=0
