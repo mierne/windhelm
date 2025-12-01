@@ -1,6 +1,7 @@
 if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
-REM Pulse Engine Version Pre-Alpha-1.0-250621
+REM Pulse Engine Version Pre-Alpha-1.0-251130
 
+:BATTLE_GLOBAL_RESET
 REM Level selection indicator
 SET IFOR.LEVEL1_SELECTED=1
 SET IFOR.LEVEL2_SELECTED=0
@@ -18,14 +19,11 @@ SET AMCR.SELECTED_LEVEL=Level 1
 SET AMCR.ECOUNT=%pulse.amcr_level_1_ecount%
 SET AMCR.PLAYER_CLEARED=False
 SET AMCR.FINAL_LEVEL=False
-IF %player.ifor_cleared_level1% == True (
+IF %player.ifor_cleared_level1% EQU 1 (
     SET IFOR.PLAYER_CLEARED=True
 ) ELSE (
     SET IFOR.PLAYER_CLEARED=False
 )
-
-
-
 
 REM Determine the reason Pulse Engine was called
 :CALL_REASON
@@ -106,7 +104,7 @@ IF %IFOR.LEVEL2_SELECTED% EQU 1 (
 )
 ECHO                                   ^|-----------------------------------------/ ^> %displayMessage% ^<
 ECHO.
-ECHO Where do you wish to go? %player.name%?
+ECHO Where do you wish to go, %player.name%? %player.ifor_cleared_level1%
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| ATK: %player.damage% ^| DEF: %player.armor% ^| MGK: %player.magicka% ^| LUNIS: %player.coins%
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
@@ -123,25 +121,49 @@ IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
 :IFOR_ADVENTURE
-REM Check if the previous level has been cleared
-IF %IFOR.LEVEL2_SELECTED% EQU 1 (
-    IF %player.ifor_cleared_level1% == False (
+REM Check if any foes remain and if the previous level has been cleared.
+IF %IFOR.LEVEL1_SELECTED% EQU 1 (
+    IF %pulse.ifor_level_1_ecount% EQU 0 (
+        SET displayMessage=No enemies remain here, move forward.
+        GOTO :VENTURE_IRIDESCENT_FOREST
+    ) ELSE (
+        REM No previous level, so we continue
+    )
+) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
+    IF %player.ifor_cleared_level1% EQU 0 (
         GOTO :IFOR_CLEAR_PREVIOUS
     ) ELSE (
-        GOTO :IFOR_AB_CHECK
+        IF %pulse.ifor_level_2_ecount% EQU 0 (
+            SET displayMessage=No enemies remain here, move forward.
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        ) ELSE (
+            GOTO :IFOR_AB_CHECK
+        )
     )
 ) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
-    IF %player.ifor_cleared_level2% == False (
+    IF %player.ifor_cleared_level2% EQU 0 (
         GOTO :IFOR_CLEAR_PREVIOUS
     ) ELSE (
-        GOTO :IFOR_AB_CHECK
+        IF %pulse.ifor_level_3_ecount% EQU 0 (
+            SET displayMessage=No enemies remain here, move forward.
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        ) ELSE (
+            GOTO :IFOR_AB_CHECK
+        )
     )
 ) ELSE IF %IFOR.LEVEL4_SELECTED% EQU 1 (
-    IF %player.ifor_cleared_level3% == False (
+    IF %player.ifor_cleared_level3% EQU 0 (
         GOTO :IFOR_CLEAR_PREVIOUS
     ) ELSE (
-        GOTO :IFOR_AB_CHECK
+        IF %pulse.ifor_level_4_ecount% EQU 0 (
+            SET displayMessage=No enemies remain here, move forward.
+            GOTO :VENTURE_IRIDESCENT_FOREST
+        ) ELSE (
+            GOTO :IFOR_AB_CHECK
+        )
     )
+) ELSE (
+    REM Error handling
 )
 
 REM Needs to check if selected level contains a boss foe.
@@ -230,11 +252,14 @@ GOTO :VENTURE_IRIDESCENT_FOREST
 
 :IFOR_CHECK_AREA_BOSS
 IF %player.pe_abgu_cleared% EQU 0 (
-    GOTO :AMCR_EXPLORE
+    GOTO :AMCR_EXPLORE_TRANSITION
 ) ELSE (
     SET displayMessage=Cannot pass. You must first defeat the boss here.
     GOTO :VENTURE_IRIDESCENT_FOREST
 )
+
+:AMCR_EXPLORE_TRANSITION
+CALL "%winLoc%\data\assets\ui\animated\ANI_travel.bat"
 
 :AMCR_EXPLORE
 MODE con: cols=140 lines=27
@@ -346,7 +371,8 @@ SET VENDOR.ITEM=INSPECT_LONGSWORD
 SET VENDOR.VENDOR=%pulse.amcr_hidden_merchant_longsowrd_stock%
 SET windhelm.global_item_price=%pulse.amcr_hidden_merchant_longsowrd_price%
 SET windhelm.global_item_stock=%pulse.amcr_hidden_merchant_longsowrd_stock%
-
+CALL "%winLoc%\data\functions\global_modules.bat"
+GOTO :AMCR_EXPLORE
 
 REM Unified Zone Exploration - UZE
 :ZONE_SELECT_NEXT
@@ -476,7 +502,7 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET IFOR.SELECTED_LEVEL=Level 1
         SET IFOR.ECOUNT=%pulse.ifor_level_1_ecount%
         SET IFOR.FINAL_LEVEL=False
-        IF %player.ifor_cleared_level1% == True (
+        IF %player.ifor_cleared_level1% EQU 1 (
             SET IFOR.PLAYER_CLEARED=True
             GOTO :VENTURE_IRIDESCENT_FOREST
         ) ELSE (
@@ -756,9 +782,9 @@ SET enLooted=0
 SET player.damage_base=%player.damage%
 
 REM Iridescent Bandit Information
-SET bandit.health=80
+SET bandit.health=70
 SET bandit.magicka=100
-SET bandit.damage=14
+SET bandit.damage=10
 SET bandit.damage_type_resistance=physical
 SET bandit.damage_resisted=0
 
@@ -776,7 +802,7 @@ SET abyss_guardian.faction=Abyss Lurkers
 :PE_COMBAT_ENGINE_ENCOUNTER
 IF "%currentEnemy%" == "Bandit" (
     SET enemy.health=%bandit.health%
-    SET enemy.magicka=%bandit.magicka%
+    SET enemy.magicka=%bandit.magicka%s
     SET enemy.damage=%bandit.damage%
     SET enemy.damage_type_resistance=%bandit.damage_type_resistance%
     SET enemy.damage_resisted=%bandit.damage_resisted%
@@ -836,12 +862,12 @@ IF %PA% GEQ 80 (
     SET player.message=That REALLY hurt.
     SET /A enemy.health=!enemy.health! -%player.damage%*2
     GOTO :PLAYER_ARMOR_CALCULATION
-) ELSE IF %PA% GEQ 27 (
+) ELSE IF %PA% GEQ 16 (
     REM Normal Attack 2
     SET player.message=You managed a hit, mother would be proud.
     SET /A enemy.health=!enemy.health! -%player.damage%
     GOTO :PLAYER_ARMOR_CALCULATION
-) ELSE IF %PA% LEQ 26 (
+) ELSE IF %PA% LEQ 15 (
     REM Player attack misses.
     SET player.message=You forgot to tie your laces and fall flat on your face.
     GOTO :PLAYER_ARMOR_CALCULATION
@@ -949,7 +975,7 @@ EXIT
 :VICTORY_STATS_TRACK
 IF "%currentEnemy%" == "Bandit" (
     SET /A player.bandits_slain=!player.bandits_slain! +1
-    GOTO :VICTORY_REWARDS
+    GOTO :VICTORY_TRACK_CLEARED
 ) ELSE IF "%currentEnemy%" == "Abyssal Guardian" (
     SET /A player.iridescent_ab_defeated=1
     SET player.pe_abgu_cleared=1
@@ -958,6 +984,15 @@ IF "%currentEnemy%" == "Bandit" (
 ) ELSE (
     REM Enemy doesn't exist? How'd you get here?
     GOTO :ERROR_HANDLER
+)
+
+:VICTORY_TRACK_CLEARED
+REM Keep track of which level was cleared.
+IF %IFOR.LEVEL1_SELECTED% EQU 1 (
+    REM Iridescent Forest Level 1 was selected, mark as cleared.
+    SET player.ifor_cleared_level1=1
+    SET /A pulse.ifor_level_1_ecount=%pulse.ifor_level_1_ecount% -1
+    GOTO :VICTORY_REWARDS
 )
 
 :BOSS_DEFEAT_REWARDS
@@ -1094,7 +1129,7 @@ IF /I "%CH%" == "Q" GOTO :CLEANUP
 :CLEANUP
 SET enLooted=0
 SET enemy.damage=%enemy.damage_base%
-GOTO :PE_EXPLORATION_ENGINE
+GOTO :BATTLE_GLOBAL_RESET
 
 :AUTOSAVE
 goto :eof
