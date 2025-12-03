@@ -1,5 +1,4 @@
 if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
-REM Pulse Engine Version Pre-Alpha-1.0-251130
 
 :BATTLE_GLOBAL_RESET
 REM Level selection indicator
@@ -802,7 +801,7 @@ SET abyss_guardian.faction=Abyss Lurkers
 :PE_COMBAT_ENGINE_ENCOUNTER
 IF "%currentEnemy%" == "Bandit" (
     SET enemy.health=%bandit.health%
-    SET enemy.magicka=%bandit.magicka%s
+    SET enemy.magicka=%bandit.magicka%
     SET enemy.damage=%bandit.damage%
     SET enemy.damage_type_resistance=%bandit.damage_type_resistance%
     SET enemy.damage_resisted=%bandit.damage_resisted%
@@ -847,12 +846,11 @@ ECHO ^| %player.message%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [A / ATTACK ] ^| [I / ITEMS ] ^| [Q / FLEE ]
+ECHO ^| [A / ATTACK ] ^| [I / ITEMS ]
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "A" GOTO :PLAYER_ATTACK
 IF /I "%CH%" == "I" GOTO :PLAYER_ITEMS
-IF /I "%CH%" == "Q" GOTO :PLAYER_FLEE
 
 :PLAYER_ATTACK
 REM a number between 0 and 100 can be split 4 ways, two hits, a crit and a miss. Descending chance in that order.
