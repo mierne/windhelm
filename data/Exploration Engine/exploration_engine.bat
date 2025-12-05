@@ -45,6 +45,8 @@ SET /A EE=%RANDOM% %%50
 IF %EE% LEQ 50 (
     SET currentEnemy=Bandit
     CALL "%winLoc%\data\Combat Engine\scripts\evie.bat"
+    SET player.catalogue_bandit_encountered=1
+    SET player.catalogue_bandit=Bandit
     GOTO :VENTURE_IRIDESCENT_FOREST
 ) ELSE (
     REM In the future, random items may be discovered.
@@ -57,9 +59,11 @@ IF %player.iridescent_ab_defeated% EQU 1 (
     SET displayMessage=You have already defeated this great foe.
     GOTO :VENTURE_IRIDESCENT_FOREST
 ) ELSE (
-    IF %player.level% GEQ 5 (
-        SET currentEnemy="Abyss Guardian"
+    IF %player.level% GEQ 0 (
+        SET currentEnemy=Abyss Guardian
         CALL "%winLoc%\data\Combat Engine\scripts\evie.bat"
+        SET player.catalogue_abyss_guardian_encountered=1
+        SET player.catalogue_abyss_guardian=Abyss Guardian
         GOTO :VENTURE_IRIDESCENT_FOREST
     ) ELSE (
         SET displayMessage=Your level is too low for this encounter.
@@ -212,7 +216,7 @@ ECHO ^| [1 / TELL ME ABOUT WINDHELM ] ^| [2 / EARNING LUNIS ] ^| [Q / BACK ] ^| 
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH1
-IF /I "%CH%" == "2" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH2
+IF /I "%CH%" == "2" GOTO :WE_WANDER_ENCOUNTER_1_INT1
 IF /I "%CH%" == "Q" GOTO :MAIN
 GOTO :INVALID_INPUT
 
@@ -289,6 +293,6 @@ GOTO :%RETURN%
 
 REM Save Player progress before quitting Exploration Engine.
 :AUTOSAVE
-SET SLOPr=save
+SET SLOPr=SAVE
 CALL "%winLoc%\data\functions\SLOP.bat"
 GOTO :EOF
