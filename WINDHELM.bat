@@ -205,7 +205,6 @@ SET RETURN=dashboard
 ECHO.
 TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
-ECHO %displayMessage% %player.ifor_level_1_searched% %player.ifor_cleared_level1%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
