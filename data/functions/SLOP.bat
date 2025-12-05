@@ -6,7 +6,7 @@ REM Variables needed to make Windhelm work are loaded here.
 SET player.message=...
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=UNSTABLE-0.4.0-251130
+SET windhelm.vn=UNSTABLE-0.4.0_00-251205
 SET windhelm.enable_stability_warning=1
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
@@ -172,7 +172,7 @@ ECHO %player.health%
 ECHO %player.magicka%
 ECHO %player.damage%
 ECHO %player.damage_heavy%
-ECHO %player.armor%
+ECHO %player.armor_class%
 ECHO %player.class%
 ECHO %player.coins%
 ECHO %player.xp%
@@ -221,6 +221,14 @@ ECHO %player.ifor_level_1_searched%
 ECHO %player.ifor_level_2_searched%
 ECHO %player.ifor_level_3_searched%
 ECHO %player.ifor_level_4_searched%
+ECHO %player.pe_abgu_cleared%
+ECHO %player.amcr_cleared_level1%
+ECHO %player.amcr_cleared_level2%
+ECHO %player.amcr_cleared_level3%
+ECHO %player.amcr_level_1_searched%
+ECHO %player.amcr_level_2_searched%
+ECHO %player.amcr_level_3_searched%
+ECHO %player.amcr_nightfall_cleared%
 ECHO %player.armor_equipped%
 ECHO %player.weapon_equipped%
 ECHO %player.spell_equipped%
@@ -300,7 +308,7 @@ SET /P player.health=
 SET /P player.magicka=
 SET /P player.damage=
 SET /P player.damage_heavy=
-SET /P player.armor=
+SET /P player.armor_class=
 SET /P player.class=
 SET /P player.coins=
 SET /P player.xp=
@@ -349,6 +357,14 @@ SET /P player.ifor_level_1_searched=
 SET /p player.ifor_level_2_searched=
 SET /p player.ifor_level_3_searched=
 SET /p player.ifor_level_4_searched=
+SET /p player.pe_abgu_cleared=
+SET /p player.amcr_cleared_level1=
+SET /p player.amcr_cleared_level2=
+SET /p player.amcr_cleared_level3=
+SET /p player.amcr_level_1_searched=
+SET /p player.amcr_level_2_searched=
+SET /p player.amcr_level_3_searched=
+SET /p player.amcr_nightfall_cleared=
 SET /P player.armor_equipped=
 SET /P player.weapon_equipped=
 SET /P player.spell_equipped=
@@ -430,9 +446,9 @@ SET player.health=100
 SET player.magicka=100
 SET player.damage=3
 SET player.damage_heavy=10
-SET player.armor=0
+SET player.armor_class=0
 SET player.class=NONE
-SET player.coins=1000
+SET player.coins=250
 SET player.xp=0
 SET player.xp_required=5000
 SET player.level=1
