@@ -283,14 +283,14 @@ TYPE "%cd%\data\assets\ui\your_class.txt"
 ECHO.
 ECHO Choose a class for %player.name%. Select a class to learn more.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [S] Sorcerer : Born to a family of poor Sorcerers, lost to the winds.
-ECHO ^| [W] Warrior  : A shard formed in battle, many scars remain.
-ECHO ^| [D] Druid    : Their greatest distraction will be their downfall.
+ECHO ^| [1] Sorcerer : Born to a wealthy family, lost to the winds.
+ECHO ^| [2] Warrior  : A shard formed in battle, many scars remain.
+ECHO ^| [3] Druid    : Their greatest distraction will be their downfall.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%CH%" == "S" GOTO :SORCERER_CHOSEN_PREVIEW
-IF /I "%CH%" == "W" GOTO :WARRIOR_CHOSEN_PREVIEW
-IF /I "%CH%" == "D" GOTO :DRUID_CHOSEN_PREVIEW
+IF /I "%CH%" == "1" GOTO :SORCERER_CHOSEN_PREVIEW
+IF /I "%CH%" == "2" GOTO :WARRIOR_CHOSEN_PREVIEW
+IF /I "%CH%" == "3" GOTO :DRUID_CHOSEN_PREVIEW
 GOTO :INVALID_INPUT
 
 :DRUID_CHOSEN_PREVIEW
@@ -362,8 +362,8 @@ IF /I "%CH%" == "Q" GOTO :CHOOSE_CLASS
 GOTO :INVALID_INPUT
 
 :DRUID_CHOSEN
-SET player.health=70
-SET player.health_max=70
+SET player.health=100
+SET player.health_max=100
 SET player.magicka=200
 SET player.magicka_max=200
 SET player.magicka_skill=6
@@ -389,8 +389,8 @@ SET player.class_ability=rage
 GOTO :APPLY_RACE_BONUSES
 
 :SORCERER_CHOSEN
-SET player.health=75
-SET player.health_max=75
+SET player.health=100
+SET player.health_max=100
 SET player.magicka=150
 SET player.magicka_max=150
 SET player.magicka_skill=6
@@ -414,7 +414,7 @@ IF %player.race% == human (
 )
 
 :APPLY_RACE_BONUS_HUMAN
-SET /A player.health_max=!player.health_max! +50
+SET /A player.health_max=!player.health_max! +20
 SET player.health=%player.health_max%
 SET /A player.skill_damage=!player.skill_damage! +2
 GOTO :CHOOSE_ORIGIN
@@ -423,13 +423,13 @@ GOTO :CHOOSE_ORIGIN
 GOTO :CHOOSE_ORIGIN
 
 :APPLY_RACE_BONUS_FRAWEN
-SET /A player.health=!player.health_max! +50
+SET /A player.health=!player.health_max! +10
 SET player.health=!player.health_max!
 SET /A player.skill_intelligence=!player.skill_intelligence! +2
 GOTO :CHOOSE_ORIGIN
 
 :APPLY_RACE_BONUS_NEMMAR
-SET /A player.health=!player.health! +50
+SET /A player.health=!player.health! +10
 SET player.health=!player.health_max!
 SET /A player.skill_damage=!player.skill_damage! +2
 GOTO :CHOOSE_ORIGIN
@@ -445,7 +445,7 @@ ECHO.
 ECHO Choose an origin for %player.name%. Select an origin to learn more about it.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1] Forest Origin  : You've awoken in a forest clearing, head pounding and no memories.
-ECHO ^| [2] Cabin Origin   : You're awoken by a distant howl. Sitting up you find yourself alone in an abandoned cabin.
+ECHO ^| [2] Cabin Origin   : You're startled by a distant howl. Sitting up you find yourself alone in an abandoned cabin.
 ECHO ^| [3] Inn Origin     : You've come to on a bed in a local inn. You're unsure of how you got here.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
