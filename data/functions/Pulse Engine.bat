@@ -37,6 +37,7 @@ IF %PE_CALL% == Exploration_Engine (
 )
 
 :PE_EXPLORATION_ENGINE
+MODE con: cols=105 lines=17
 TITLE WINDHELM - Exploration Engine ^| %player.name% the %player.race% %player.class%!
 SET RETURN=PE_EXPLORATION_ENGINE
 CLS
@@ -45,7 +46,7 @@ TYPE "%winLoc%\data\assets\ui\exploration.txt"
 ECHO.
 ECHO Where is it you wish to go, %player.name%?
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / IRIDESCENT FOREST ] ^| [2 / WINDHELM EXTERIOR ] ^| [3 / ROCKWINN PLAZA ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -105,7 +106,7 @@ ECHO                                   ^|---------------------------------------
 ECHO.
 ECHO Where do you wish to go, %player.name%? %player.ifor_cleared_level1%
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| ATK: %player.damage% ^| DEF: %player.armor% ^| MGK: %player.magicka% ^| LUNIS: %player.coins%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| ATK: %player.damage% ^| DEF: %player.armor_class% ^| MGK: %player.magicka% ^| LUNIS: %player.coins%
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [6 / NEXT ZONE ] ^| [Q / BACK ]
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
@@ -312,7 +313,7 @@ ECHO                                   ^|---------------------------------------
 ECHO.
 ECHO Where do you wish to go? %player.name%?
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| ATK: %player.damage% ^| DEF: %player.armor% ^| MGK: %player.magicka% ^| LUNIS: %player.coins%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| ATK: %player.damage% ^| DEF: %player.armor_class% ^| MGK: %player.magicka% ^| LUNIS: %player.coins%
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [6 / BACK ] ^| [Q / BACK ]
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
@@ -354,7 +355,7 @@ ECHO.
 ECHO Thank you for saving me, kind Shard... Discounts, just for you!
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| LONG SWORD: %pulse.amcr_hidden_merchant_longsowrd_stock% STOCKED, PRICE: %pulse.amcr_hidden_merchant_longsowrd_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -557,7 +558,7 @@ ECHO.
 ECHO.
 ECHO What is it you wish to do, %player.name%?
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / WANDER ] ^| [2 / TRAVELING MERCHANT ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -577,7 +578,7 @@ TYPE "%cd%\data\assets\npcs\merchant.txt"
 ECHO.
 ECHO You approach the merchant's wagon, which has been temporarily transformed into a market stall.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / VIEW WARES ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -597,7 +598,7 @@ ECHO.
 ECHO What can I do for you, Shard?
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| XP TONIC: %vendor.travmerch_xp_tonic_stock% STOCKED, PRICE: %vendor.travmerch_xp_tonic_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -634,7 +635,7 @@ REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
 ECHO.
 ECHO The merchant greets you with a friendly smile.
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / APPROACH ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -667,7 +668,7 @@ REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
 ECHO.
 ECHO You see someone with what appears to be a polearm closely following another.
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / APPROACH ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -686,7 +687,7 @@ ECHO.
 ECHO As you approach the set of guards, they turn and look to meet your gaze,
 ECHO their eyes barely visible behind their visors.
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / TELL ME ABOUT WINDHELM ] ^| [2 / EARNING LUNIS ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -710,7 +711,7 @@ ECHO.
 ECHO The guard leans in as much as the plate armor they wore allowed.
 ECHO "I'm pretty sure this castle was placed here by the Gods themselves. I mean, how could it not have been?"
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / CONTINUE ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -731,7 +732,7 @@ ECHO "It's in the perfect spot. Right in the middle of a strange, magical forest
 ECHO "It's hard enough leaving the forest, imagine trying to get in! Not a chance man put this here."
 ECHO "I mean, the records of this castle's builders are so scattered I'd be surprised if they were even real^!"
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / CONTINUE ] ^| [Q / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -754,7 +755,7 @@ ECHO "You know, if you find the man and bring him back.. alive, the Lord may rew
 ECHO.
 ECHO The guard on the left performs a small bow and turns about, following the other guard.
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| ST: %player.stamina% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| ST: %player.stamina% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^|[Q / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -808,7 +809,14 @@ IF "%currentEnemy%" == "Bandit" (
     SET enemy.damage_base=%bandit.damage%
     SET ce.boss_active=0
     SET curEn=Bandit
-    GOTO :PE_EBS
+    IF %player.catalogue_bandit_encountered% EQU 0 (
+        SET player.catalogue_bandit_encountered=1
+        SET player.catalogue_bandit=Bandit
+        SET /A player.catalogue_unlocked=%player.catalogue_unlocked% +1
+        GOTO :PE_EBS
+    ) ELSE (
+        GOTO :PE_EBS
+    )
 ) ELSE IF "%currentEnemy%" == "Abyss Guardian" (
     SET enemy.health=%abyss_guardian.health%
     SET enemy.magicka=%abyss_guardian.magicka%
@@ -820,7 +828,14 @@ IF "%currentEnemy%" == "Bandit" (
     SET enemy.dialogue_title=%abyss_guardian.dialogue_title%
     SET ce.boss_active=1
     SET curEn=Abyss Guardian
-    GOTO :PE_EBS
+    IF %player.catalogue_abyss_guardian_encountered% EQU 0 (
+        SET player.catalogue_abyss_guardian_encountered=1
+        SET player.catalogue_abyss_guardian=Abyss Guardian
+        SET /A player.catalogue_unlocked=%player.catalogue_unlocked% +1
+        GOTO :PE_EBS
+    ) ELSE (
+        GOTO :PE_EBS
+    )
 ) ELSE (
     REM Error handling.
     ECHO Enemy type unavailable. >> EV-ERROR.log
@@ -844,7 +859,7 @@ ECHO ^| %currentEnemy% HP: %enemy.health% ^| ATK: %enemy.damage%
 ECHO ^| %displayMessage%
 ECHO ^| %player.message%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [A / ATTACK ] ^| [I / ITEMS ]
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -876,10 +891,10 @@ IF %PA% GEQ 80 (
 :PLAYER_ARMOR_CALCULATION
 REM Adjusts enemy attack damage based on Player armor value.
 SET enemy.damage=%enemy.damage_base%
-IF %player.armor_prot% LEQ 0 (
+IF %player.armor_class% LEQ 0 (
     GOTO :CHECK_ACTIVE_BOSS
 ) ELSE (
-    SET /A enemy.damage=!enemy.damage! -%player.armor_prot%
+    SET /A enemy.damage=!enemy.damage! -%player.armor_class%
     GOTO :CHECK_ACTIVE_BOSS
 )
 
@@ -1049,7 +1064,7 @@ ECHO.
 ECHO The %currentEnemy% was defeated. Your health and magicka has been refilled!
 ECHO %player.message% ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO [1 / LOOT ] ^| [Q LEAVE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
@@ -1117,7 +1132,7 @@ ECHO.
 ECHO You were defeated by the %currentEnemy%. Your health and magicka has been restored.
 ECHO %player.message% ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [Q LEAVE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
