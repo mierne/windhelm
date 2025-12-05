@@ -2,7 +2,7 @@ REM temp fix for empty variables (what's causing this?)
 SET /A CR=%RANDOM% * 17 / 32768 + 8
 
 :EBS
-MODE con: cols=120 lines=20
+MODE con: cols=105 lines=20
 IF %enemy.health% LEQ 0 GOTO :VICTORY_STATS_TRACK
 IF %player.health% LEQ 0 GOTO :DEFEAT_SCREEN
 SET player.damage=%player.damage_base%
@@ -78,13 +78,11 @@ IF %PA% GEQ 84 (
     REM Critical hit
     SET displayMessage=PLAYER HIT - placeholder
     SET /A player.health=!player.health! -%enemy.damage%*2
-    SET /A enemy.stamina=!enemy.stamina! -13
     GOTO :EBS
 ) ELSE IF %PA% GEQ 31 (
     REM Normal Attack 2
     SET displayMessage=PLAYER HIT - placeholder
     SET /A player.health=!player.health! -%enemy.damage%
-    SET /A enemy.stamina=!enemy.stamina! -13
     GOTO :EBS
 ) ELSE IF %PA% LEQ 30 (
     REM Player attack misses.
@@ -115,6 +113,7 @@ IF %PA% GEQ 70 (
 ) ELSE (
     REM Error handling
 )
+
 
 :PLAYER_INVENTORY
 REM REDESIGN PLAYER INVENTORY ACCESS
@@ -294,6 +293,7 @@ SET enemy.damage=%enemy.damage_base%
 GOTO :AUTOSAVE
 
 :AUTOSAVE
+SET displayMessage=...
 SET SLOPr=SAVE
 CALL "%winLoc%\data\functions\SLOP.bat"
 GOTO :EOF
