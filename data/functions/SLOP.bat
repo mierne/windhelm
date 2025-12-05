@@ -11,10 +11,9 @@ SET refundItem=0
 SET refundPrice=0
 SET itemStored=false
 SET player.message=...
-
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=STABLE-0.3.0-250426
+SET windhelm.vn=STABLE-0.3.0_01-251204
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
@@ -105,7 +104,7 @@ IF %SLOPr% == SAVE (
     GOTO :GAME_INIT
 ) ELSE (
     SET errorType=checkTime
-    CALL "%cd%\data\functions\errorhandling.bat"
+    CALL "%cd%\data\functions\Error Handler.bat"
     EXIT /B
 )
 
