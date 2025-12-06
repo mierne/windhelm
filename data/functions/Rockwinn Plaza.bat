@@ -184,12 +184,12 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| LONG SWORD: %vendor.blacksmith_long_sword_stock% STOCKED, PRICE: %vendor.blacksmith_long_sword_price% LUNIS.
 ECHO ^| SHORT SWORD: %vendor.blacksmith_short_sword_stock% STOCKED, PRICE: %vendor.blacksmith_short_sword_price% LUNIS.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / LONG SWORD ] ^| [2 / SHORT SWORD ] ^| [Q / BACK ]
+ECHO ^| [1 / LONGSWORD ] ^| [2 / SHORTSWORD ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_LONG_SWORD
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_INSPECT_SHORT_SWORD
-IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
+IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONScc
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_LONG_SWORD
@@ -199,7 +199,7 @@ MODE con: cols=101 lines=24
 ECHO.
 TYPE "%cd%\data\assets\ui\long_sword.txt"
 ECHO.
-ECHO Inspecting the Long Sword.
+ECHO Inspecting the longsword.
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_long_sword_damage%
 ECHO ^| CATEGORY: %windhelm.item_long_sword_category%
@@ -215,25 +215,14 @@ IF /I "%CH%" == "Q" GOTO :BLACKSMITH_CATEGORY_SWORDS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_BUY_LONG_SWORD
-REM Check if the Blacksmith has this item in stock.
-IF %vendor.blacksmith_long_sword_stock% LEQ 0 (
-    REM There is none of this item in stock.
-    SET displayMessage=Sorry, we're sold out of this weapon.
+IF %player.coins% LSS %vendor.blacksmith_long_sword_price% (
+    SET displayMessage=You cannot afford this item.
     GOTO :BLACKSMITH_CATEGORY_SWORDS
 ) ELSE (
-    REM Check if the Player can afford this item.
-    IF %player.coins% LSS %vendor.blacksmith_long_sword_price% (
-        REM THe Player cannot afford this item.
-        SET displayMessage=Sorry, you can't afford this weapon.
-        GOTO :BLACKSMITH_CATEGORY_SWORDS
-    ) ELSE (
-        REM Purchase the item.
-        SET /A player.item_long_sword_owned=!player.item_long_sword_owned! +1
-        SET /A vendor.blacksmith_long_sword_stock=!vendor.blacksmith_long_sword_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_long_sword_price%
-        SET displayMessage=Purchased 1 Long Sword for %vendor.blacksmith_long_sword_price%.
-        GOTO :BLACKSMITH_CATEGORY_SWORDS
-    )
+    SET /A player.coins=%player.coins% -%vendor.blacksmith_long_sword_price%
+    SET /A player.item_long_sword_owned=%player.item_long_sword_owned% +1
+    SET itemPurchased=Purchased [1] longsword.
+    GOTO :BLACKSMITH_CATEGORY_SWORDS
 )
 
 :BLACKSMITH_INSPECT_SHORT_SWORD
@@ -243,7 +232,7 @@ MODE con: cols=111 lines=22
 ECHO.
 TYPE "%cd%\data\assets\ui\short_sword.txt"
 ECHO.
-ECHO Showing detailed information for the Short Sword.
+ECHO Showing detailed information for the shortsword.
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_short_sword_damage%
 ECHO ^| CATEGORY: %windhelm.item_short_sword_category%
@@ -259,25 +248,14 @@ IF /I "%CH%" == "Q" GOTO :BLACKSMITH_CATEGORY_SWORDS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_BUY_SHORT_SWORD
-REM Check if the Blacksmith has this item in stock.
-IF %vendor.blacksmith_short_sword_stock% LEQ 0 (
-    REM There is none of this item in stock.
-    SET displayMessage=Sorry, we're sold out of this weapon.
+IF %player.coins% LSS %vendor.blacksmith_short_sword_price% (
+    SET displayMessage=You cannot afford this item.
     GOTO :BLACKSMITH_CATEGORY_SWORDS
 ) ELSE (
-    REM Check if the Player can afford this item.
-    IF %player.coins% LSS %vendor.blacksmith_short_sword_price% (
-        REM THe Player cannot afford this item.
-        SET displayMessage=Sorry, you can't afford this weapon.
-        GOTO :BLACKSMITH_CATEGORY_SWORDS
-    ) ELSE (
-        REM Purchase the item.
-        SET /A player.item_short_sword_owned=!player.item_short_sword_owned! +1
-        SET /A vendor.blacksmith_short_sword_stock=!vendor.blacksmith_short_sword_stock! -1
-        SET /A player.coins=!player.coins! -%blacksmith_short_sword_price%
-        SET displayMessage=Purchased 1 Short Sword for %vendor.blacksmith_short_sword_price%.
-        GOTO :BLACKSMITH_CATEGORY_SWORDS
-    )
+    SET /A player.coins=%player.coins% -%vendor.blacksmith_short_sword_price%
+    SET /A player.item_short_sword_owned=%player.item_short_sword_owned% +1
+    SET displayMessage=Purchased [1] shortsword.
+    GOTO :BLACKSMITH_CATEGORY_SWORDS
 )
 
 :BLACKSMITH_CATEGORY_AXES
@@ -816,3 +794,9 @@ REM Saves Merchant data.
 SET SLOPr=SAVE
 CALL "%cd%\data\functions\SLOP.bat"
 GOTO :EOF
+
+:colorEcho
+echo off
+<nul set /p ".=%DEL%" > "%~2"
+findstr /v /a:%1 /R "^$" "%~2" nul
+del "%~2" > nul 2>&1i
