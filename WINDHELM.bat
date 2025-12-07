@@ -11,10 +11,11 @@ REM    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 REM    GNU General Public License for more details.
 REM    You should have received a copy of the GNU General Public License
 REM    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+REM Colored text enabler
 
 :WIN_INIT
 SET winLoc=%~dp0
-SET windhelm.ut=Nightfall
+SET windhelm.ut="Nightfall"
 SET SLOPr=INIT
 SET asint=0
 CALL "%winLoc%\data\functions\SLOP.bat"
@@ -33,7 +34,7 @@ ECHO.
 TYPE "%winLoc%\data\assets\ui\main.txt"
 ECHO.
 ECHO.
-ECHO Pre-Alpha Version %windhelm.vn% "Nightfall"
+ECHO Pre-Alpha Version %windhelm.vn% %windhelm.ut%
 ECHO ========================================================================================================================
 ECHO                   [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [Q / QUIT ]
 ECHO.
@@ -47,20 +48,21 @@ GOTO :INVALID_INPUT
 
 :ABOUT
 TITLE (Windhelm - %windhelm.ut%) ^| About Windhelm
-MODE con: cols=120 lines=21
+MODE con: cols=150 lines=23
 CLS
 SET RETURN=ABOUT
 ECHO.
 TYPE "%winLoc%\data\assets\ui\about.txt"
 ECHO     Version %windhelm.vn%
-ECHO ========================================================================================================================
+ECHO ======================================================================================================================================================
 IF %windhelm.enable_stability_warning% EQU 1 ECHO This is an UNSTABLE build. Check the github page for more information.
 ECHO.
-ECHO Delve into the powerful, mysterious Iridescent Forest of the Kindgom of Fulkwinn and it's equally powerful castle,
-ECHO Windhelm^^! Discover shards of your past and rebuild your identity, or forge a new one. Your destiny is yours to control
-ECHO alone. Take on the threats of the Iridescent Forest, defending it from those that wish it harm.
-ECHO Use soul memories to unlock special abilites and form strong bonds to other shards.
-ECHO ========================================================================================================================
+ECHO Windhelm is a text-based role-playing game built with the Windows Batch Script language. 
+ECHO You are tasked with recovering your memories and pieces of your soul--shards.
+ECHO Create your desired character with the in-depth character creation tool, each choice you make contributes to the story and your character's abilities.
+ECHO Progress through the world and learn more about the mysterious forest you find yourself in.
+ECHO Clues can be obtained from passing conversations with NPCs, encounters with bosses or tattered books you find during your travels.
+ECHO ======================================================================================================================================================
 ECHO [1 / GITHUB PAGE ] ^| [2 / WEB PAGE ] ^| [Q / RETURN ]
 ECHO.
 ECHO Copyright (C) 2021-2025 Mierne ^<ahoy@mierne.net^> licensed under GNU GPLv3
@@ -68,6 +70,7 @@ SET /P CH=">"
 IF /I "%CH%" == "1" START https://www.github.com/mierne/windhelm && GOTO :ABOUT
 IF /I "%CH%" == "2" START https://mierne.net/windhelm && GOTO :ABOUT
 IF /I "%CH%" == "Q" GOTO :START
+GOTO :INVALID_INPUT
 
 :SETTINGS
 TITLE (Windhelm - %windhelm.ut%) ^| Settings Menu.
@@ -206,11 +209,12 @@ ECHO.
 TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / EXPLORE ] ^| [2 / INVENTORY ] ^| [V / VIEW CHARACTER ] ^| [C / HANDBOOK ]
-ECHO ^| [S / SAVE ]    ^| [Q / EXIT ]
-ECHO +---------------------------------------------------------------------------------------------------+
+ECHO +----------------^|----------------------------------------------------------------------------------+
+ECHO ^| [S / SAVE ]    ^| [Q / EXIT ]    ^|
+ECHO +----------------------------------
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :exploration_engine
 IF /I "%CH%" == "2" GOTO :view_inventory
@@ -246,7 +250,7 @@ TYPE "%winLoc%\data\assets\ui\character.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +---------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO ^| NAME: %player.name% ^| RACE: %player.race% ^| CLASS: %player.class% ^| PRONOUNS: %player.personal_p_1%/%player.personal_p_2%/%player.possesive_1%/%player.reflexive_1% ^| ORIGIN: %player.origin%
 ECHO +---------------------------------------------------------------------------------------------------------------+
 ECHO ^| WEAPON: %player.weapon_equipped% ^| DAMAGE: %player.skill_damage% ^| MAGICKA: %player.skill_magicka% ^| ATHLETICS: %player.skill_athletics% ^| SPEECH: %player.skill_speech% ^| INTELLIGENCE: %player.skill_intelligence%
@@ -276,7 +280,7 @@ TYPE "%winLoc%\data\assets\ui\your_name.txt"
 ECHO.
 ECHO Enter a new name.
 ECHO +---------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------------------+
 ECHO ^| TYPE CANCEL TO CANCEL.
 ECHO +---------------------------------------------------------------------------------------------------------------+
@@ -307,7 +311,7 @@ TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
 ECHO %displayMessage% ^| Total discovered: %player.catalogue_unlocked%/%player.catalogue_locked%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / HUMANOIDS ]
 ECHO ^| [Q / EXIT ]
@@ -327,7 +331,7 @@ TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
 ECHO %displayMessage% ^| Total discovered: %player.catalogue_unlocked%/%player.catalogue_locked%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / %player.catalogue_bandit% ] ^| [2 / %player.catalogue_abyss_guardian% ] ^| [ 3 / %player.catalogue_wandering_trader% ]
 ECHO ^| [Q / EXIT ]
