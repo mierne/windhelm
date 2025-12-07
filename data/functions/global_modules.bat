@@ -341,7 +341,7 @@ IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :INSPECT_STONE_ARMOR
 )
 
-:BLACKSMITH_INSPECT_IRON_ARMOR
+:INSPECT_IRON_ARMOR
 CLS
 SET RETURN=INSPECT_IRON_ARMOR
 MODE con: cols=111 lines=20

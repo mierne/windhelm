@@ -126,7 +126,7 @@ ECHO +--------------------------------------------------------------------------
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_LONG_SWORD
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_INSPECT_SHORT_SWORD
-IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONScc
+IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_LONG_SWORD

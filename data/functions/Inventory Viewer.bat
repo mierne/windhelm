@@ -654,8 +654,8 @@ ECHO ^| TYPE: %windhelm.item_iron_armor_type%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO [E / EQUIP ] ^| [U / UNEQUIP ] ^| [Q / BACK ]
 SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :EQUIP_IRON_ARMOR
-IF /I "%CH%" == "2" GOTO :UNEQUIP_IRON_ARMOR
+IF /I "%CH%" == "E" GOTO :EQUIP_IRON_ARMOR
+IF /I "%CH%" == "U" GOTO :UNEQUIP_IRON_ARMOR
 IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_MEDIUM_ARMOR
 GOTO :INVALID_INPUT
 

@@ -18,13 +18,29 @@ SET AMCR.SELECTED_LEVEL=Level 1
 SET AMCR.ECOUNT=%pulse.amcr_level_1_ecount%
 SET AMCR.PLAYER_CLEARED=False
 SET AMCR.FINAL_LEVEL=False
-IF %player.ifor_cleared_level1% EQU 1 (
+REM Hacky. There's a better way.
+IF %pulse.ifor_level_1_ecount% EQU 0 (
+    SET player.ifor_cleared_level1=1
     SET IFOR.PLAYER_CLEARED=True
+    IF %pulse.ifor_level_2_ecount% EQU 0 (
+        SET player.ifor_cleared_level2=1
+        IF %pulse.ifor_level_3_ecount% EQU 0 (
+            SET player.ifor_cleared_level3=1
+            IF %pulse.ifor_level_4_ecount% EQU 0 (
+                SET player.ifor_cleared_level4=1
+            ) ELSE (
+                GOTO :CALL_REASON
+            )
+        ) ELSE (
+            GOTO :CALL_REASON
+        )
+    ) ELSE (
+        GOTO :CALL_REASON
+    )
 ) ELSE (
-    SET IFOR.PLAYER_CLEARED=False
+    GOTO :CALL_REASON
 )
 
-REM Determine the reason Pulse Engine was called
 :CALL_REASON
 IF %PE_CALL% == Exploration_Engine (
     GOTO :PE_EXPLORATION_ENGINE
@@ -382,11 +398,11 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET IFOR.SELECTED_LEVEL=Level 2
         SET IFOR.ECOUNT=%pulse.ifor_level_2_ecount%
         SET IFOR.FINAL_LEVEL=False
-        IF %player.ifor_cleared_level2% == True (
-            SET IFOR.PLAYER_CLEARED=True
+        IF %player.ifor_cleared_level2% EQU 1 (
+            SET IFOR.player_cleared=True
             GOTO :VENTURE_IRIDESCENT_FOREST
         ) ELSE (
-            SET IFOR.PLAYER_CLEARED=False
+            SET IFOR.player_cleared=False
             GOTO :VENTURE_IRIDESCENT_FOREST
         )
     ) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
@@ -395,7 +411,7 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET IFOR.SELECTED_LEVEL=Level 3
         SET IFOR.ECOUNT=%pulse.ifor_level_3_ecount%
         SET IFOR.FINAL_LEVEL=False
-        IF %player.ifor_cleared_level3% == True (
+        IF %player.ifor_cleared_level3% == 1 (
             SET IFOR.PLAYER_CLEARED=True
             GOTO :VENTURE_IRIDESCENT_FOREST
         ) ELSE (
@@ -408,7 +424,7 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET IFOR.SELECTED_LEVEL=Level 4
         SET IFOR.ECOUNT=%pulse.ifor_level_4_ecount%
         SET IFOR.FINAL_LEVEL=True
-        IF %player.ifor_cleared_level4% == True (
+        IF %player.ifor_cleared_level4% == 1 (
             SET IFOR.PLAYER_CLEARED=True
             GOTO :VENTURE_IRIDESCENT_FOREST
         ) ELSE (
@@ -431,7 +447,7 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET AMCR.SELECTED_LEVEL=Level 2
         SET AMCR.ECOUNT=%pulse.amcr_level_2_ecount%
         SET AMCR.FINAL_LEVEL=False
-        IF %player.amcr_cleared_level2% == True (
+        IF %player.amcr_cleared_level2% == 1 (
             SET AMCR.PLAYER_CLEARED=True
             GOTO :AMCR_EXPLORE
         ) ELSE (
@@ -444,7 +460,7 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET AMCR.SELECTED_LEVEL=Level 3
         SET AMCR.ECOUNT=%pulse.amcr_level_3_ecount%
         SET AMCR.FINAL_LEVEL=False
-        IF %player.amcr_cleared_level3% == True (
+        IF %player.amcr_cleared_level3% == 1 (
             SET AMCR.PLAYER_CLEARED=True
             GOTO :AMCR_EXPLORE
         ) ELSE (
@@ -474,7 +490,7 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET IFOR.SELECTED_LEVEL=Level 3
         SET IFOR.ECOUNT=%pulse.ifor_level_3_ecount%
         SET IFOR.FINAL_LEVEL=False
-        IF %player.ifor_cleared_level3% == True (
+        IF %player.ifor_cleared_level3% == 1 (
             SET IFOR.PLAYER_CLEARED=True
             GOTO :VENTURE_IRIDESCENT_FOREST
         ) ELSE (
@@ -487,7 +503,7 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET IFOR.SELECTED_LEVEL=Level 2
         SET IFOR.ECOUNT=%pulse.ifor_level_2_ecount%
         SET IFOR.FINAL_LEVEL=False
-        IF %player.ifor_cleared_level2% == True (
+        IF %player.ifor_cleared_level2% == 1 (
             SET IFOR.PLAYER_CLEARED=True
             GOTO :VENTURE_IRIDESCENT_FOREST
         ) ELSE (
@@ -518,7 +534,7 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET AMCR.SELECTED_LEVEL=Level 2
         SET AMCR.ECOUNT=%pulse.amcr_level_2_ecount%
         SET AMCR.FINAL_LEVEL=False
-        IF %player.amcr_cleared_level2% == True (
+        IF %player.amcr_cleared_level2% == 1 (
             SET AMCR.PLAYER_CLEARED=True
             GOTO :AMCR_EXPLORE
         ) ELSE (
@@ -531,7 +547,7 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET AMCR.SELECTED_LEVEL=Level 1
         SET AMCR.ECOUNT=%pulse.amcr_level_1_ecount%
         SET AMCR.FINAL_LEVEL=False
-        IF %player.amcr_cleared_level1% == True (
+        IF %player.amcr_cleared_level1% == 1 (
             SET AMCR.PLAYER_CLEARED=True
             GOTO :AMCR_EXPLORE
         ) ELSE (
@@ -855,16 +871,16 @@ TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.race% %player.clas
 CLS
 ECHO.
 TYPE "%winLoc%\data\assets\enemies\Iridescent Forest\%currentEnemy%.txt"
-ECHO.
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO %player.ifor_cleared_level2%
+ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| %currentEnemy% HP: %enemy.health% ^| ATK: %enemy.damage%
 ECHO ^| %displayMessage%
 ECHO ^| %player.message%
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| [A / ATTACK ] ^| [I / ITEMS ]
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO +----------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "A" GOTO :PLAYER_ATTACK
 IF /I "%CH%" == "I" GOTO :PLAYER_ITEMS
@@ -1002,11 +1018,17 @@ IF "%currentEnemy%" == "Bandit" (
 )
 
 :VICTORY_TRACK_CLEARED
-REM Keep track of which level was cleared.
 IF %IFOR.LEVEL1_SELECTED% EQU 1 (
-    REM Iridescent Forest Level 1 was selected, mark as cleared.
-    SET player.ifor_cleared_level1=1
-    SET /A pulse.ifor_level_1_ecount=%pulse.ifor_level_1_ecount% -1
+    SET /A pulse.ifor_level_1_ecount=!pulse.ifor_level_1_ecount! -1
+    GOTO :VICTORY_REWARDS
+) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
+    SET /A pulse.ifor_level_2_ecount=!pulse.ifor_level_2_ecount! -1
+    GOTO :VICTORY_REWARDS
+) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
+    SET /A pulse.ifor_level_3_ecount=!pulse.ifor_level_3_ecount! -1
+    GOTO :VICTORY_REWARDS
+) ELSE IF %IFOR.LEVEL4_SELECTED% EQU 1 (
+    SET /A pulse.ifor_level_4_ecount=!pulse.ifor_level_4_ecount! -1
     GOTO :VICTORY_REWARDS
 )
 
