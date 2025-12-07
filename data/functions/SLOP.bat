@@ -6,7 +6,7 @@ REM Variables needed to make Windhelm work are loaded here.
 SET player.message=...
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=UNSTABLE-0.4.0_00-251205
+SET windhelm.vn=UNSTABLE-0.4.0_00-251206
 SET windhelm.enable_stability_warning=1
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
@@ -19,12 +19,12 @@ SET windhelm.skill_intelligence_level_cost=10
 SET windhelm.skill_destruction_level_cost=20
 SET windhelm.skill_restoration_level_cost=20
 REM Weapon item data
-SET windhelm.item_long_sword_name=Long Sword
+SET windhelm.item_long_sword_name=Longsword
 SET windhelm.item_long_sword_damage=8
 SET windhelm.item_long_sword_type=weapon
 SET windhelm.item_long_sword_category=swords
 SET windhelm.item_long_sword_damage_type=physical
-SET windhelm.item_short_sword_name=Short Sword
+SET windhelm.item_short_sword_name=Shortsword
 SET windhelm.item_short_sword_damage=5
 SET windhelm.item_short_sword_type=weapon
 SET windhelm.item_short_sword_category=swords
