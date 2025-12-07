@@ -4,19 +4,22 @@
   ##### Originally created by Mierne
 </div>
 
-# About Windhelm
-Delve into the powerful, mysterious Iridescent Forest of the Kingdom of Fulkwinn and it's equally powerful castle - Windhelm.
-Discover shards of your past, rebuild your identity or forge a new one. Take on the threats to the Iridescent Forest, defending it from those who wish it harm.
-Use soul memories to learn about the world around you and potentially form new allies.
+# About
+Windhelm is a text-based role-playing game built with the Windows Batch Script language. You are tasked with recovering your memories and pieces of your soul—shards.\
+Create your desired character with the in-depth character creation tool, each choice you make contributes to the story and your character's abilities.\
+Progress through the world and learn more about the mysterious forest you find yourself in. Clues can be obtained from passing conversations with NPCs,
+encounters with bosses or tattered books you find during your travels.\
+More information about mechanics or enemies can learned through gameplay.
 
-## Game Mechanics
-It is important to note that the listed changes are not in their final state and may not make it into the final product regardless.<br/>
-As of Windhelm's [Pre-Alpha 0.3.0-250426 release](https://github.com/mierne/windhelm/releases/tag/0.3.0-250426):
-- Unique starting classes
-- Unique character origin stories which impact available dialogue and endings
-- An in-game economy
-- Player levels and tier rewards
-- In-depth combat system
+## Playing and requirements
+You may play Windhelm by either cloning this repository or choosing a release from the releases page.
 
-## Contributing
-Windhelm is an open-source project licensed under GNU GPLv3. Contributions are welcome. If you discover an issue, please open an issue and follow the stated guidelines.
+Windhelm has been tested and confirmed to work properly on command line version 10.0.1.\
+**Recommended Command Prompt settings:**
++ Recommended font: Consolas
++ Recommended font size for proper scaling: 16
+
+Windhelm also requires VBScript for several tasks, inclduing the animated level transitions but will function without it.
+
+## Contributions and suggestions
+Contributions are welcome, just be sure that you have read the license. Suggestions may be sent to my email, <ahoy@mierne.net>.
