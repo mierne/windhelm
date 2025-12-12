@@ -911,12 +911,11 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / HEALTH TONIC (%player.item_tonic_healing_owned%) ] ^| [2 / MAGICKA TONIC (%player.item_tonic_magicka_owned%) ] ^| [3 / XP TONIC (%player.item_tonic_xp_owned%) ] ^| [Q / BACK ]
+ECHO ^| [1 / HEALTH TONIC (%player.item_tonic_healing_owned%) ] ^| [2 / MAGICKA TONIC (%player.item_tonic_magicka_owned%) ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :INSPECT_TONIC_HEALING
 IF /I "%CH%" == "2" GOTO :INSPECT_TONIC_MAGICKA
-IF /I "%CH%" == "3" GOTO :INSPECT_TONIC_XP
 IF /I "%CH%" == "Q" GOTO :IVM
 GOTO :INVALID_INPUT
 
@@ -1017,64 +1016,20 @@ IF %player.item_tonic_magicka_owned% LEQ 0 (
 :CONSUME_TONIC_MAGICKA
 IF %player.item_tonic_magicka_owned% LEQ 0 (
     SET displayMessage=You do not have any of this Tonic to consume.
-    GOTO :VIEW_TYPE_TONICS
+    GOTO :INSPECT_TONIC_MAGICKA
 ) ELSE (
     IF %player.magicka% EQU %player.magicka_max% (
-        SET displayMessage=Your health is already full.
-        GOTO :VIEW_TYPE_TONICS
+        SET displayMessage=Your magicka is already full.
+        GOTO :INSPECT_TONIC_MAGICKA
     ) ELSE (
         SET /A player.magicka=!player.magicka! +%windhelm.item_tonic_magicka_modifier%
         SET /A player.item_tonic_magicka_owned=!player.item_tonic_magicka_owned! -1
         IF %player.magicka% GTR %player.magicka_max% (
             SET player.magicka=%player.magicka_max%
             SET displayMessage=Replenished %windhelm.item_tonic_magicka_modifier% magicka.
-            GOTO :VIEW_TYPE_TONICS
+            GOTO :INSPECT_TONIC_MAGICKA
         )
     )
-)
-
-:INSPECT_TONIC_XP
-CLS
-SET RETURN=INSPECT_TONIC_XP
-MODE con: cols=115 lines=22
-ECHO.
-TYPE "%cd%\data\assets\ui\xp_tonic.txt"
-ECHO.
-ECHO Showing detailed information for the XP Tonic. ^| %displayMessage%
-ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO ^| AMOUNT: %player.item_tonic_xp_owned%
-ECHO ^| MODIFIER: %windhelm.item_tonic_xp_modifier%
-ECHO ^| CATEGORY: %windhelm.item_tonic_xp_category%
-ECHO ^| TYPE: %windhelm.item_tonic_xp_type%
-ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO [E / CONSUME ] ^| [U / DISCARD ] ^| [Q / BACK ]
-SET /P CH=">"
-IF /I "%CH%" == "E" GOTO :CONSUME_TONIC_XP
-IF /I "%CH%" == "U" GOTO :DISCARD_TONIC_XP
-IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_TONICS
-GOTO :INVALID_INPUT
-
-:DISCARD_TONIC_XP
-REM Check if the Player has the item to discard.
-IF %player.item_tonic_xp_owned% LEQ 0 (
-    REM Player does not have any of this tonic to discard.
-    SET displayMessage=You do not have this item.
-    GOTO :INSPECT_TONIC_XP
-) ELSE (
-    SET /A player.item_tonic_xp_owned=!player.item_tonic_xp_owned! -1
-    SET displayMessage=Discarded 1 xp Tonic.
-    GOTO :INSPECT_TONIC_XP
-)
-
-:CONSUME_TONIC_XP
-IF %player.item_tonic_xp_owned% LEQ 0 (
-    SET displayMessage=You do not have any of this Tonic to consume.
-    GOTO :VIEW_TYPE_TONICS
-) ELSE (
-    SET /A player.xp=!player.xp! +%windhelm.item_tonic_xp_modifier%
-    SET /A player.item_tonic_xp_owned=!player.item_tonic_xp_owned! -1
-    SET displayMessage=Consumed 1 XP Tonic for +%windhelm.item_tonic_xp_modifier% XP.
-    GOTO :VIEW_TYPE_TONICS
 )
 
 :INVALID_INPUT

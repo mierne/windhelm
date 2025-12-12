@@ -6,7 +6,8 @@ REM Variables needed to make Windhelm work are loaded here.
 SET player.message=...
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=UNSTABLE-0.4.0_00-251206
+SET windhelm.vn=UNSTABLE-0.4.0_00-251211
+SET windhelm.ut="Nightfall"
 SET windhelm.enable_stability_warning=1
 REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
 SET windhelm.foe_bandit_favored_element=None
@@ -110,10 +111,6 @@ SET windhelm.item_tonic_magicka_name=Magicka Tonic
 SET windhelm.item_tonic_magicka_modifier=15
 SET windhelm.item_tonic_magicka_type=consumable
 SET windhelm.item_tonic_magicka_category=tonics
-SET windhelm.item_tonic_xp_name=XP Tonic
-SET windhelm.item_tonic_xp_modifier=200
-SET windhelm.item_tonic_xp_type=consumable
-SET windhelm.item_tonic_xp_category=tonics
 REM Effect data
 REM Imbue data
 REM Pulse Engine level data
@@ -130,7 +127,6 @@ REM Script paths
 SET wait="%winLoc%\data\scripts\wait.vbs"
 REM Global Modules placeholder values
 SET windhelm.global_item_price=0
-SET windhelm.global_item_stock=0
 SET windhelm.global_item_damage=0
 SET windhelm.global_item_modifier=20
 SET windhelm.global_item_prot=0
@@ -245,7 +241,6 @@ ECHO %player.item_mace_owned%
 ECHO %player.item_wooden_bow_owned%
 ECHO %player.item_tonic_healing_owned%
 ECHO %player.item_tonic_magicka_owned%
-ECHO %player.item_tonic_xp_owned%
 ECHO %vendor.blacksmith_long_sword_price%
 ECHO %vendor.blacksmith_short_sword_price%
 ECHO %vendor.blacksmith_great_axe_price%
@@ -262,24 +257,8 @@ ECHO %vendor.blacksmith_short_sword_sbp%
 ECHO %vendor.blacksmith_great_axe_sbp%
 ECHO %vendor.blacksmith_mace_sbp%
 ECHO %vendor.blacksmith_wooden_bow_sbp%
-ECHO %vendor.blacksmith_long_sword_stock%
-ECHO %vendor.blacksmith_short_sword_stock%
-ECHO %vendor.blacksmith_great_axe_stock%
-ECHO %vendor.blacksmith_mace_stock%
-ECHO %vendor.blacksmith_wooden_bow_stock%
-ECHO %vendor.blacksmith_cactus_armor_stock%
-ECHO %vendor.blacksmith_guard_armor_stock%
-ECHO %vendor.blacksmith_stone_armor_stock%
-ECHO %vendor.blacksmith_steel_armor_stock%
-ECHO %vendor.blacksmith_iron_armor_stock%
-ECHO %vendor.blacksmith_scale_armor_stock%
-ECHO %vendor.alchemist.health_tonic_price%
-ECHO %vendor.alchemist.magicka_tonic_price%
-ECHO %vendor.alchemist.health_tonic_stock%
-ECHO %vendor.alchemist.magicka_tonic_stock%
 ECHO %pulse.amcr_hidden_merchant_visits%
 ECHO %pulse.amcr_hidden_merchant_longsowrd_price%
-ECHO %pulse.amcr_hidden_merchant_longsowrd_stock%
 ECHO %pulse.ifor_area_boss_defeated%
 ECHO %pulse.ifor_level_1_ecount%
 ECHO %pulse.ifor_level_2_ecount%
@@ -381,7 +360,6 @@ SET /P player.item_mace_owned=
 SET /P player.item_wooden_bow_owned=
 SET /P player.item_tonic_healing_owned=
 SET /P player.item_tonic_magicka_owned=
-SET /P player.item_tonic_xp_owned=
 SET /P vendor.blacksmith_long_sword_price=
 SET /P vendor.blacksmith_short_sword_price=
 SET /P vendor.blacksmith_great_axe_price=
@@ -398,24 +376,8 @@ SET /P vendor.blacksmith_short_sword_sbp=
 SET /P vendor.blacksmith_great_axe_sbp=
 SET /P vendor.blacksmith_mace_sbp=
 SET /P vendor.blacksmith_wooden_bow_sbp=
-SET /P vendor.blacksmith_long_sword_stock=
-SET /P vendor.blacksmith_short_sword_stock=
-SET /P vendor.blacksmith_great_axe_stock=
-SET /P vendor.blacksmith_mace_stock=
-SET /P vendor.blacksmith_wooden_bow_stock=
-SET /P vendor.blacksmith_cactus_armor_stock=
-SET /P vendor.blacksmith_guard_armor_stock=
-SET /P vendor.blacksmith_stone_armor_stock=
-SET /P vendor.blacksmith_steel_armor_stock=
-SET /P vendor.blacksmith_iron_armor_stock=
-SET /P vendor.blacksmith_scale_armor_stock=
-SET /P vendor.alchemist.health_tonic_price=
-SET /P vendor.alchemist.magicka_tonic_price=
-SET /P vendor.alchemist.health_tonic_stock=
-SET /P vendor.alchemist.magicka_tonic_stock=
 SET /P pulse.amcr_hidden_merchant_visits=
 SET /P pulse.amcr_hidden_merchant_longsowrd_price=
-SET /P pulse.amcr_hidden_merchant_longsowrd_stock=
 SET /P pulse.ifor_area_boss_defeated=
 SET /P pulse.ifor_level_1_ecount=
 SET /P pulse.ifor_level_2_ecount=
@@ -531,7 +493,6 @@ SET player.item_mace_owned=0
 SET player.item_wooden_bow_owned=0
 SET player.item_tonic_healing_owned=0
 SET player.item_tonic_magicka_owned=0
-SET player.item_tonic_xp_owned=0
 GOTO :INIT_MERCHANTS
 
 REM Setup Merchant inventories & Prices
@@ -560,32 +521,15 @@ SET vendor.blacksmith_stone_armor_sbp=115
 SET vendor.blacksmith_steel_armor_sbp=620
 SET vendor.blacksmith_iron_armor_sbp=318
 SET vendor.blacksmith_scale_armor_sbp=1622
-REM Blacksmith Shop Stock.
-SET vendor.blacksmith_long_sword_stock=6
-SET vendor.blacksmith_short_sword_stock=4
-SET vendor.blacksmith_great_axe_stock=5
-SET vendor.blacksmith_mace_stock=5
-SET vendor.blacksmith_wooden_bow_stock=2
-SET vendor.blacksmith_cactus_armor_stock=12
-SET vendor.blacksmith_guard_armor_stock=12
-SET vendor.blacksmith_stone_armor_stock=12
-SET vendor.blacksmith_steel_armor_stock=12
-SET vendor.blacksmith_iron_armor_stock=12
-SET vendor.blacksmith_scale_armor_stock=12
 REM Alchemist Shop Base Prices.
 SET vendor.alchemist.health_tonic_price=25
 SET vendor.alchemist.magicka_tonic_price=25
 REM Alchemist Item Stock.
-SET vendor.alchemist.health_tonic_stock=50
-SET vendor.alchemist.magicka_tonic_stock=50
 REM Traveling Merchant Stock
-SET vendor.travmerch_xp_tonic_stock=6
 REM Traveling Merchant Prices
-SET vendor.travmerch_xp_tonic_price=400
 REM Autmular Hidden Merchant
 SET pulse.amcr_hidden_merchant_visits=0
 SET pulse.amcr_hidden_merchant_longsowrd_price=120
-SET pulse.amcr_hidden_merchant_longsowrd_stock=6
 IF %SLOPr% == INIT (
     GOTO :EOF
 ) ELSE (

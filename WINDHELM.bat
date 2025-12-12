@@ -15,7 +15,6 @@ REM Colored text enabler
 
 :WIN_INIT
 SET winLoc=%~dp0
-SET windhelm.ut="Nightfall"
 SET SLOPr=INIT
 SET asint=0
 CALL "%winLoc%\data\functions\SLOP.bat"

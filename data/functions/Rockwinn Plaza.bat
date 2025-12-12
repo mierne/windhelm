@@ -35,8 +35,8 @@ ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HEALING TONIC: %vendor.alchemist.health_tonic_stock% STOCKED, PRICE: %vendor.alchemist.health_tonic_price% LUNIS
-ECHO ^| MAGICKA TONIC: %vendor.alchemist.magicka_tonic_stock% STOCKED, PRICE: %vendor.alchemist.magicka_tonic_price% LUNIS
+ECHO ^| HEALTH TONIC: %vendor.alchemist.health_tonic_price% LUNIS
+ECHO ^| MAGICKA TONIC: %vendor.alchemist.magicka_tonic_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO + [1 / HEALING TONIC ] ^| [2 / MAGICKA TONIC ] ^| [Q / GO BACK ]                                     +
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -118,8 +118,8 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select a SWORD to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| LONGSWORD: %vendor.blacksmith_long_sword_stock% STOCKED, PRICE: %vendor.blacksmith_long_sword_price% LUNIS.
-ECHO ^| SHORTSWORD: %vendor.blacksmith_short_sword_stock% STOCKED, PRICE: %vendor.blacksmith_short_sword_price% LUNIS.
+ECHO ^| LONGSWORD: %vendor.blacksmith_long_sword_price% LUNIS.
+ECHO ^| SHORTSWORD: %vendor.blacksmith_short_sword_price% LUNIS.
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / LONGSWORD ] ^| [2 / SHORTSWORD ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -154,7 +154,7 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select an AXE to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| GREAT AXE: %vendor.blacksmith_great_axe_stock% STOCKED, PRICE: %vendor.blacksmith_great_axe_price% LUNIS
+ECHO ^| GREAT AXE: %vendor.blacksmith_great_axe_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / GREAT AXE ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -182,7 +182,7 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select a MACE to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| MACE: %vendor.blacksmith_mace_stock% STOCKED, PRICE: %vendor.blacksmith_mace_price% LUNIS
+ECHO ^| MACE: %vendor.blacksmith_mace_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / MACE ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -210,7 +210,7 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select a BOW to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| WOODEN BOW: %vendor.blacksmith_wooden_bow_stock% STOCKED, PRICE: %vendor.blacksmith_wooden_bow_price% LUNIS
+ECHO ^| WOODEN BOW: %vendor.blacksmith_wooden_bow_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / WOODEN BOW ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -260,8 +260,8 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-----------------------------------------------------------------------------------------------------------------+
 ECHO ^| Select an ARMOR SET to purchase.
 ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO ^| CACTUS ARMOR: %vendor.blacksmith_cactus_armor_stock% STOCKED, PRICE: %vendor.blacksmith_cactus_armor_price% LUNIS.
-ECHO ^| GUARD ARMOR: %vendor.blacksmith_guard_armor_stock% STOCKED, PRICE: %vendor.blacksmith_guard_armor_price% LUNIS.
+ECHO ^| CACTUS ARMOR: %vendor.blacksmith_cactus_armor_price% LUNIS.
+ECHO ^| GUARD ARMOR: %vendor.blacksmith_guard_armor_price% LUNIS.
 ECHO +-----------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / CACTUS ARMOR ] ^| [2 / GUARD ARMOR ] ^| [Q / BACK ]
 ECHO +-----------------------------------------------------------------------------------------------------------------+
@@ -296,8 +296,8 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Select an ARMOR SET to purchase.
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| STONE: %vendor.blacksmith_stone_armor_stock% STOCKED, PRICE: %vendor.blacksmith_stone_armor_price% LUNIS.
-ECHO ^| IRON: %vendor.blacksmith_iron_armor_stock% STOCKED, PRICE: %vendor.blacksmith_iron_armor_price% LUNIS.
+ECHO ^| STONE: %vendor.blacksmith_stone_armor_price% LUNIS.
+ECHO ^| IRON: %vendor.blacksmith_iron_armor_price% LUNIS.
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / STONE ARMOR ] ^| [2 / IRON ARMOR ] ^| [Q / BACK ]
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
@@ -332,8 +332,8 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-----------------------------------------------------------------------------------------------------------------+
 ECHO ^| Select an ARMOR SET to purchase.
 ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO ^| STEEL: %vendor.blacksmith_steel_armor_stock% STOCKED, PRICE: %vendor.blacksmith_steel_armor_price% LUNIS.
-ECHO ^| SCALE: %vendor.blacksmith_scale_armor_stock% STOCKED, PRICE: %vendor.blacksmith_scale_armor_price% LUNIS.
+ECHO ^| STEEL: %vendor.blacksmith_steel_armor_price% LUNIS.
+ECHO ^| SCALE: %vendor.blacksmith_scale_armor_price% LUNIS.
 ECHO +-----------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / STEEL ARMOR ] ^| [2 / SCALE ARMOR ] ^| [Q / BACK ]
 ECHO +-----------------------------------------------------------------------------------------------------------------+

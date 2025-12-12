@@ -36,7 +36,7 @@ MODE con: cols=103 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\health_tonic.txt"
 ECHO.
-ECHO Showing detailed information for the Healing Tonic.
+ECHO Showing detailed information for the Healing Tonic. ^| %displayMessage% 
 ECHO +-----------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_tonic_healing_owned%
 ECHO ^| MODIFIER: +%windhelm.item_tonic_healing_modifier% HP
@@ -66,7 +66,7 @@ MODE con: cols=115 lines=22
 ECHO.
 TYPE "%cd%\data\assets\ui\magicka_tonic.txt"
 ECHO.
-ECHO Showing detailed information for the Magicka Tonic.
+ECHO Showing detailed information for the Magicka Tonic. ^| %displayMessage% 
 ECHO +-----------------------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_tonic_magicka_owned%
 ECHO ^| MODIFIER: +%windhelm.item_tonic_magicka_modifier% HP
@@ -159,7 +159,7 @@ MODE con: cols=111 lines=21
 ECHO.
 TYPE "%cd%\data\assets\ui\great_axe.txt"
 ECHO.
-ECHO Showing detailed information for the Greataxe.
+ECHO Showing detailed information for the Greataxe. ^| %displayMessage% 
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_great_axe_damage%
 ECHO ^| CATEGORY: %windhelm.item_great_axe_category%
@@ -191,7 +191,7 @@ MODE con: cols=111 lines=20
 ECHO.
 TYPE "%cd%\data\assets\ui\mace.txt"
 ECHO.
-ECHO Showing detailed information for the Great Axe.
+ECHO Showing detailed information for the Great Axe. ^| %displayMessage% 
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_mace_damage%
 ECHO ^| CATEGORY: %windhelm.item_mace_category%
@@ -223,7 +223,7 @@ MODE con: cols=111 lines=21
 ECHO.
 TYPE "%cd%\data\assets\ui\wooden_bow.txt"
 ECHO.
-ECHO Showing detailed information for the Wooden Bow.
+ECHO Showing detailed information for the Wooden Bow. ^| %displayMessage% 
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| DAMAGE: %windhelm.item_wooden_bow_damage%
 ECHO ^| CATEGORY: %windhelm.item_wooden_bow_category%
@@ -255,7 +255,7 @@ MODE con: cols=122 lines=20
 ECHO.
 TYPE "%cd%\data\assets\ui\cactus_armor.txt"
 ECHO.
-ECHO Showing detailed information for the Cactus Armor set.
+ECHO Showing detailed information for the Cactus Armor set. ^| %displayMessage% 
 ECHO +------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| PROTECTION: %windhelm.item_cactus_armor_prot%
 ECHO ^| CATEGORY: %windhelm.item_cactus_armor_category%
@@ -286,7 +286,7 @@ MODE con: cols=112 lines=20
 ECHO.
 TYPE "%cd%\data\assets\ui\guard_armor.txt"
 ECHO.
-ECHO Showing detailed information for the Guard Armor set.
+ECHO Showing detailed information for the Guard Armor set. ^| %displayMessage% 
 ECHO +--------------------------------------------------------------------------------------------------------------+
 ECHO ^| PROTECTION: %windhelm.item_guard_armor_prot%
 ECHO ^| CATEGORY: %windhelm.item_guard_armor_category%
@@ -317,7 +317,7 @@ MODE con: cols=112 lines=20
 ECHO.
 TYPE "%cd%\data\assets\ui\stone_armor.txt"
 ECHO.
-ECHO Showing detailed information for the Guard Armor set.
+ECHO Showing detailed information for the Guard Armor set. ^| %displayMessage% 
 ECHO +--------------------------------------------------------------------------------------------------------------+
 ECHO ^| PROTECTION: %windhelm.item_stone_armor_prot%
 ECHO ^| CATEGORY: %windhelm.item_stone_armor_category%
@@ -348,7 +348,7 @@ MODE con: cols=111 lines=20
 ECHO.
 TYPE "%cd%\data\assets\ui\iron_armor.txt"
 ECHO.
-ECHO Showing detailed information for the Guard Armor set.
+ECHO Showing detailed information for the Guard Armor set. ^| %displayMessage% 
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| PROTECTION: %windhelm.item_iron_armor_prot%
 ECHO ^| CATEGORY: %windhelm.item_iron_armor_category%
@@ -379,7 +379,7 @@ MODE con: cols=111 lines=20
 ECHO.
 TYPE "%cd%\data\assets\ui\steel_armor.txt"
 ECHO.
-ECHO Showing detailed information for the Guard Armor set.
+ECHO Showing detailed information for the Guard Armor set. ^| %displayMessage% 
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| PROTECTION: %windhelm.item_steel_armor_prot%
 ECHO ^| CATEGORY: %windhelm.item_steel_armor_category%
@@ -410,7 +410,7 @@ MODE con: cols=111 lines=20
 ECHO.
 TYPE "%cd%\data\assets\ui\scale_armor.txt"
 ECHO.
-ECHO Showing detailed information for the Guard Armor set.
+ECHO Showing detailed information for the Guard Armor set. ^| %displayMessage% 
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| PROTECTION: %windhelm.item_scale_armor_prot%
 ECHO ^| CATEGORY: %windhelm.item_scale_armor_category%

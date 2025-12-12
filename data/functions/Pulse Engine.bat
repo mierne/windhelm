@@ -169,7 +169,8 @@ IF %IFOR.LEVEL1_SELECTED% EQU 1 (
     )
 ) ELSE IF %IFOR.LEVEL4_SELECTED% EQU 1 (
     IF %player.ifor_cleared_level3% EQU 0 (
-        GOTO :IFOR_CLEAR_PREVIOUS
+        @REM GOTO :IFOR_CLEAR_PREVIOUS TEMPORARY FOR DEBUGGING
+        GOTO :IFOR_AB_CHECK
     ) ELSE (
         IF %pulse.ifor_level_4_ecount% EQU 0 (
             SET displayMessage=No enemies remain here, move forward.
@@ -185,7 +186,9 @@ IF %IFOR.LEVEL1_SELECTED% EQU 1 (
 REM Needs to check if selected level contains a boss foe.
 :IFOR_AB_CHECK
 IF %IFOR.LEVEL4_SELECTED% EQU 1 (
-    SET currentEnemy="Abyssal Guardian"
+    SET currentEnemy=AbyssalGuardian
+    ECHO %currentEnemy%
+    PAUSE
     GOTO :PE_COMBAT_ENGINE
 ) ELSE (
     GOTO :IFOR_FOE_ENCOUNTER
@@ -798,7 +801,7 @@ SET player.damage_base=%player.damage%
 REM Iridescent Bandit Information
 SET bandit.health=70
 SET bandit.magicka=100
-SET bandit.damage=8
+SET bandit.damage=10
 SET bandit.damage_type_resistance=physical
 SET bandit.damage_resisted=0
 
@@ -808,13 +811,14 @@ SET abyss_guardian.magicka=400
 SET abyss_guardian.damage=20
 SET abyss_guardian.special_damage=45
 SET abyss_guardian.damage_type_resistance=physical
-SET abyss_guardian.damage_resisted=6
+SET abyss_guardian.damage_resisted=4
 SET abyss_guardian.dialogue_title=Abyss Lurker L'yahn
 REM Currently unsued data
 SET abyss_guardian.faction=Abyss Lurkers
 
 :PE_COMBAT_ENGINE_ENCOUNTER
-IF "%currentEnemy%" == "Bandit" (
+pause
+IF %currentEnemy% == Bandit (
     SET enemy.health=%bandit.health%
     SET enemy.magicka=%bandit.magicka%
     SET enemy.damage=%bandit.damage%
@@ -833,7 +837,7 @@ IF "%currentEnemy%" == "Bandit" (
         SET displayMessage=...
         GOTO :PE_EBS
     )
-) ELSE IF "%currentEnemy%" == "Abyss Guardian" (
+) ELSE IF %currentEnemy% == AbyssalGuardian (
     SET enemy.health=%abyss_guardian.health%
     SET enemy.magicka=%abyss_guardian.magicka%
     SET enemy.damage=%abyss_guardian.damage%
@@ -855,10 +859,8 @@ IF "%currentEnemy%" == "Bandit" (
         GOTO :PE_EBS
     )
 ) ELSE (
-    REM Error handling.
-    ECHO Enemy type unavailable. >> EV-ERROR.log
-    SET errorType=EnemyType
-    CALL "%winLoc%\data\functions\Error Handler.bat"
+    ECHO Enemy errorType is unavailable.
+    PAUSE
     EXIT /B
 )
 
@@ -890,12 +892,12 @@ REM a number between 0 and 100 can be split 4 ways, two hits, a crit and a miss.
 SET /A PA=%RANDOM% %%100
 IF %PA% GEQ 80 (
     REM Critical hit
-    SET player.message=%player.name% got a critical hit on %currentEnemy%^!
+    SET player.message=%player.name% got a critical hit on %curEn%^!
     SET /A enemy.health=!enemy.health! -%player.damage%*2
     GOTO :PLAYER_ARMOR_CALCULATION
 ) ELSE IF %PA% GEQ 16 (
     REM Normal Attack 2
-    SET player.message=%player.name% landed a solid hit on %currentEnemy%.
+    SET player.message=%player.name% landed a solid hit on %curEn%.
     SET /A enemy.health=!enemy.health! -%player.damage%
     GOTO :PLAYER_ARMOR_CALCULATION
 ) ELSE IF %PA% LEQ 15 (
@@ -952,6 +954,21 @@ IF %PA% GEQ 84 (
     REM Error handling
 )
 
+:PE_EBS_BOSS
+SET /A PA=%RANDOM% %%100
+IF %PA% GEQ 70 (
+    SET displayMessage=Abyssal Guardian got a critical hit on %player.name%.
+    SET /A player.health=!player.health! -%enemy.damage%*2
+    GOTO :PE_EBS
+) ELSE IF %PA% GEQ 15 (
+    SET displayMessage=Abyssal Guardian managed a strike on %player.name%.
+    SET /A player.health=!player.health! -%enemy.damage%
+    GOTO :PE_EBS
+) ELSE (
+    SET displayMessage=Abyssal Guardian missed %player.name% by mere inches.
+    GOTO :PE_EBS
+)
+
 :EAC_BOSS
 REM Much like the enemy attack phase, just stronger.
 REM a number between 0 and 100 can be split 4 ways, two hits, a crit and a miss. Descending chance in that order. Favored to crit the Player.
@@ -973,10 +990,6 @@ IF %PA% GEQ 70 (
 ) ELSE (
     REM Error handling
 )
-
-
-:PLAYER_INVENTORY
-REM REDESIGN PLAYER INVENTORY ACCESS
 
 :PLAYER_ITEMS
 SET windhelm.inventory_call=combat
@@ -1004,10 +1017,10 @@ CALL "%winLoc%\data\functions\SLOP.bat"
 EXIT
 
 :VICTORY_STATS_TRACK
-IF "%currentEnemy%" == "Bandit" (
+IF %currentEnemy% == Bandit (
     SET /A player.bandits_slain=!player.bandits_slain! +1
     GOTO :VICTORY_TRACK_CLEARED
-) ELSE IF "%currentEnemy%" == "Abyssal Guardian" (
+) ELSE IF %currentEnemy% == AbyssalGuardian (
     SET /A player.iridescent_ab_defeated=1
     SET player.pe_abgu_cleared=1
     GOTO :BOSS_DEFEAT_REWARDS
