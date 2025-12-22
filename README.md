@@ -21,5 +21,8 @@ Windhelm has been tested and confirmed to work properly on command line version 
 
 Windhelm also requires VBScript for several tasks, inclduing the animated level transitions but will function without it.
 
+## WINE disclaimer
+Windhelm has not been thoroughly tested through Wine, but did encounter issues with window scaling and font settings. Use a VM for the best experience if on Linux.
+
 ## Contributions and suggestions
 Contributions are welcome, just be sure that you have read the license. Suggestions may be sent to my email, <ahoy@mierne.net>.
