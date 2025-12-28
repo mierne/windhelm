@@ -10,14 +10,6 @@ SET IFOR.SELECTED_LEVEL=Level 1
 SET IFOR.ECOUNT=%pulse.ifor_level_1_ecount%
 SET IFOR.PLAYER_CLEARED=False
 SET IFOR.FINAL_LEVEL=False
-
-SET AMCR.LEVEL1_SELECTED=1
-SET AMCR.LEVEL2_SELECTED=0
-SET AMCR.LEVEL3_SELECTED=0
-SET AMCR.SELECTED_LEVEL=Level 1
-SET AMCR.ECOUNT=%pulse.amcr_level_1_ecount%
-SET AMCR.PLAYER_CLEARED=False
-SET AMCR.FINAL_LEVEL=False
 REM Hacky. There's a better way.
 IF %pulse.ifor_level_1_ecount% EQU 0 (
     SET player.ifor_cleared_level1=1
@@ -64,13 +56,13 @@ ECHO Where is it you wish to go, %player.name%?
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / IRIDESCENT FOREST ] ^| [2 / WINDHELM EXTERIOR ] ^| [3 / ROCKWINN PLAZA ] ^| [Q / BACK ]
+ECHO ^| [1 / IRIDESCENT FOREST ] ^| [2 / WINDHELM EXTERIOR ] ^| [3 / ROCKWINN PLAZA ]
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :VENTURE_IRIDESCENT_FOREST
 IF /I "%CH%" == "2" GOTO :VENTURE_WINDHELM_EXTERIOR
 IF /I "%CH%" == "3" GOTO :VENTURE_ROCKWINN_PLAZA
-IF /I "%CH%" == "Q" GOTO :AUTOSAVE
+IF /I "%CH%" == "E" GOTO :AUTOSAVE
 GOTO :INVALID_INPUT
 
 REM Iridscent Forest Level 1 - Sublevels 1-4
@@ -124,7 +116,7 @@ ECHO Where do you wish to go, %player.name%?
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| ATK: %player.damage% ^| DEF: %player.armor_class% ^| MGK: %player.magicka% ^| LUNIS: %player.coins%
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [6 / NEXT ZONE ] ^| [Q / BACK ]
+ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [6 / NEXT ZONE ]
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :ZONE_SELECT_NEXT
@@ -133,7 +125,7 @@ IF /I "%CH%" == "3" GOTO :IFOR_ADVENTURE
 IF /I "%CH%" == "4" GOTO :IFOR_SEARCH_CURRENT
 IF /I "%CH%" == "5" GOTO :IFOR_USE_ITEM_CURRENT
 IF /I "%CH%" == "6" GOTO :IFOR_CHECK_AREA_BOSS
-IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
+IF /I "%CH%" == "E" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
 :IFOR_ADVENTURE
@@ -205,42 +197,45 @@ IF %EE% LEQ 50 (
 )
 
 :IFOR_SEARCH_CURRENT
-REM Check of this sublevel has been searched.
+rem Check if this level has been cleared.
 IF %IFOR.LEVEL1_SELECTED% EQU 1 (
-    IF %player.ifor_level_1_searched% EQU 1 (
-        GOTO :IFORSC_LS
+    IF %player.ifor_cleared_level1% EQU 1 (
+        GOTO :IFOR_CLEARED_LEVEL
     ) ELSE (
-        SET player.ifor_level_1_searched=1
-        GOTO :IFORSC_EC
+        CALL "%winLoc%\data\functions\sublevel\IFOR\sublevel_1.bat"
+        GOTO :VENTURE_IRIDESCENT_FOREST
     )
 ) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
-    IF %player.ifor_level_2_searched% EQU 1 (
-        GOTO :IFORSC_LS
+    IF %player.ifor_cleared_level2% EQU 1 (
+        GOTO :IFOR_CLEARED_LEVEL
     ) ELSE (
-        SET player.ifor_level_2_searched=1
-        GOTO :IFORSC_EC
+        CALL "%winLoc%\data\functions\sublevel\IFOR\sublevel_2.bat"
+        GOTO :VENTURE_IRIDESCENT_FOREST
     )
 ) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
-    IF %player.ifor_level_3_searched% EQU 1 (
-        GOTO :IFORSC_LS
+    IF %player.ifor_cleared_level3% EQU 1 (
+        GOTO :IFOR_CLEARED_LEVEL
     ) ELSE (
-        SET player.ifor_level_3_searched=1
-        GOTO :IFORSC_EC
+        CALL "%winLoc%\data\functions\sublevel\IFOR\sublevel_3.bat"
+        GOTO :VENTURE_IRIDESCENT_FOREST
     )
-) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
-    IF %player.ifor_level_4_searched% EQU 1 (
-        GOTO :IFORSC_LS
+) ELSE IF %IFOR.LEVEL4_SELECTED EQU 1 (
+    IF %player.ifor_cleared_level4% EQU 1 (
+        GOTO :IFOR_CLEARED_LEVEL
     ) ELSE (
-        SET player.ifor_level_4_searched=1
-        GOTO :IFORSC_EC
+        CALL "%winLoc%\data\functions\sublevel\IFOR\sublevel_4.bat"
+        GOTO :VENTURE_IRIDESCENT_FOREST
     )
 ) ELSE (
-    REM Error handle this later. Please don't forget.
-    PAUSE
+    GOTO :error_CFSL
 )
 
 :IFORSC_LS
 SET displayMessage=You've already searched this level.
+GOTO :VENTURE_IRIDESCENT_FOREST
+
+:IFOR_CLEARED_LEVEL
+SET displayMessage=You've cleared this level and cannot explore it any further.
 GOTO :VENTURE_IRIDESCENT_FOREST
 
 :IFORSC_EC
@@ -271,125 +266,13 @@ GOTO :VENTURE_IRIDESCENT_FOREST
 
 :IFOR_CHECK_AREA_BOSS
 IF %player.pe_abgu_cleared% EQU 0 (
-    GOTO :AMCR_EXPLORE_TRANSITION
+    ECHO BOO! Content dead end. Check back in the future.
+    PAUSE
+    GOTO :%RETURN%
 ) ELSE (
     SET displayMessage=Cannot pass. You must first defeat the boss here.
     GOTO :VENTURE_IRIDESCENT_FOREST
 )
-
-:AMCR_EXPLORE_TRANSITION
-CALL "%winLoc%\data\assets\ui\animated\ANI_travel.bat"
-
-:AMCR_EXPLORE
-MODE con: cols=140 lines=27
-TITLE (Windhelm - %windhelm.ut%) Autmular Crypt ^| %player.name% the %player.race% %player.class%
-SET RETURN=AMCR_EXPLORE
-SET PE.ZONE_ACTIVE=AMCR_EXPLORE
-CLS
-ECHO                                    /                 \
-ECHO ----------------------------------/ AUTMULAR    CRYPT \-------------------------------------------------------------------------------------
-ECHO                                   \-------------------/
-ECHO -----------------------------------\     %AMCR.SELECTED_LEVEL%     /
-
-
-
-
-
-
-
-
-
-ECHO                                     \               /
-IF %AMCR.LEVEL1_SELECTED% EQU 1 (
-    ECHO         ^>^| 1 ^|^<                      \             /
-) ELSE (
-    ECHO              1                       \             /
-)
-ECHO                                       ^|--------------------------\ AREA BOSS DEFEATED: %pulse.amcr_area_boss_defeated%
-ECHO                                                                   \ ENEMIES: %AMCR.ECOUNT% ^| CLEARED: %AMCR.PLAYER_CLEARED%
-IF %AMCR.LEVEL3_SELECTED% EQU 1 (
-    ECHO                                                                    ^|------------------------------------------------------------------------
-    ECHO -----------\
-    ECHO             \                                                                            
-    ECHO              ^|---------------\                                                                ^>^| 3 ^|^<
-) ELSE (
-    ECHO                                                                    ^|------------------------------------------------------------------------
-    ECHO -----------\
-    ECHO             \                                                                            
-    ECHO              ^|---------------\                                                                   3
-)
-IF %AMCR.LEVEL2_SELECTED% EQU 1 (
-    ECHO                                \
-    ECHO                                 \            ^>^| 2 ^|^<                          ^|-------------------------------------------------------------
-    ECHO                                  \                                           /
-    ) ELSE (
-    ECHO                                \
-    ECHO                                 \               2                             ^|-------------------------------------------------------------
-    ECHO                                  \                                           /
-    
-)
-ECHO                                   ^|-----------------------------------------/ ^> %displayMessage% ^<
-ECHO.
-ECHO Where do you wish to go? %player.name%?
-ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| ATK: %player.damage% ^| DEF: %player.armor_class% ^| MGK: %player.magicka% ^| LUNIS: %player.coins%
-ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [6 / BACK ] ^| [Q / BACK ]
-ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :ZONE_SELECT_NEXT
-IF /I "%CH%" == "2" GOTO :ZONE_SELECT_LAST
-IF /I "%CH%" == "3" GOTO :AMCR_ADVENTURE
-IF /I "%CH%" == "4" GOTO :AMCR_SEARCH_CURRENT
-IF /I "%CH%" == "5" GOTO :PE_USE_ITEM_CURRENT
-IF /I "%CH%" == "6" GOTO :VENTURE_IRIDESCENT_FOREST
-IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
-GOTO :INVALID_INPUT
-
-:AMCR_ADVENTURE
-REM Check if the selected sublevel has an encounter or set of encounters
-IF %AMCR.LEVEL2_SELECTED% EQU 1 (
-    REM Play the travel animation
-    CALL "%winLoc%\data\assets\ui\animated\ANI_travel.bat"
-    IF %pulse.amcr_hidden_merchant_visits% GEQ 5 (
-        SET displayMessage=Whoever was here, is gone now.
-        GOTO :AMCR_EXPLORE
-    )
-    GOTO :AMCR_ENCOUNTER_L2
-) ELSE (
-    CALL "%winLoc%\data\assets\ui\animated\ANI_travel.bat"
-    SET displayMessage=Nothing of interest.
-    GOTO :AMCR_EXPLORE
-)
-
-:AMCR_ENCOUNTER_L2
-SET /A pulse.amcr_hidden_merchant_visits=!pulse.amcr_hidden_merchant_visits! +1
-TITLE (Autmular Crypt) - Hidden Merchant ^| %player.name% the %player.race% %player.class%
-MODE con: cols=100 lines=22
-SET RETURN=AMCR_ENCOUNTER_L2
-ECHO.
-TYPE "%cd%\data\assets\npcs\generic_merchant.txt"
-ECHO.
-ECHO.
-ECHO Thank you for saving me, kind Shard... Discounts, just for you!
-ECHO %displayMessage%
-ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
-ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| PRICE: %pulse.amcr_hidden_merchant_longsowrd_price% LUNIS
-ECHO +--------------------------------------------------------------------------------------------------+
-ECHO + [1 / LONG SWORD ] ^| [Q / GO BACK ]                                                            +
-ECHO +--------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :AMCR_HM_BUY_LONGSWORD
-IF /I "%CH%" == "Q" GOTO :AMCR_EXPLORE
-GOTO :INVALID_INPUT
-
-:AMCR_HM_BUY_LONGSWORD
-SET VENDOR.ITEM=INSPECT_LONGSWORD
-SET windhelm.global_item_price=%pulse.amcr_hidden_merchant_longsowrd_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
-GOTO :AMCR_EXPLORE
 
 REM Unified Zone Exploration - UZE
 :ZONE_SELECT_NEXT
@@ -441,41 +324,6 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET errorType=sublevel
         CALL "%winLoc%\data\functions\Error Handler.bat"
         GOTO :VENTURE_IRIDESCENT_FOREST
-    )
-) ELSE IF %PE.ZONE_ACTIVE% == AMCR_EXPLORE (
-    REM Sublevel selection for the Autumular Crypt
-    IF %AMCR.LEVEL1_SELECTED% EQU 1 (
-        SET AMCR.LEVEL1_SELECTED=0
-        SET AMCR.LEVEL2_SELECTED=1
-        SET AMCR.SELECTED_LEVEL=Level 2
-        SET AMCR.ECOUNT=%pulse.amcr_level_2_ecount%
-        SET AMCR.FINAL_LEVEL=False
-        IF %player.amcr_cleared_level2% == 1 (
-            SET AMCR.PLAYER_CLEARED=True
-            GOTO :AMCR_EXPLORE
-        ) ELSE (
-            SET AMCR.PLAYER_CLEARED=False
-            GOTO :AMCR_EXPLORE
-        )
-    ) ELSE IF %AMCR.LEVEL2_SELECTED% EQU 1 (
-        SET AMCR.LEVEL2_SELECTED=0
-        SET AMCR.LEVEL3_SELECTED=1
-        SET AMCR.SELECTED_LEVEL=Level 3
-        SET AMCR.ECOUNT=%pulse.amcr_level_3_ecount%
-        SET AMCR.FINAL_LEVEL=False
-        IF %player.amcr_cleared_level3% == 1 (
-            SET AMCR.PLAYER_CLEARED=True
-            GOTO :AMCR_EXPLORE
-        ) ELSE (
-            SET AMCR.PLAYER_CLEARED=False
-            GOTO :AMCR_EXPLORE
-        )
-    ) ELSE IF %AMCR.LEVEL3_SELECTED% EQU 1 (
-        SET displayMessage=Cannot go any further forward.
-        GOTO :AMCR_EXPLORE
-    ) ELSE (
-        SET errorType=sublevel
-        CALL "%winLoc%\data\functions\Error Handler.bat"
     )
 ) ELSE (
     SET errorType=areazone
@@ -530,37 +378,6 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET displayMessage=Cannot go back any further.
         GOTO :VENTURE_IRIDESCENT_FOREST
     )
-) ELSE IF %PE.ZONE_ACTIVE% == AMCR_EXPLORE (
-    IF %AMCR.LEVEL3_SELECTED% EQU 1 (
-        SET AMCR.LEVEL3_SELECTED=0
-        SET AMCR.LEVEL2_SELECTED=1
-        SET AMCR.SELECTED_LEVEL=Level 2
-        SET AMCR.ECOUNT=%pulse.amcr_level_2_ecount%
-        SET AMCR.FINAL_LEVEL=False
-        IF %player.amcr_cleared_level2% == 1 (
-            SET AMCR.PLAYER_CLEARED=True
-            GOTO :AMCR_EXPLORE
-        ) ELSE (
-            SET AMCR.PLAYER_CLEARED=False
-            GOTO :AMCR_EXPLORE
-        )
-    ) ELSE IF %AMCR.LEVEL2_SELECTED% EQU 1 (
-        SET AMCR.LEVEL2_SELECTED=0
-        SET AMCR.LEVEL1_SELECTED=1
-        SET AMCR.SELECTED_LEVEL=Level 1
-        SET AMCR.ECOUNT=%pulse.amcr_level_1_ecount%
-        SET AMCR.FINAL_LEVEL=False
-        IF %player.amcr_cleared_level1% == 1 (
-            SET AMCR.PLAYER_CLEARED=True
-            GOTO :AMCR_EXPLORE
-        ) ELSE (
-            SET AMCR.PLAYER_CLEARED=False
-            GOTO :AMCR_EXPLORE
-        )
-    ) ELSE (
-        SET displayMessage=Cannot go back any further.
-        GOTO :AMCR_EXPLORE
-    )
 ) ELSE (
     REM Error Handler
 )
@@ -577,12 +394,12 @@ ECHO What is it you wish to do, %player.name%?
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / WANDER ] ^| [2 / TRAVELING MERCHANT ] ^| [Q / BACK ] ^| %displayMessage%
+ECHO ^| [1 / WANDER ] ^| [2 / TRAVELING MERCHANT ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER
 IF /I "%CH%" == "2" GOTO :WE_TRAVELING_MERCHANT
-IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
+IF /I "%CH%" == "E" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
 :WE_TRAVELING_MERCHANT
@@ -597,11 +414,11 @@ ECHO You approach the merchant's wagon, which has been temporarily transformed i
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / VIEW WARES ] ^| [Q / BACK ] ^| %displayMessage%
+ECHO ^| [1 / VIEW WARES ] ^| %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :TM_VIEW_ITEMS
-IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
+IF /I "%CH%" == "E" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
 :TM_VIEW_ITEMS
@@ -619,11 +436,11 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| XP TONIC: %vendor.travmerch_xp_tonic_stock% STOCKED, PRICE: %vendor.travmerch_xp_tonic_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO + [1 / XP TONIC ] ^| [Q / GO BACK ]                                                                 +
+ECHO + [1 / XP TONIC ]                                                                +
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :TM_BUY_XP_TONIC
-IF /I "%CH%" == "Q" GOTO :WE_TRAVELING_MERCHANT
+IF /I "%CH%" == "E" GOTO :WE_TRAVELING_MERCHANT
 GOTO :INVALID_INPUT
 
 :TM_BUY_XP_TONIC
@@ -654,11 +471,11 @@ ECHO The merchant greets you with a friendly smile.
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / APPROACH ] ^| [Q / BACK ] ^| %displayMessage%
+ECHO ^| [1 / APPROACH ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1
-IF /I "%CH%" == "Q" GOTO :WE_TRAVELING_MERCHANT
+IF /I "%CH%" == "E" GOTO :WE_TRAVELING_MERCHANT
 GOTO :INVALID_INPUT
 
 :WE_WANDER
@@ -687,11 +504,11 @@ ECHO You see someone with what appears to be a polearm closely following another
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / APPROACH ] ^| [Q / BACK ] ^| %displayMessage%
+ECHO ^| [1 / APPROACH ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1
-IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
+IF /I "%CH%" == "E" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
 :WE_WANDER_ENCOUNTER_1_INT1
@@ -706,12 +523,12 @@ ECHO their eyes barely visible behind their visors.
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / TELL ME ABOUT WINDHELM ] ^| [2 / EARNING LUNIS ] ^| [Q / BACK ] ^| %displayMessage%
+ECHO ^| [1 / TELL ME ABOUT WINDHELM ] ^| [2 / EARNING LUNIS ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH1
 IF /I "%CH%" == "2" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH2
-IF /I "%CH%" == "Q" GOTO :PE_EXPLORATION_ENGINE
+IF /I "%CH%" == "E" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
 :WE_WANDER_ENCOUNTER_1_INT1_CH1
@@ -730,11 +547,11 @@ ECHO "I'm pretty sure this castle was placed here by the Gods themselves. I mean
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / CONTINUE ] ^| [Q / BACK ] ^| %displayMessage%
+ECHO ^| [1 / CONTINUE ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH1_SCH1
-IF /I "%CH%" == "Q" GOTO :WE_WANDER_ENCOUNTER_1_INT1
+IF /I "%CH%" == "E" GOTO :WE_WANDER_ENCOUNTER_1_INT1
 GOTO :INVALID_INPUT
 
 :WE_WANDER_ENCOUNTER_1_INT1_CH1_SCH1
@@ -751,11 +568,11 @@ ECHO "I mean, the records of this castle's builders are so scattered I'd be surp
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / CONTINUE ] ^| [Q / BACK ] ^| %displayMessage%
+ECHO ^| [1 / CONTINUE ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH1_SCH2
-IF /I "%CH%" == "Q" GOTO :WE_WANDER_ENCOUNTER_1_INT1
+IF /I "%CH%" == "E" GOTO :WE_WANDER_ENCOUNTER_1_INT1
 GOTO :INVALID_INPUT
 
 :WE_WANDER_ENCOUNTER_1_INT1_CH1_SCH2
@@ -774,10 +591,10 @@ ECHO The guard on the left performs a small bow and turns about, following the o
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^|[Q / BACK ] ^| %displayMessage%
+ECHO ^|[E / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%CH%" == "Q" GOTO :WE_WANDER_ENCOUNTER_1_INT1
+IF /I "%CH%" == "E" GOTO :WE_WANDER_ENCOUNTER_1_INT1
 GOTO :INVALID_INPUT
 
 :INVALID_INPUT
@@ -1103,11 +920,11 @@ ECHO %player.message% ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO [1 / LOOT ] ^| [Q LEAVE ]
+ECHO [1 / LOOT ] ^| [E LEAVE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :LOOT
-IF /I "%CH%" == "Q" GOTO :CLEANUP
+IF /I "%CH%" == "E" GOTO :CLEANUP
 
 :LOOT
 IF %enLooted% EQU 1 (
@@ -1171,10 +988,14 @@ ECHO %player.message% ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [Q LEAVE ]
+ECHO ^| [E LEAVE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
-IF /I "%CH%" == "Q" GOTO :CLEANUP
+IF /I "%CH%" == "E" GOTO :CLEANUP
+
+:error_CFSL
+set displayMessage=Error encountered. Cannot find selected level.
+GOTO :%RETURN%
 
 :CLEANUP
 SET enLooted=0
