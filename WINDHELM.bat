@@ -181,6 +181,8 @@ ECHO %windhelm.transition_delay%
 GOTO :%RETURN%
 
 :NEW_GAME
+SET SLOPr=INIT
+call "%winLoc%\data\functions\SLOP.bat"
 CALL "%winLoc%\data\functions\ciac.bat"
 IF %OSQ% EQU 1 (
     GOTO :START
