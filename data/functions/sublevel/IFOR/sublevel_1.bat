@@ -71,21 +71,10 @@ echo ^| You must roll a 15 or higher to succeed this check.
 echo +---------------------------------------------------------------------------------------------------------------------------+
 echo ^| [1 / Roll ] ^| [2 / Think again... ]
 set /p ch="> "
-if /i "%ch%" == "1" goto :scene_1_examine_plants_athletics_check_roll
+if /i "%ch%" == "1" call :roll scene_1_examine_plants_athletics_check_roll_success scene_1_examine_plants_athletics_check_roll_failure %player.skill_athletics% 15
 if /i "%ch%" == "2" goto :scene_1_examine_plants
 if /i "%ch%" == "S" goto :save_game
 if /i "%ch%" == "E" goto :autosave
-
-:scene_1_examine_plants_athletics_check_roll
-call "%winLoc%\data\functions\roll.bat"
-set /a dieroll=%dieroll% +%player.skill_athletics%
-if %dieroll% geq 15 (
-    set displayMessage=You rolled a %dieroll%, success!
-    goto :scene_1_examine_plants_athletics_check_roll_success
-) else (
-    set displayMessage=You rolled a %dieroll%, failure!
-   goto :scene_1_examine_plants_athletics_check_roll_failure
-)
 
 :scene_1_examine_plants_athletics_check_roll_success
 set rtm=scene_1_examine_plants_athletics_check_roll_success
@@ -140,21 +129,10 @@ echo ^| You must roll a 15 or higher to succeed this check.
 echo +---------------------------------------------------------------------------------------------------------------------------+
 echo ^| [1 / Roll ] ^| [2 / Think again... ]
 set /p ch="> "
-if /i "%ch%" == "1" goto :scene_1_examine_plants_intelligence_check_roll
+if /i "%ch%" == "1" call :roll scene_1_examine_plants_intellgience_check_roll_success scene_1_examine_plants_intelligence_check_roll_failure %player.skill_intelligence% 15
 if /i "%ch%" == "2" goto :scene_1_examine_plants
 if /i "%ch%" == "S" goto :save_game
 if /i "%ch%" == "E" goto :autosave
-
-:scene_1_examine_plants_intelligence_check_roll
-call "%winLoc%\data\functions\roll.bat"
-set /a dieroll=%dieroll% +%player.skill_intelligence%
-if %dieroll% geq 15 (
-    set displayMessage=You rolled a %dieroll%, success!
-    goto :scene_1_examine_plants_intellgience_check_roll_success
-) else (
-    set displayMessage=You rolled a %dieroll%, failure!
-   goto :scene_1_examine_plants_intelligence_check_roll_failure
-)
 
 :scene_1_examine_plants_intellgience_check_roll_success
 set rtm=scene_1_examine_plants_intellgience_check_roll_success
@@ -278,22 +256,10 @@ echo ^| You must roll a 10 or higher to succeed this check.
 echo +---------------------------------------------------------------------------------------------------------------------------+
 echo ^| [1 / Roll 1d20 +%player.skill_intelligence%] ^| [2 / Think again... ]
 set /p ch="> "
-if /i "%ch%" == "1" goto :scene_1_examine_wagon_inspect_area_roll
+if /i "%ch%" == "1" call :roll scene_1_examine_wagon_inspect_area_roll_success scene_1_examine_wagon_inspect_area_roll_failure %player.skill_intelligence% 10
 if /i "%ch%" == "2" goto :scene_1_examine_wagon
 if /i "%ch%" == "S" goto :save_game
 if /i "%ch%" == "E" goto :autosave
-
-
-:scene_1_examine_wagon_inspect_area_roll
-call "%winLoc%\data\functions\roll.bat"
-set /a dieroll=%dieroll% +%player.skill_intelligence%
-if %dieroll% geq 10 (
-    set displayMessage=You rolled a %dieroll%, success!
-    goto :scene_1_examine_wagon_inspect_area_roll_success
-) else (
-    set displayMessage=You rolled a %dieroll%, failure!
-   goto :scene_1_examine_wagon_inspect_area_roll_failure
-)
 
 :scene_1_examine_wagon_inspect_area_roll_success
 set rtm=scene_1_examine_wagon_inspect_area_roll_success
@@ -357,6 +323,17 @@ set /p ch="> "
 if /i "%ch%" == "1" goto :scene_1_examine_wagon
 if /i "%ch%" == "S" goto :save_game
 if /i "%ch%" == "E" goto :autosave
+
+:roll
+call "%winLoc%\data\functions\roll.bat"
+set /a dieroll=%dieroll% +%3
+if %dieroll% geq %4 (
+    set displayMessage=You rolled a %dieroll%, success!
+    goto :%1
+) else (
+    set displayMessage=You rolled a %dieroll%, failure!
+   goto :%2
+)
 
 :save_game
 SET SLOPr=SAVE
