@@ -221,7 +221,10 @@ ECHO %player.ifor_level_4_searched%
 ECHO %player.ifor_level_4_location%
 ECHO %player.pe_abgu_cleared%
 ECHO %player.scene_1_examine_plants%
+ECHO %player.scene_1_examine_barrels%
+ECHO %player.scene_1_examine_wagon%
 ECHO %player.hazard_spotted_pod_known%
+ECHO %player.s1_exwag_inspect_area%
 ECHO %player.armor_equipped%
 ECHO %player.weapon_equipped%
 ECHO %player.spell_equipped%
@@ -330,7 +333,10 @@ SET /p player.ifor_level_4_searched=
 SET /P player.ifor_level_4_location=
 SET /p player.pe_abgu_cleared=
 set /p player.scene_1_examine_plants=
+set /p player.scene_1_examine_barrels=
+set /p player.scene_1_examine_wagon=
 set /p player.hazard_spotted_pod_known=
+set /p player.s1_exwag_inspect_area=
 SET /P player.armor_equipped=
 SET /P player.weapon_equipped=
 SET /P player.spell_equipped=
@@ -451,8 +457,12 @@ SET player.ifor_level_4_location=NotStarted
 SET player.pe_abgu_cleared=0
 rem Player sublevel scene data
 set player.scene_1_examine_plants=incomplete
+set player.scene_1_examine_barrels=incomplete
+set player.scene_1_examine_wagon=incomplete
 rem Known hazards to the player
 set player.hazard_spotted_pod_known=0
+rem Nodes completed
+set player.s1_exwag_inspect_area=incomplete
 GOTO :PLAYER_INIT_INVENTORY
 
 :PLAYER_INIT_INVENTORY
