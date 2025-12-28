@@ -11,7 +11,6 @@ REM    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 REM    GNU General Public License for more details.
 REM    You should have received a copy of the GNU General Public License
 REM    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-REM Colored text enabler
 
 :WIN_INIT
 SET winLoc=%~dp0
@@ -35,14 +34,14 @@ ECHO.
 ECHO.
 ECHO Pre-Alpha Version %windhelm.vn% %windhelm.ut%
 ECHO ========================================================================================================================
-ECHO                   [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [Q / QUIT ]
+ECHO                   [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [E / QUIT ]
 ECHO.
-SET /P CH=">"
+SET /P CH="> "
 IF /I "%CH%" == "1" GOTO :LOAD_SAVE
 IF /I "%CH%" == "2" GOTO :NEW_GAME
 IF /I "%CH%" == "3" GOTO :SETTINGS
 IF /I "%CH%" == "4" GOTO :ABOUT
-IF /I "%CH%" == "Q" GOTO :EOF
+IF /I "%CH%" == "E" GOTO :EOF
 GOTO :INVALID_INPUT
 
 :ABOUT
@@ -62,13 +61,13 @@ ECHO Create your desired character with the in-depth character creation tool, ea
 ECHO Progress through the world and learn more about the mysterious forest you find yourself in.
 ECHO Clues can be obtained from passing conversations with NPCs, encounters with bosses or tattered books you find during your travels.
 ECHO ======================================================================================================================================================
-ECHO [1 / GITHUB PAGE ] ^| [2 / WEB PAGE ] ^| [Q / RETURN ]
+ECHO [1 / GITHUB PAGE ] ^| [2 / WEB PAGE ] ^| [E / RETURN ]
 ECHO.
 ECHO Copyright (C) 2021-2025 Mierne ^<ahoy@mierne.net^> licensed under GNU GPLv3
 SET /P CH=">"
 IF /I "%CH%" == "1" START https://www.github.com/mierne/windhelm && GOTO :ABOUT
 IF /I "%CH%" == "2" START https://mierne.net/windhelm && GOTO :ABOUT
-IF /I "%CH%" == "Q" GOTO :START
+IF /I "%CH%" == "E" GOTO :START
 GOTO :INVALID_INPUT
 
 :SETTINGS
@@ -80,12 +79,12 @@ ECHO.
 TYPE "%cd%\data\assets\ui\settings.txt"
 ECHO.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / CHANGE THEME ] ^| [2 / TRANSITION CONFIGURATION ] ^| [Q / EXIT ]                              +
+ECHO ^| [1 / CHANGE THEME ] ^| [2 / TRANSITION CONFIGURATION ] ^| [E / EXIT ]                              +
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :theme_select
 IF /I "%CH%" == "2" GOTO :TRANS_CONFIG
-IF /I "%CH%" == "Q" GOTO :START
+IF /I "%CH%" == "E" GOTO :START
 GOTO :INVALID_INPUT
 
 :theme_select
@@ -97,13 +96,13 @@ TYPE "%cd%\data\assets\ui\color.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / 0E DEFAULT ] ^| [2 / 1F HIGH VIS ] ^| [C / CUSTOM ] ^| [Q / EXIT ]                             +
+ECHO ^| [1 / 0E DEFAULT ] ^| [2 / 1F HIGH VIS ] ^| [C / CUSTOM ] ^| [E / EXIT ]                             +
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :0E
 IF /I "%CH%" == "2" GOTO :1F
 IF /I "%CH%" == "C" GOTO :CUSTOM_COLOR
-IF /I "%CH%" == "Q" GOTO :SETTINGS
+IF /I "%CH%" == "E" GOTO :SETTINGS
 GOTO :INVALID_INPUT
 
 :CUSTOM_COLOR
@@ -116,11 +115,11 @@ ECHO.
 ECHO ENTER A VALID BATCH SCRIPT COLOR CODE. (SEE COLOR /?)
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 HELP ] [Q / EXIT ]                                                                            +
+ECHO ^| [1 HELP ] [E / EXIT ]                                                                            +
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :THEME_CUSTOM_HELP
-IF /I "%CH%" == "Q" GOTO :SETTINGS
+IF /I "%CH%" == "E" GOTO :SETTINGS
 COLOR %CH%
 SET windhelm.theme_color=%CH%
 GOTO :SAVE_SETTINGS
@@ -152,17 +151,22 @@ TYPE "%cd%\data\assets\ui\delay_config.txt"
 ECHO.
 ECHO %displayMessage% ^| The current delay is: %windhelm.transition_delay%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / DEFAULT (300MS) ] ^| [C / CUSTOM ] ^| [Q / EXIT ]                                             +
+ECHO ^| [1 / DEFAULT (300MS) ] ^| [2 / PREVIEW ] ^| [C / CUSTOM ] ^| [E / EXIT ]                            +
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :TC_DEFAULT
+IF /I "%CH%" == "2" GOTO :TC_PREVIEW
 IF /I "%CH%" == "C" GOTO :TC_CUSTOM
-IF /I "%CH%" == "Q" GOTO :SETTINGS
+IF /I "%CH%" == "E" GOTO :SETTINGS
 GOTO :INVALID_INPUT
 
 :TC_DEFAULT
 SET windhelm.transition_delay=300
 GOTO :SAVE_SETTINGS
+
+:TC_PREVIEW
+CALL "%winLoc%\data\assets\ui\animated\ANI_travel.bat"
+GOTO :TRANS_CONFIG
 
 :TC_CUSTOM
 SET /P TCT="Set a custom transition animation delay (in ms): "
@@ -211,15 +215,13 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / EXPLORE ] ^| [2 / INVENTORY ] ^| [V / VIEW CHARACTER ] ^| [C / HANDBOOK ]
-ECHO +----------------^|----------------------------------------------------------------------------------+
-ECHO ^| [S / SAVE ]    ^| [Q / EXIT ]    ^|
-ECHO +----------------------------------
+ECHO +---------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :exploration_engine
 IF /I "%CH%" == "2" GOTO :view_inventory
 IF /I "%CH%" == "V" GOTO :character_view
 IF /I "%CH%" == "S" GOTO :Save_Game
-IF /I "%CH%" == "Q" GOTO :Exit_Without_Saving
+IF /I "%CH%" == "E" GOTO :Exit_Without_Saving
 IF /I "%CH%" == "C" GOTO :catalogue
 GOTO :INVALID_INPUT
 
@@ -257,13 +259,13 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| BANDITS SLAIN: %player.bandits_slain%
 ECHO ^| TOTAL DEATHS: %player.total_deaths%
 ECHO +---------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / LEVEL UP ] ^| [2 / CHANGE NAME ] ^| [3 / CHANGE PRONOUNS ] ^| [Q / BACK ]
+ECHO ^| [1 / LEVEL UP ] ^| [2 / CHANGE NAME ] ^| [3 / CHANGE PRONOUNS ] ^| [E / BACK ]
 ECHO +---------------------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :PLAYER_LEVEL_UP
 IF /I "%CH%" == "2" GOTO :PLAYER_CHANGE_NAME
 IF /I "%CH%" == "3" GOTO :PLAYER_CHANGE_PRONOUNS
-IF /I "%CH%" == "Q" GOTO :dashboard
+IF /I "%CH%" == "E" GOTO :dashboard
 GOTO :INVALID_INPUT
 
 :PLAYER_LEVEL_UP
@@ -313,11 +315,11 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / HUMANOIDS ]
-ECHO ^| [Q / EXIT ]
+ECHO ^| [E / EXIT ]
 ECHO +---------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :catalogue_category_humanoids
-IF /I "%CH%" == "Q" GOTO :dashboard
+IF /I "%CH%" == "E" GOTO :dashboard
 GOTO :INVALID_INPUT
 
 :catalogue_category_humanoids
@@ -333,13 +335,13 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / %player.catalogue_bandit% ] ^| [2 / %player.catalogue_abyss_guardian% ] ^| [ 3 / %player.catalogue_wandering_trader% ]
-ECHO ^| [Q / EXIT ]
+ECHO ^| [E / EXIT ]
 ECHO +---------------------------------------------------------------------------------------------------+
 SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :catalogue_check_bandit
 IF /I "%CH%" == "2" GOTO :catalogue_check_abgu
 IF /I "%CH%" == "3" GOTO :catalogue_check_wantra
-IF /I "%CH%" == "Q" GOTO :catalogue
+IF /I "%CH%" == "E" GOTO :catalogue
 GOTO :INVALID_INPUT
 
 :catalogue_check_bandit
@@ -387,9 +389,9 @@ ECHO ^| Health: 80 ^| Magicka: 100
 ECHO ^| Damage: 14 ^| Resistance Type: Physical ^| Total Resistance: 0
 ECHO ^| Faction: Non-Aligned
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [Q / BACK]
+ECHO ^| [E / BACK]
 SET /P CH=">"
-IF /I "%CH%" == "Q" GOTO :catalogue_category_humanoids
+IF /I "%CH%" == "E" GOTO :catalogue_category_humanoids
 GOTO :INVALID_INPUT
 
 :catalogue_view_abgu
@@ -411,9 +413,9 @@ ECHO ^| Health: 250 ^| Magicka: 400
 ECHO ^| Damage: 20/45 ^| Resistance Type: Physical ^| Total Resistance: 12
 ECHO ^| Faction: Abyss Lurkers
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [Q / BACK]
+ECHO ^| [E / BACK]
 SET /P CH=">"
-IF /I "%CH%" == "Q" GOTO :catalogue_category_humanoids
+IF /I "%CH%" == "E" GOTO :catalogue_category_humanoids
 GOTO :INVALID_INPUT
 
 :catalogue_view_wantra
@@ -435,9 +437,9 @@ ECHO ^| Health: 100 ^| Magicka: 100
 ECHO ^| Damage: 0 ^| Resistance Type: Physical ^| Total Resistance: 0
 ECHO ^| Faction: Fa'rel Trading Union
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [Q / BACK]
+ECHO ^| [E / BACK]
 SET /P CH=">"
-IF /I "%CH%" == "Q" GOTO :catalogue_category_humanoids
+IF /I "%CH%" == "E" GOTO :catalogue_category_humanoids
 GOTO :INVALID_INPUT
 
 :INVALID_INPUT
