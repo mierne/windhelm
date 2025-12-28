@@ -6,20 +6,20 @@ REM Variables needed to make Windhelm work are loaded here.
 SET player.message=...
 SET windhelm.inventory_call=passive
 REM Other values
-SET windhelm.vn=UNSTABLE-0.4.0_00-251211
-SET windhelm.ut="Nightfall"
+SET windhelm.vn=UNSTABLE-0.4.0_00-251228
+SET windhelm.ut="Stargazer"
 SET windhelm.enable_stability_warning=1
-REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
+rem Enemy favored element determines which they are immune to
 SET windhelm.foe_bandit_favored_element=None
 SET windhelm.foe_abyssal_guardian_favored_element=None
-REM Level up skill costs base
+rem Player skill level up cost
 SET windhelm.skill_damage_level_cost=6
 SET windhelm.skill_speech_level_cost=9
 SET windhelm.skill_athletics_level_cost=10
 SET windhelm.skill_intelligence_level_cost=10
 SET windhelm.skill_destruction_level_cost=20
 SET windhelm.skill_restoration_level_cost=20
-REM Weapon item data
+rem Windhelm weapon item table
 SET windhelm.item_long_sword_name=Longsword
 SET windhelm.item_long_sword_damage=8
 SET windhelm.item_long_sword_type=weapon
@@ -119,10 +119,6 @@ SET pulse.ifor_level_1_ecount=1
 SET pulse.ifor_level_2_ecount=3
 SET pulse.ifor_level_3_ecount=4
 SET pulse.ifor_level_4_ecount=1
-SET pulse.amcr_area_boss_defeated=False
-SET pulse.amcr_level_1_ecount=1
-SET pulse.amcr_level_2_ecount=5
-SET pulse.amcr_level_3_ecount=1
 REM Script paths
 SET wait="%winLoc%\data\scripts\wait.vbs"
 REM Global Modules placeholder values
@@ -134,6 +130,8 @@ SET windhelm.global_item_type=none
 SET windhelm.global_item_category=none
 SET windhelm.global_item_name=none
 SET windhelm.transition_delay=300
+rem Die values
+set dieroll=0
 
 :SETTINGS_LOADER
 (
@@ -214,17 +212,16 @@ ECHO %player.ifor_cleared_level4%
 ECHO %player.ifor_level2_secret_unlocked%
 ECHO %player.ifor_cleared_boss%
 ECHO %player.ifor_level_1_searched%
+ECHO %player.ifor_level_1_location%
 ECHO %player.ifor_level_2_searched%
+ECHO %player.ifor_level_2_location%
 ECHO %player.ifor_level_3_searched%
+ECHO %player.ifor_level_3_location%
 ECHO %player.ifor_level_4_searched%
+ECHO %player.ifor_level_4_location%
 ECHO %player.pe_abgu_cleared%
-ECHO %player.amcr_cleared_level1%
-ECHO %player.amcr_cleared_level2%
-ECHO %player.amcr_cleared_level3%
-ECHO %player.amcr_level_1_searched%
-ECHO %player.amcr_level_2_searched%
-ECHO %player.amcr_level_3_searched%
-ECHO %player.amcr_nightfall_cleared%
+ECHO %player.scene_1_examine_plants%
+ECHO %player.hazard_spotted_pod_known%
 ECHO %player.armor_equipped%
 ECHO %player.weapon_equipped%
 ECHO %player.spell_equipped%
@@ -257,20 +254,11 @@ ECHO %vendor.blacksmith_short_sword_sbp%
 ECHO %vendor.blacksmith_great_axe_sbp%
 ECHO %vendor.blacksmith_mace_sbp%
 ECHO %vendor.blacksmith_wooden_bow_sbp%
-ECHO %pulse.amcr_hidden_merchant_visits%
-ECHO %pulse.amcr_hidden_merchant_longsowrd_price%
 ECHO %pulse.ifor_area_boss_defeated%
 ECHO %pulse.ifor_level_1_ecount%
 ECHO %pulse.ifor_level_2_ecount%
 ECHO %pulse.ifor_level_3_ecount%
 ECHO %pulse.ifor_level_4_ecount%
-ECHO %player.amcr_cleared_level1%
-ECHO %player.amcr_cleared_level2%
-ECHO %player.amcr_cleared_level3%
-ECHO %player.amcr_level_1_searched%
-ECHO %player.amcr_level_2_searched%
-ECHO %player.amcr_level_3_searched%
-ECHO %player.amcr_nightfall_cleared%
 )>"%cd%\data\player\savedata.txt"
 GOTO :loadData
 
@@ -333,17 +321,16 @@ SET /P player.ifor_cleared_level4=
 SET /P player.ifor_level2_secret_unlocked=
 SET /P player.ifor_cleared_boss=
 SET /P player.ifor_level_1_searched=
+SET /P player.ifor_level_1_location=
 SET /p player.ifor_level_2_searched=
+SET /P player.ifor_level_2_location=
 SET /p player.ifor_level_3_searched=
+SET /P player.ifor_level_3_location=
 SET /p player.ifor_level_4_searched=
+SET /P player.ifor_level_4_location=
 SET /p player.pe_abgu_cleared=
-SET /p player.amcr_cleared_level1=
-SET /p player.amcr_cleared_level2=
-SET /p player.amcr_cleared_level3=
-SET /p player.amcr_level_1_searched=
-SET /p player.amcr_level_2_searched=
-SET /p player.amcr_level_3_searched=
-SET /p player.amcr_nightfall_cleared=
+set /p player.scene_1_examine_plants=
+set /p player.hazard_spotted_pod_known=
 SET /P player.armor_equipped=
 SET /P player.weapon_equipped=
 SET /P player.spell_equipped=
@@ -376,20 +363,11 @@ SET /P vendor.blacksmith_short_sword_sbp=
 SET /P vendor.blacksmith_great_axe_sbp=
 SET /P vendor.blacksmith_mace_sbp=
 SET /P vendor.blacksmith_wooden_bow_sbp=
-SET /P pulse.amcr_hidden_merchant_visits=
-SET /P pulse.amcr_hidden_merchant_longsowrd_price=
 SET /P pulse.ifor_area_boss_defeated=
 SET /P pulse.ifor_level_1_ecount=
 SET /P pulse.ifor_level_2_ecount=
 SET /P pulse.ifor_level_3_ecount=
 SET /P pulse.ifor_level_4_ecount=
-SET /P player.amcr_cleared_level1=
-SET /P player.amcr_cleared_level2=
-SET /P player.amcr_cleared_level3=
-SET /P player.amcr_level_1_searched=
-SET /P player.amcr_level_2_searched=
-SET /P player.amcr_level_3_searched=
-SET /P player.amcr_nightfall_cleared=
 )<"%cd%\data\player\savedata.txt"
 GOTO :EOF
 
@@ -463,23 +441,24 @@ SET player.ifor_cleared_level4=0
 SET player.ifor_level2_secret_unlocked=0
 SET player.ifor_cleared_boss=0
 SET player.ifor_level_1_searched=0
+SET player.ifor_level_1_location=NotStarted
 SET player.ifor_level_2_searched=0
+SET player.ifor_level_2_location=NotStarted
 SET player.ifor_level_3_searched=0
+SET player.ifor_level_3_location=NotStarted
 SET player.ifor_level_4_searched=0
+SET player.ifor_level_4_location=NotStarted
 SET player.pe_abgu_cleared=0
-SET player.amcr_cleared_level1=0
-SET player.amcr_cleared_level2=0
-SET player.amcr_cleared_level3=0
-SET player.amcr_level_1_searched=0
-SET player.amcr_level_2_searched=0
-SET player.amcr_level_3_searched=0
-SET player.amcr_nightfall_cleared=0
+rem Player sublevel scene data
+set player.scene_1_examine_plants=incomplete
+rem Known hazards to the player
+set player.hazard_spotted_pod_known=0
 GOTO :PLAYER_INIT_INVENTORY
 
 :PLAYER_INIT_INVENTORY
-SET player.armor_equipped=EMPTY
-SET player.weapon_equipped=EMPTY
-SET player.spell_equipped=EMPTY
+SET player.armor_equipped=None
+SET player.weapon_equipped=None
+SET player.spell_equipped=None
 SET player.item_cactus_armor_owned=0
 SET player.item_guard_armor_owned=0
 SET player.item_stone_armor_owned=0
@@ -524,12 +503,7 @@ SET vendor.blacksmith_scale_armor_sbp=1622
 REM Alchemist Shop Base Prices.
 SET vendor.alchemist.health_tonic_price=25
 SET vendor.alchemist.magicka_tonic_price=25
-REM Alchemist Item Stock.
-REM Traveling Merchant Stock
-REM Traveling Merchant Prices
-REM Autmular Hidden Merchant
-SET pulse.amcr_hidden_merchant_visits=0
-SET pulse.amcr_hidden_merchant_longsowrd_price=120
+
 IF %SLOPr% == INIT (
     GOTO :EOF
 ) ELSE (
