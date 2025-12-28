@@ -47,15 +47,11 @@ IF /I "%CH%" == "Q" GOTO :MAIN
 GOTO :INVALID_INPUT
 
 :ALCHEMIST_BUY_HEALING_TONIC
-SET VENDOR.ITEM=INSPECT_HEALING_TONIC
-SET windhelm.global_item_price=%vendor.alchemist.health_tonic_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_HEALTH_TONIC %vendor.alchemist.health_tonic_price%
 GOTO :VENDOR_ALCHEMIST
 
 :ALCHEMIST_BUY_MAGICKA_TONIC
-SET VENDOR.ITEM=INSPECT_MAGICKA_TONIC
-SET windhelm.global_item_price=%vendor.alchemist.magicka_tonic_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_MAGICKA_TONIC %vendor.alchemist.magicka_tonic_price%
 GOTO :VENDOR_ALCHEMIST
 
 REM Blacksmith Vendor.
@@ -130,15 +126,13 @@ IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_LONG_SWORD
-SET VENDOR.ITEM=INSPECT_LONGSWORD
-SET windhelm.global_item_price=%vendor.blacksmith_long_sword_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+@REM SET windhelm.global_item_price=vendor.blacksmith_long_sword_price
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_LONGSWORD %vendor.blacksmith_long_sword_price%
 GOTO :BLACKSMITH_CATEGORY_SWORDS
 
 :BLACKSMITH_INSPECT_SHORT_SWORD
-SET VENDOR.ITEM=INSPECT_SHORTSWORD
-SET windhelm.global_item_price=%vendor.blacksmith_short_sword_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+@REM SET windhelm.global_item_price=%vendor.blacksmith_short_sword_price%
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_SHORTSWORD %vendor.blacksmith_short_sword_price%
 GOTO :BLACKSMITH_CATEGORY_SWORDS
 
 :BLACKSMITH_CATEGORY_AXES
@@ -164,9 +158,7 @@ IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_GREAT_AXE
-SET VENDOR.ITEM=INSPECT_GREATAXE
-SET windhelm.global_item_price=%vendor.blacksmith_great_axe_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_GREATAXE %vendor.blacksmith_great_axe_price%
 GOTO :BLACKSMITH_CATEGORY_AXES
 
 :BLACKSMITH_CATEGORY_MACES
@@ -192,9 +184,7 @@ IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_MACE
-SET VENDOR.ITEM=INSPECT_GREATAXE
-SET windhelm.global_item_price=%vendor.blacksmith_mace_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_GREATAXE %vendor.blacksmith_mace_price%
 GOTO :BLACKSMITH_CATEGORY_MACES
 
 :BLACKSMITH_CATEGORY_BOWS
@@ -220,9 +210,7 @@ IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_BOW
-SET VENDOR.ITEM=INSPECT_WOODEN_BOW
-SET windhelm.global_item_price=%vendor.blacksmith_wooden_bow_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_WOODEN_BOW %vendor.blacksmith_wooden_bow_price%
 GOTO :BLACKSMITH_CATEGORY_BOWS
 
 :BLACKSMITH_TYPE_ARMOR
@@ -272,15 +260,11 @@ IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_ARMOR
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_CACTUS_ARMOR
-SET VENDOR.ITEM=INSPECT_CACTUS_ARMOR
-SET windhelm.global_item_price=%vendor.blacksmith_cactus_armor_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_CACTUS_ARMOR %vendor.blacksmith_cactus_armor_price%
 GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
 
 :BLACKSMITH_INSPECT_GUARD_ARMOR
-SET VENDOR.ITEM=INSPECT_GUARD_ARMOR
-SET windhelm.global_item_price=%vendor.blacksmith_guard_armor_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_GUARD_ARMOR %vendor.blacksmith_guard_armor_price%
 GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
 
 :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
@@ -308,15 +292,11 @@ IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_ARMOR
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_STONE_ARMOR
-SET VENDOR.ITEM=INSPECT_STONE_ARMOR
-SET windhelm.global_item_price=%vendor.blacksmith_stone_armor_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_STONE_ARMOR %vendor.blacksmith_stone_armor_price%
 GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
 
 :BLACKSMITH_INSPECT_IRON_ARMOR
-SET VENDOR.ITEM=INSPECT_IRON_ARMOR
-SET windhelm.global_item_price=%vendor.blacksmith_iron_armor_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_IRON_ARMOR %vendor.blacksmith_iron_armor_price%
 GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
 
 :BLACKSMITH_CATEGORY_HEAVY_ARMOR
@@ -344,15 +324,11 @@ IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_ARMOR
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_STEEL_ARMOR
-SET VENDOR.ITEM=INSPECT_STEEL_ARMOR
-SET windhelm.global_item_price=%vendor.blacksmith_steel_armor_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_STEEL_ARMOR %vendor.blacksmith_steel_armor_price%
 GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
 
 :BLACKSMITH_INSPECT_SCALE_ARMOR
-SET VENDOR.ITEM=INSPECT_SCALE_ARMOR
-SET windhelm.global_item_price=%vendor.blacksmith_scale_armor_price%
-CALL "%winLoc%\data\functions\global_modules.bat"
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_SCALE_ARMOR %vendor.blacksmith_scale_armor_price%
 GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
 
 :VENDOR_WIZARD
