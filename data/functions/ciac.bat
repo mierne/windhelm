@@ -372,6 +372,7 @@ SET player.magicSchool_DestructionSkill=2
 SET player.magicSchool_RestorationSkill=6
 SET player.class=Druid
 SET player.class_ability=precognition
+SET player.item_wooden_bow_owned=1
 GOTO :APPLY_RACE_BONUSES
 
 :WARRIOR_CHOSEN
@@ -386,6 +387,7 @@ SET player.magicSchool_DestructionSkill=2
 SET player.magicSchool_RestorationSkill=2
 SET player.class=Warrior
 SET player.class_ability=rage
+SET player.item_short_sword_owned=1
 GOTO :APPLY_RACE_BONUSES
 
 :SORCERER_CHOSEN
@@ -399,6 +401,7 @@ SET player.magicSchool_DestructionSkill=8
 SET player.magicSchool_RestorationSkill=12
 SET player.class=Sorcerer
 SET player.class_ability=sapping
+SET player.item_short_sword_owned=1
 GOTO :APPLY_RACE_BONUSES
 
 REM Applies health and other skill bonuses.
