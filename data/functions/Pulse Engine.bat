@@ -2,24 +2,24 @@ if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 
 :BATTLE_GLOBAL_RESET
 REM Level selection indicator
-SET "IFOR.LEVEL1_SELECTED=1"
-SET "IFOR.LEVEL2_SELECTED=0"
-SET "IFOR.LEVEL3_SELECTED=0"
-SET "IFOR.LEVEL4_SELECTED=0"
-SET "IFOR.SELECTED_LEVEL=Level 1"
-SET "IFOR.ECOUNT=%pulse.ifor_level_1_ecount%"
+SET IFOR.LEVEL1_SELECTED=1
+SET IFOR.LEVEL2_SELECTED=0
+SET IFOR.LEVEL3_SELECTED=0
+SET IFOR.LEVEL4_SELECTED=0
+SET IFOR.SELECTED_LEVEL=Level 1
+SET IFOR.ECOUNT=%pulse.ifor_level_1_ecount%
 SET "IFOR.PLAYER_CLEARED=False"
 SET "IFOR.FINAL_LEVEL=False"
 REM Hacky. There's a better way.
 IF %pulse.ifor_level_1_ecount% EQU 0 (
-    SET "player.ifor_cleared_level1=1"
+    SET player.ifor_cleared_level1=1
     SET "IFOR.PLAYER_CLEARED=True"
     IF %pulse.ifor_level_2_ecount% EQU 0 (
-        SET "player.ifor_cleared_level2=1"
+        SET player.ifor_cleared_level2=1
         IF %pulse.ifor_level_3_ecount% EQU 0 (
-            SET "player.ifor_cleared_level3=1"
+            SET player.ifor_cleared_level3=1
             IF %pulse.ifor_level_4_ecount% EQU 0 (
-                SET "player.ifor_cleared_level4=1"
+                SET player.ifor_cleared_level4=1
             ) ELSE (
                 GOTO :CALL_REASON
             )
@@ -47,7 +47,7 @@ IF "%PE_CALL%" == "Exploration_Engine" (
 :PE_EXPLORATION_ENGINE
 MODE con: cols=105 lines=17
 TITLE WINDHELM - Exploration Engine ^| %player.name% the %player.race% %player.class%!
-SET "RETURN=PE_EXPLORATION_ENGINE"
+SET RETURN=PE_EXPLORATION_ENGINE
 CLS
 ECHO.
 TYPE "%winLoc%\data\assets\ui\exploration.txt"
@@ -58,7 +58,7 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / IRIDESCENT FOREST ] ^| [2 / WINDHELM EXTERIOR ] ^| [3 / ROCKWINN PLAZA ]
 ECHO +-------------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
+SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :VENTURE_IRIDESCENT_FOREST
 IF /I "%CH%" == "2" GOTO :VENTURE_WINDHELM_EXTERIOR
 IF /I "%CH%" == "3" GOTO :VENTURE_ROCKWINN_PLAZA
@@ -118,7 +118,7 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / NEXT LEVEL ] ^| [2 / PREVIOUS LEVEL ] ^| ^| [3 / ENTER LEVEL ] ^| [4 / SEARCH ] ^| [5 / USE ITEM ] ^| [6 / NEXT ZONE ]
 ECHO +------------------------------------------------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
+SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :ZONE_SELECT_NEXT
 IF /I "%CH%" == "2" GOTO :ZONE_SELECT_LAST
 IF /I "%CH%" == "3" GOTO :IFOR_ADVENTURE
@@ -219,7 +219,7 @@ IF %IFOR.LEVEL1_SELECTED% EQU 1 (
         CALL "%winLoc%\data\functions\sublevel\IFOR\sublevel_3.bat"
         GOTO :VENTURE_IRIDESCENT_FOREST
     )
-) ELSE IF %IFOR.LEVEL4_SELECTED EQU 1 (
+) ELSE IF %IFOR.LEVEL4_SELECTED% EQU 1 (
     IF %player.ifor_cleared_level4% EQU 1 (
         GOTO :IFOR_CLEARED_LEVEL
     ) ELSE (
@@ -244,7 +244,7 @@ IF %IFOR.ECOUNT% GTR 0 (
     REM Enemies have NOT been cleared from this room. Encounter risk
     IF %ER% GEQ 20 (
         REM Check level for enemy type
-        SET "displayMessage=You encountered an enemy while exploring this level."
+        SET displayMessage=You encountered an enemy while exploring this level.
         GOTO :IFOR_AB_CHECK
     ) ELSE (
         REM No encounter
@@ -253,12 +253,6 @@ IF %IFOR.ECOUNT% GTR 0 (
 ) ELSE (
     GOTO :IFORSC_LOGIC
 )
-
-REM IRIDESCENT FOREST - SUBLEVEL SEARCHING
-:IFORSC_LOGIC
-SET PELH=IFOR_SUBLEVEL
-CALL "%winLoc%\data\functions\Loot Handler.bat"
-GOTO :VENTURE_IRIDESCENT_FOREST
 
 :IFOR_CLEAR_PREVIOUS
 SET "displayMessage=The way is blocked... You must clear the previous level."
@@ -276,13 +270,13 @@ IF %player.pe_abgu_cleared% EQU 0 (
 
 REM Unified Zone Exploration - UZE
 :ZONE_SELECT_NEXT
-IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
+IF "%PE.ZONE_ACTIVE%" == "VENTURE_IRIDESCENT_FOREST" (
     REM Sublevel selection for the Iridescent Forest
     IF %IFOR.LEVEL1_SELECTED% EQU 1 (
-        SET "IFOR.LEVEL1_SELECTED=0"
-        SET "IFOR.LEVEL2_SELECTED=1"
+        SET IFOR.LEVEL1_SELECTED=0
+        SET IFOR.LEVEL2_SELECTED=1
         SET "IFOR.SELECTED_LEVEL=Level 2"
-        SET "IFOR.ECOUNT=%pulse.ifor_level_2_ecount%"
+        SET IFOR.ECOUNT=%pulse.ifor_level_2_ecount%
         SET "IFOR.FINAL_LEVEL=False"
         IF %player.ifor_cleared_level2% EQU 1 (
             SET "IFOR.player_cleared=True"
@@ -292,12 +286,12 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
             GOTO :VENTURE_IRIDESCENT_FOREST
         )
     ) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
-        SET "IFOR.LEVEL2_SELECTED=0"
-        SET "IFOR.LEVEL3_SELECTED=1"
+        SET IFOR.LEVEL2_SELECTED=0
+        SET IFOR.LEVEL3_SELECTED=1
         SET "IFOR.SELECTED_LEVEL=Level 3"
-        SET "IFOR.ECOUNT=%pulse.ifor_level_3_ecount%"
+        SET IFOR.ECOUNT=%pulse.ifor_level_3_ecount%
         SET "IFOR.FINAL_LEVEL=False"
-        IF %player.ifor_cleared_level3% == 1 (
+        IF %player.ifor_cleared_level3% EQU 1 (
             SET "IFOR.PLAYER_CLEARED=True"
             GOTO :VENTURE_IRIDESCENT_FOREST
         ) ELSE (
@@ -305,12 +299,12 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
             GOTO :VENTURE_IRIDESCENT_FOREST
         )
     ) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
-        SET "IFOR.LEVEL3_SELECTED=0"
-        SET "IFOR.LEVEL4_SELECTED=1"
+        SET IFOR.LEVEL3_SELECTED=0
+        SET IFOR.LEVEL4_SELECTED=1
         SET "IFOR.SELECTED_LEVEL=Level 4"
-        SET "IFOR.ECOUNT=%pulse.ifor_level_4_ecount%"
+        SET IFOR.ECOUNT=%pulse.ifor_level_4_ecount%
         SET "IFOR.FINAL_LEVEL=True"
-        IF %player.ifor_cleared_level4% == 1 (
+        IF %player.ifor_cleared_level4% EQU 1 (
             SET "IFOR.PLAYER_CLEARED=True"
             GOTO :VENTURE_IRIDESCENT_FOREST
         ) ELSE (
@@ -321,25 +315,23 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         SET "displayMessage=Cannot go any further forward."
         GOTO :VENTURE_IRIDESCENT_FOREST
     ) ELSE (
-        SET errorType=sublevel
-        CALL "%winLoc%\data\functions\Error Handler.bat"
-        GOTO :VENTURE_IRIDESCENT_FOREST
+        echo PULSE ENGINE: error on line 272
+        pause
+        exit /b
     )
 ) ELSE (
-    SET "errorType=areazone"
-    SET "callingScript=Pulse Engine.bat"
-    SET "errorCause=Invalid zone selection"
-    SET "scriptLine=352"
-    CALL "%winLoc%\data\functions\Error Handler.bat"
+        echo PULSE ENGINE: error on line 272
+        pause
+        exit /b
 )
 
 :ZONE_SELECT_LAST
-IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
+IF "%PE.ZONE_ACTIVE%" == "VENTURE_IRIDESCENT_FOREST" (
         IF %IFOR.LEVEL4_SELECTED% EQU 1 (
-        SET "IFOR.LEVEL4_SELECTED=0"
-        SET "IFOR.LEVEL3_SELECTED=1"
+        SET IFOR.LEVEL4_SELECTED=0
+        SET IFOR.LEVEL3_SELECTED=1
         SET "IFOR.SELECTED_LEVEL=Level 3"
-        SET "IFOR.ECOUNT=%pulse.ifor_level_3_ecount%"
+        SET IFOR.ECOUNT=%pulse.ifor_level_3_ecount%
         SET "IFOR.FINAL_LEVEL=False"
         IF %player.ifor_cleared_level3% == 1 (
             SET "IFOR.PLAYER_CLEARED=True"
@@ -349,10 +341,10 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
             GOTO :VENTURE_IRIDESCENT_FOREST
         )
     ) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
-        SET "IFOR.LEVEL3_SELECTED=0"
-        SET "IFOR.LEVEL2_SELECTED=1"
+        SET IFOR.LEVEL3_SELECTED=0
+        SET IFOR.LEVEL2_SELECTED=1
         SET "IFOR.SELECTED_LEVEL=Level 2"
-        SET "IFOR.ECOUNT=%pulse.ifor_level_2_ecount%"
+        SET IFOR.ECOUNT=%pulse.ifor_level_2_ecount%
         SET "IFOR.FINAL_LEVEL=False"
         IF %player.ifor_cleared_level2% == 1 (
             SET "IFOR.PLAYER_CLEARED=True"
@@ -362,10 +354,10 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
             GOTO :VENTURE_IRIDESCENT_FOREST
         )
     ) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
-        SET "IFOR.LEVEL2_SELECTED=0"
-        SET "IFOR.LEVEL1_SELECTED=1"
+        SET IFOR.LEVEL2_SELECTED=0
+        SET IFOR.LEVEL1_SELECTED=1
         SET "IFOR.SELECTED_LEVEL=Level 1"
-        SET "IFOR.ECOUNT=%pulse.ifor_level_1_ecount%"
+        SET IFOR.ECOUNT=%pulse.ifor_level_1_ecount%
         SET "IFOR.FINAL_LEVEL=False"
         IF %player.ifor_cleared_level1% EQU 1 (
             SET "IFOR.PLAYER_CLEARED=True"
@@ -379,7 +371,9 @@ IF %PE.ZONE_ACTIVE% == VENTURE_IRIDESCENT_FOREST (
         GOTO :VENTURE_IRIDESCENT_FOREST
     )
 ) ELSE (
-    REM Error Handler
+    echo PULSE ENGINE: error on line 328
+    pause
+    exit /b
 )
 
 :VENTURE_WINDHELM_EXTERIOR
@@ -396,7 +390,7 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / WANDER ] ^| [2 / TRAVELING MERCHANT ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
+SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER
 IF /I "%CH%" == "2" GOTO :WE_TRAVELING_MERCHANT
 IF /I "%CH%" == "E" GOTO :PE_EXPLORATION_ENGINE
@@ -405,7 +399,6 @@ GOTO :INVALID_INPUT
 :WE_TRAVELING_MERCHANT
 MODE con: cols=100 lines=16
 SET "RETURN=WE_TRAVELING_MERCHANT"
-SET "displayMessage=..."
 CLS
 ECHO.
 TYPE "%cd%\data\assets\npcs\merchant.txt"
@@ -416,31 +409,29 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / VIEW WARES ] ^| %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
+SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :TM_VIEW_ITEMS
 IF /I "%CH%" == "E" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
 
 :TM_VIEW_ITEMS
-echo Not IMPLEMENTED.
-pause
-goto :WE_TRAVELING_MERCHANT
-
-MODE con: cols=105 lines=19
-SET "RETURN=TM_VIEW_ITEMS"
-SET displayMessage=...
-CLS
+TITLE (Rockwinn Plaza) - Alchemist ^| %player.name% the %player.race% %player.class%
+MODE con: cols=100 lines=20
+SET "RETURN=VENDOR_ALCHEMIST"
 ECHO.
-REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
+TYPE "%cd%\data\assets\npcs\merchant.txt"
 ECHO.
-ECHO The merchant greets you with a friendly smile.
-ECHO +-------------------------------------------------------------------------------------------------------+
+ECHO.
+ECHO What can I do for you, Shard?
+ECHO %displayMessage%
+ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
-ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / APPROACH ] ^| %displayMessage%
-ECHO +-------------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
-IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| XP TONIC: %vendor.travmerch_xp_tonic_stock% STOCKED, PRICE: %vendor.travmerch_xp_tonic_price% LUNIS
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO + [E / LEAVE ]                                                                +
+ECHO +--------------------------------------------------------------------------------------------------+
+SET /P CH=">"
 IF /I "%CH%" == "E" GOTO :WE_TRAVELING_MERCHANT
 GOTO :INVALID_INPUT
 
@@ -461,7 +452,6 @@ GOTO :PE_EXPLORATION_ENGINE
 :WE_WANDER_ENCOUNTER_1
 MODE con: cols=105 lines=19
 SET "RETURN=WE_WANDER_ENCOUNTER_1"
-SET "displayMessage=..."
 CLS
 ECHO.
 REM TYPE "%winLoc%\PATH\TO\ASCII\ART"
@@ -472,7 +462,7 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / APPROACH ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
+SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1
 IF /I "%CH%" == "E" GOTO :PE_EXPLORATION_ENGINE
 GOTO :INVALID_INPUT
@@ -491,7 +481,7 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / TELL ME ABOUT WINDHELM ] ^| [2 / EARNING LUNIS ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
+SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH1
 IF /I "%CH%" == "2" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH2
 IF /I "%CH%" == "E" GOTO :PE_EXPLORATION_ENGINE
@@ -515,7 +505,7 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / CONTINUE ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
+SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH1_SCH1
 IF /I "%CH%" == "E" GOTO :WE_WANDER_ENCOUNTER_1_INT1
 GOTO :INVALID_INPUT
@@ -536,7 +526,7 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [1 / CONTINUE ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
+SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :WE_WANDER_ENCOUNTER_1_INT1_CH1_SCH2
 IF /I "%CH%" == "E" GOTO :WE_WANDER_ENCOUNTER_1_INT1
 GOTO :INVALID_INPUT
@@ -559,13 +549,12 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^|[E / BACK ] ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
+SET /P CH=">"
 IF /I "%CH%" == "E" GOTO :WE_WANDER_ENCOUNTER_1_INT1
 GOTO :INVALID_INPUT
 
 :INVALID_INPUT
-ECHO "%CH%" is not a valid input.
-PAUSE
+set "displayMessage="%CH%" is not a valid input."
 GOTO :%RETURN%
 
 REM Combat Engine
@@ -574,46 +563,45 @@ REM temp fix for empty variables (what's causing this?)
 SET /A CR=%RANDOM% * 17 / 32768 + 8
 SET "player_levelup_notif=."
 SET "player.info=..."
-SET "ce.boss_active=0"
+SET ce.boss_active=0
 
 REM Global Variables
-SET "player.armor_calculated=0"
-SET "enLooted=0"
-SET "player.damage_base=%player.damage%"
+SET player.armor_calculated=0
+SET enLooted=0
+SET player.damage_base=%player.damage%
 
 REM Iridescent Bandit Information
-SET "bandit.health=70"
-SET "bandit.magicka=100"
-SET "bandit.damage=10"
+SET bandit.health=70
+SET bandit.magicka=100
+SET bandit.damage=10
 SET "bandit.damage_type_resistance=physical"
-SET "bandit.damage_resisted=0"
+SET bandit.damage_resisted=0
 
 REM Abyss Guardian Information
-SET "abyss_guardian.health=200"
-SET "abyss_guardian.magicka=400"
-SET "abyss_guardian.damage=20"
-SET "abyss_guardian.special_damage=45"
+SET abyss_guardian.health=200
+SET abyss_guardian.magicka=400
+SET abyss_guardian.damage=20
+SET abyss_guardian.special_damage=45
 SET "abyss_guardian.damage_type_resistance=physical"
-SET "abyss_guardian.damage_resisted=4"
+SET abyss_guardian.damage_resisted=4
 SET "abyss_guardian.dialogue_title=Abyss Lurker L'yahn"
 REM Currently unsued data
 SET "abyss_guardian.faction=Abyss Lurkers"
 
 :PE_COMBAT_ENGINE_ENCOUNTER
-pause
 IF "%currentEnemy%" == "Bandit" (
-    SET "enemy.health=%bandit.health%"
-    SET "enemy.magicka=%bandit.magicka%"
-    SET "enemy.damage=%bandit.damage%"
+    SET enemy.health=%bandit.health%
+    SET enemy.magicka=%bandit.magicka%
+    SET enemy.damage=%bandit.damage%
     SET "enemy.damage_type_resistance=%bandit.damage_type_resistance%"
-    SET "enemy.damage_resisted=%bandit.damage_resisted%"
-    SET "enemy.damage_base=%bandit.damage%"
-    SET "ce.boss_active=0"
+    SET enemy.damage_resisted=%bandit.damage_resisted%
+    SET enemy.damage_base=%bandit.damage%
+    SET ce.boss_active=0
     SET "curEn=Bandit"
     IF %player.catalogue_bandit_encountered% EQU 0 (
-        SET "player.catalogue_bandit_encountered=1"
+        SET player.catalogue_bandit_encountered=1
         SET "player.catalogue_bandit=Bandit"
-        call :catalogue_new_entry
+        set /a player.catalogue_unlocked+=1
         SET "displayMessage=..."
         GOTO :PE_EBS
     ) ELSE (
@@ -621,37 +609,37 @@ IF "%currentEnemy%" == "Bandit" (
         GOTO :PE_EBS
     )
 ) ELSE IF "%currentEnemy%" == "AbyssalGuardian" (
-    SET "enemy.health=%abyss_guardian.health%"
-    SET "enemy.magicka=%abyss_guardian.magicka%"
-    SET "enemy.damage=%abyss_guardian.damage%"
-    SET "enemy.damage_base=%abyss_guardian.damage%"
-    SET "enemy.special_damage=%abyss_guardian.special_damage%"
+    SET enemy.health=%abyss_guardian.health%
+    SET enemy.magicka=%abyss_guardian.magicka%
+    SET enemy.damage=%abyss_guardian.damage%
+    SET enemy.damage_base=%abyss_guardian.damage%
+    SET enemy.special_damage=%abyss_guardian.special_damage%
     SET "enemy.damage_type_resistance=%abyss_guardian.damage_type_resistance%"
-    SET "enemy.damage_resisted=%abyss_guardian.damage_resisted%"
-    SET "enemy.dialogue_title=%abyss_guardian.dialogue_title%"
-    SET "ce.boss_active=1"
+    SET enemy.damage_resisted=%abyss_guardian.damage_resisted%
+    SET enemy.dialogue_title=%abyss_guardian.dialogue_title%
+    SET ce.boss_active=1
     SET "curEn=Abyss Guardian"
     IF %player.catalogue_abyss_guardian_encountered% EQU 0 (
-        SET "player.catalogue_abyss_guardian_encountered=1"
+        SET player.catalogue_abyss_guardian_encountered=1
         SET "player.catalogue_abyss_guardian=Abyss Guardian"
-        call :catalogue_new_entry
+        set /a player.catalogue_unlocked+=1
         SET "displayMessage=..."
         GOTO :PE_EBS
     ) ELSE (
-        SET displayMessage=...
+        SET "displayMessage=..."
         GOTO :PE_EBS
     )
 ) ELSE (
-    ECHO Enemy errorType is unavailable.
-    PAUSE
-    EXIT /B
+    echo PULSE ENGINE: error on line 591
+    pause
+    exit /b
 )
 
 :PE_EBS
 MODE con: cols=120 lines=20
 IF %enemy.health% LEQ 0 GOTO :VICTORY_STATS_TRACK
 IF %player.health% LEQ 0 GOTO :DEFEAT_SCREEN
-SET "player.damage=%player.damage_base%"
+SET player.damage=%player.damage_base%
 TITLE (WINDHELM) - COMBAT ENGINE ^| %player.name% the %player.race% %player.class% vs %curEn% & SET enAT=%enATb%
 CLS
 ECHO.
@@ -666,9 +654,10 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| [A / ATTACK ] ^| [I / ITEMS ]
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
+SET /P CH=">"
 IF /I "%CH%" == "A" GOTO :PLAYER_ATTACK
 IF /I "%CH%" == "I" GOTO :PLAYER_ITEMS
+GOTO :INVALID_INPUT
 
 :PLAYER_ATTACK
 REM a number between 0 and 100 can be split 4 ways, two hits, a crit and a miss. Descending chance in that order.
@@ -676,12 +665,13 @@ SET /A PA=%RANDOM% %%100
 IF %PA% GEQ 80 (
     REM Critical hit
     SET "player.message=%player.name% got a critical hit on %curEn%^!"
-    set /a "enemy.health-=!player.damage!" *2
+    set /a enemy.health-=player.damage*2
+    @REM SET /A enemy.health=!enemy.health! -%player.damage%*2
     GOTO :PLAYER_ARMOR_CALCULATION
 ) ELSE IF %PA% GEQ 16 (
     REM Normal Attack 2
     SET "player.message=%player.name% landed a solid hit on %curEn%."
-    set /a "enemy.health-=!player.damage!"
+    set /a enemy.health-=player.damage
     GOTO :PLAYER_ARMOR_CALCULATION
 ) ELSE IF %PA% LEQ 15 (
     REM Player attack misses.
@@ -693,11 +683,11 @@ IF %PA% GEQ 80 (
 
 :PLAYER_ARMOR_CALCULATION
 REM Adjusts enemy attack damage based on Player armor value.
-SET "enemy.damage=%enemy.damage_base%"
+SET enemy.damage=%enemy.damage_base%
 IF %player.armor_class% LEQ 0 (
     GOTO :CHECK_ACTIVE_BOSS
 ) ELSE (
-    set /a "enemy.damage-=!player.armor_class!"
+    set /a enemy.damage-=player.armor_class
     GOTO :CHECK_ACTIVE_BOSS
 )
 
@@ -715,12 +705,13 @@ SET /A PA=%RANDOM% %%100
 IF %PA% GEQ 84 (
     REM Critical hit
     SET "displayMessage=%currentEnemy% got a critical hit."
-    set /a "player.health-=!enemy.damage!" *2
+    set /a player.health-=enemy.damage*2
+    @REM SET /A player.health=!player.health! -%enemy.damage%*2
     GOTO :PE_EBS
 ) ELSE IF %PA% GEQ 31 (
     REM Normal Attack 2
     SET "displayMessage=The %currentEnemy% lands a solid strike on %player.name%."
-    set /a "player.health-=!enemy.damage!"
+    set /a player.health-=enemy.damage
     GOTO :PE_EBS
 ) ELSE IF %PA% LEQ 30 (
     REM Player attack misses.
@@ -734,11 +725,11 @@ IF %PA% GEQ 84 (
 SET /A PA=%RANDOM% %%100
 IF %PA% GEQ 70 (
     SET "displayMessage=Abyssal Guardian got a critical hit on %player.name%."
-    set /a "player.health-=!enemy.damage!" *2
+    set /a player.health-=enemy.damage*2
     GOTO :PE_EBS
 ) ELSE IF %PA% GEQ 15 (
-    SET "displayMessage=Abyssal Guardian managed a strike on %player.name%."
-    set /a "player.health-=!enemy.damage!"
+    SET displayMessage=Abyssal Guardian managed a strike on %player.name%.
+    set /a player.health-=enemy.damage
     GOTO :PE_EBS
 ) ELSE (
     SET "displayMessage=Abyssal Guardian missed %player.name% by mere inches."
@@ -746,103 +737,87 @@ IF %PA% GEQ 70 (
 )
 
 :PLAYER_ITEMS
-SET windhelm.inventory_call=combat
+SET "windhelm.inventory_call=combat"
 CALL "%winLoc%\data\functions\Inventory Viewer.bat"
 GOTO :PE_EBS
 
-:ERROR_HANDLER
-CALL "%cd%\data\functions\Error Handler.bat"
-CLS
-ECHO.
-ECHO An error has occured in Combat Engine. It is not recommended that you continue.
-ECHO Save your game and exit?
-CHOICE /C YN /N /M "Y/N"
-IF ERRORLEVEL 2 GOTO :EH_WARN
-IF ERRORLEVEL 1 GOTO :EH_CS
-
-:EH_WARN
-ECHO You have been warned.
-PAUSE
-GOTO :PE_EBS
-
-:EH_CS
-SET SLOPr=SAVE
-CALL "%winLoc%\data\functions\SLOP.bat"
-EXIT
-
 :VICTORY_STATS_TRACK
 IF "%currentEnemy%" == "Bandit" (
-    set /a "player.bandits_slain+=1"
+    set /a player.bandits_slain+=1
+    @REM SET /A player.bandits_slain=!player.bandits_slain! +1
     GOTO :VICTORY_TRACK_CLEARED
 ) ELSE IF "%currentEnemy%" == "AbyssalGuardian" (
-    set "player.iridescent_ab_defeated=1"
-    SET "player.pe_abgu_cleared=1"
+    set /a player.iridescent_ab_defeated+=1
+    @REM SET /A player.iridescent_ab_defeated=1
+    SET player.pe_abgu_cleared=1
     GOTO :BOSS_DEFEAT_REWARDS
     REM GOTO :VICTORY_REWARDS
 ) ELSE (
-    REM Enemy doesn't exist? How'd you get here?
-    GOTO :ERROR_HANDLER
+    echo PULSE ENGINE: error on line 744
+    pause
+    exit /b
 )
 
 :VICTORY_TRACK_CLEARED
 IF %IFOR.LEVEL1_SELECTED% EQU 1 (
-    set /a "pulse.ifor_level_1_ecount-=1"
+    SET /A pulse.ifor_level_1_ecount=!pulse.ifor_level_1_ecount! -1
     GOTO :VICTORY_REWARDS
 ) ELSE IF %IFOR.LEVEL2_SELECTED% EQU 1 (
-    set /a "pulse.ifor_level_2_ecount-=1"
+    SET /A pulse.ifor_level_1_ecount=!pulse.ifor_level_2_ecount! -1
     GOTO :VICTORY_REWARDS
 ) ELSE IF %IFOR.LEVEL3_SELECTED% EQU 1 (
-    set /a "pulse.ifor_level_3_ecount-=1"
+    SET /A pulse.ifor_level_1_ecount=!pulse.ifor_level_3_ecount! -1
     GOTO :VICTORY_REWARDS
 ) ELSE IF %IFOR.LEVEL4_SELECTED% EQU 1 (
-    set /a "pulse.ifor_level_4_ecount-=1"
+    SET /A pulse.ifor_level_1_ecount=!pulse.ifor_level_4_ecount! -1
     GOTO :VICTORY_REWARDS
 )
 
 :BOSS_DEFEAT_REWARDS
 SET "displayMessage=You defeated the Abyssal Guardian terrorizing the Iridescent Forest."
-set /a "player.coins+=2500"
-set /a "player.xp+=10000"
+set /a player.coins+=2500
+set /a player.xp+=10000
+@REM SET /A player.xp=!player.xp! +10000
 GOTO :VICTORY_REWARDS
 
 :VICTORY_REWARDS
-SET "player.health=%player.health_max%"
-SET "player.magicka=%player.magicka_max%"
-set /a "xpe+=%RANDOM%" %%80
+SET player.health=%player.health_max%
+SET player.magicka=%player.magicka_max%
+SET /A XPE=%RANDOM% %%80
 IF %XPE% LEQ 30 (
-    set /a "player.xp+=30"
+    set /a player.xp+=30
+    @REM SET /A player.xp=!player.xp! +30
     SET "displayMessage=Earned 30 XP"
     GOTO :VICTORY_REWARDS_LUNIS
 ) ELSE IF %XPE% LEQ 60 (
-    set /a "player.xp+=70"
+    set /a player.xp+=70
     SET "displayMessage=Earned 70 XP"
     GOTO :VICTORY_REWARDS_LUNIS
 ) ELSE (
-    set /a "player.xp+=100"
+    set /a player.xp+=100
     SET "displayMessage=Earned 100 XP"
     GOTO :VICTORY_REWARDS_LUNIS
 )
 
 :VICTORY_REWARDS_LUNIS
 IF %player.level% LSS 10 (
-    set /a "player.coins+=5"
-    SET /A player.coins=!player.coins! +5
+    set /a player.coins+=5
     SET "player.message=You earned 5 LUNIS"
     GOTO :VICTORY_SCREEN
 ) ELSE IF %player.level% LSS 20 (
-    set /a "player.coins+=10"
+    set /a player.coins+=10
     SET "player.message=You earned 10 LUNIS"
     GOTO :VICTORY_SCREEN
 ) ELSE IF %player.level% LSS 30 (
-    set /a "player.coins+=20"
+    set /a player.coins+=20
     SET "player.message=You earned 20 LUNIS"
     GOTO :VICTORY_SCREEN
 ) ELSE IF %player.level% LSS 40 (
-    set /a "player.coins+=40"
+    set /a player.coins+=30
     SET "player.message=You earned 40 LUNIS"
     GOTO :VICTORY_SCREEN
 ) ELSE (
-    set /a "player.coins+=50"
+    set /a player.coins+=50
     SET "player.message=You earned 50 LUNIS"
     GOTO :VICTORY_SCREEN
 )
@@ -860,20 +835,64 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO [1 / LOOT ] ^| [E LEAVE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
+SET /P CH=">"
 IF /I "%CH%" == "1" GOTO :LOOT
 IF /I "%CH%" == "E" GOTO :CLEANUP
 
 :LOOT
-rem loot handler should take over here.
-echo Not IMPLEMENTED!
-pause
-goto :VICTORY_SCREEN
+IF %enLooted% EQU 1 (
+    SET "player.message=This enemy was looted already."
+    GOTO :VICTORY_SCREEN
+) ELSE (
+    IF %player.iridescent_ab_defeated% EQU 1 (
+        SET "displayMessage=The great foe vanished upon defeat, nothing remains to pilfer."
+        GOTO :VICTORY_SCREEN
+    ) ELSE (
+        GOTO :VICTORY_LOOT
+    )
+)
+
+:VICTORY_LOOT
+ECHO NOT IMPLEMENTED
+PAUSE
+GOTO :VICTORY_SCREEN
+
+:PLAYER_LEVEL_10_LOWER
+SET /A LT=%RANDOM% %%40
+IF %LT% LEQ 10 (
+    SET enLooted=1
+    SET /A CR=%RANDOM% * 17 / 32768 + 8
+    set /a player.coins+=CR
+    @REM SET /A player.coins=!player.coins! +%CR%
+    SET "player.message=You found %CR% LUNIS"
+    GOTO :VICTORY_SCREEN
+) ELSE IF %LT% LEQ 20 (
+    SET enLooted=1
+    SET /A CR=%RANDOM% * 32 / 32768 + 12
+    set /a player.coins+=CR
+    SET "player.message=You found %CR% LUNIS"
+    GOTO :VICTORY_SCREEN
+) ELSE IF %LT% LEQ 30 (
+    SET enLooted=1
+    set /a player.item_long_sword_owned+=1
+    @REM SET /A player.item_long_sword_owned=!player.item_long_sword_owned! +1
+    SET "player.message=You found a Long Sword."
+    GOTO :VICTORY_SCREEN
+) ELSE IF %LT% LEQ 40 (
+    SET enLooted=1
+    SET /A CR=%RANDOM% * 48 / 32768 + 21
+    set /a player.coins+=CR
+    set /a player.item_cactus_armor_owned+=1
+    @REM SET /A player.item_cactus_armor_owned=!player.item_cactus_armor_owned! +1
+    SET "player.message=You found %CR% LUNIS and 1 CACTUS ARMOR"
+    GOTO :VICTORY_SCREEN
+)
 
 :DEFEAT_SCREEN
-set /a "player.total_deaths+=1"
-set "player.health=%player.health_max%"
-set "player.magicka=%player.magicka_max"
+set /a player.total_deaths+=1
+@REM SET /A player.total_deaths=!player.total_deaths! +1
+SET player.health=%player.health_max%
+SET player.magicka=%player.magicka_max%
 SET "player.message=..."
 SET "displayMessage=..."
 MODE con: cols=105 lines=18
@@ -888,23 +907,19 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-------------------------------------------------------------------------------------------------------+
 ECHO ^| [E LEAVE ]
 ECHO +-------------------------------------------------------------------------------------------------------+
-SET /P "CH=> "
+SET /P CH=">"
 IF /I "%CH%" == "E" GOTO :CLEANUP
-
-:catalogue_new_entry
-set /a "player.catalogue_unlocked+=1"
-goto :eof
 
 :error_CFSL
 set "displayMessage=Error encountered. Cannot find selected level."
 GOTO :%RETURN%
 
 :CLEANUP
-SET "enLooted=0"
-SET "enemy.damage=%enemy.damage_base%"
+SET enLooted=0
+SET enemy.damage=%enemy.damage_base%
 GOTO :BATTLE_GLOBAL_RESET
 
 :AUTOSAVE
-SET "SLOPr=save"
+SET "SLOPr=SAVE"
 CALL "%winLoc%\data\functions\SLOP.bat"
-goto :eof
+GOTO :EOF

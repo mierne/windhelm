@@ -1,13 +1,6 @@
 TITLE (WINDHELM) - CHOMP Character Creator
 REM CHOMP - Character Hatching Origin Making Program
 
-REM COMPAT FOR PRONOUN CHANGE FEATURE.
-IF "%player.pronouns_change_req%" EQU "1" (
-    GOTO :CHOOSE_PRONOUN
-) ELSE (
-    GOTO :CFEPD
-)
-
 REM Check for existing Player data.
 :CFEPD
 IF EXIST "%cd%\data\player\savedata.txt" (
@@ -34,12 +27,12 @@ GOTO :INVALID_INPUT
 
 REM Do not overwrite an existing save.
 :NO_OVERWRITE
-SET "OSQ=1"
+SET OSQ=1
 GOTO :EOF
 
 :ENTER_NAME
 MODE con: cols=120 lines=13
-SET "OSQ=0"
+SET OSQ=0
 CLS
 ECHO.
 TYPE "%cd%\data\assets\ui\your_name.txt"
@@ -257,46 +250,46 @@ IF /I "%CH%" == "Q" GOTO :CHOOSE_CLASS
 GOTO :INVALID_INPUT
 
 :DRUID_CHOSEN
-SET "player.health=100"
-SET "player.health_max=100"
-SET "player.magicka=200"
-SET "player.magicka_max=200"
-SET "player.magicka_skill=6"
-SET "player.magicSchool_AlterationSkill=6"
-SET "player.magicSchool_DestructionSkill=2"
-SET "player.magicSchool_RestorationSkill=6"
+SET player.health=100
+SET player.health_max=100
+SET player.magicka=200
+SET player.magicka_max=200
+SET player.magicka_skill=6
+SET player.magicSchool_AlterationSkill=6
+SET player.magicSchool_DestructionSkill=2
+SET player.magicSchool_RestorationSkill=6
 SET "player.class=Druid"
 SET "player.class_ability=precognition"
-SET "player.item_wooden_bow_owned=1"
+SET player.item_wooden_bow_owned=1
 GOTO :APPLY_RACE_BONUSES
 
 :WARRIOR_CHOSEN
-SET player.health=160"
-SET "player.health_max=160"
-SET "player.magicka=30"
-SET "player.magicka_max=30"
-SET "player.skill_athletics=6"
-SET "player.skill_damage=6"
-SET "player.magicSchool_AlterationSkill=2"
-SET "player.magicSchool_DestructionSkill=2"
-SET "player.magicSchool_RestorationSkill=2"
+SET player.health=160
+SET player.health_max=160
+SET player.magicka=30
+SET player.magicka_max=30
+SET player.skill_athletics=6
+SET player.skill_damage=6
+SET player.magicSchool_AlterationSkill=2
+SET player.magicSchool_DestructionSkill=2
+SET player.magicSchool_RestorationSkill=2
 SET "player.class=Warrior"
 SET "player.class_ability=rage"
-SET "player.item_short_sword_owned=1"
+SET player.item_short_sword_owned=1
 GOTO :APPLY_RACE_BONUSES
 
 :SORCERER_CHOSEN
-SET "player.health=100"
-SET "player.health_max=100"
-SET "player.magicka=150"
-SET "player.magicka_max=150"
-SET "player.magicka_skill=6"
-SET "player.magicSchool_AlterationSkill=12"
-SET "player.magicSchool_DestructionSkill=8"
-SET "player.magicSchool_RestorationSkill=12"
+SET player.health=999
+SET player.health_max=999
+SET player.magicka=150
+SET player.magicka_max=150
+SET player.magicka_skill=6
+SET player.magicSchool_AlterationSkill=12
+SET player.magicSchool_DestructionSkill=8
+SET player.magicSchool_RestorationSkill=12
 SET "player.class=Sorcerer"
 SET "player.class_ability=sapping"
-SET "player.item_short_sword_owned=1"
+SET player.item_short_sword_owned=1
 GOTO :APPLY_RACE_BONUSES
 
 REM Applies health and other skill bonuses.
@@ -312,24 +305,24 @@ IF "%player.race%" == "human" (
 )
 
 :APPLY_RACE_BONUS_HUMAN
-set /a "player.health_max+=20"
-set /a "player.skill_damage+=2"
-set "player.health=%player.health_max%"
+set /a player.health_max+=20
+set /a player.skill_damage+=2
+set player.health=%player.health_max%
 GOTO :CHOOSE_ORIGIN
 
 :APPLY_RACE_BONUS_FAEL
 GOTO :CHOOSE_ORIGIN
 
 :APPLY_RACE_BONUS_FRAWEN
-set /a "player.health+=10"
-set /a "player.skill_intelligence+=2"
-set "player.health=%player.health_max"
+set /a player.health+=10
+set /a player.skill_intelligence+=2
+set player.health=%player.health_max
 GOTO :CHOOSE_ORIGIN
 
 :APPLY_RACE_BONUS_NEMMAR
-set /a "player.health+=10"
-set /a "player.skill_damage+=2"
-set "player.health=%player.health_max%"
+set /a player.health+=10
+set /a player.skill_damage+=2
+set player.health=%player.health_max%
 GOTO :CHOOSE_ORIGIN
 
 REM Allows the Player to choose an origin for their character. In the future this will determine endings available to the Player.
@@ -427,17 +420,17 @@ IF /I "%CH%" == "Q" GOTO :CHOOSE_ORIGIN
 GOTO :INVALID_INPUT
 
 :FOREST_ORIGIN_SELECTED
-set /a "player.skill_intelligence+=2"
+set /a player.skill_intelligence+=2
 set "player.origin=Forest Origin"
 goto :SAVE_DATA
 
 :CABIN_ORIGIN_SELECTED
-set /a "player.skill_damage+=2"
+set /a player.skill_damage+=2
 set "player.origin=Cabin Origin"
 goto :SAVE_DATA
 
 :INN_ORIGIN_SELECTED
-set /a "player.skill_speech+=2"
+set /a player.skill_speech+=2
 set "player.origin=Inn Origin"
 goto :SAVE_DATA
 

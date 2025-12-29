@@ -1,6 +1,6 @@
 TITLE (Rockwinn Plaza) - Rockwinn Plaza ^| %player.name% the %player.race% %player.class%
 SET "refunded=false"
-SET "refundPrice=0"
+SET refundPrice=0
 
 :MAIN
 MODE con: cols=110 lines=18
@@ -14,13 +14,13 @@ ECHO %displayMessage%
 ECHO +------------------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +------------------------------------------------------------------------------------------------------------+
-ECHO + [1 / ALCHEMIST ] ^| [2 / BLACKSMITH ] ^| [3 / WIZARD ] ^| [Q / LEAVE ]                                        +
+ECHO + [1 / ALCHEMIST ] ^| [2 / BLACKSMITH ] ^| [3 / WIZARD ]
 ECHO +------------------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :VENDOR_ALCHEMIST
 IF /I "%CH%" == "2" GOTO :VENDOR_BLACKSMITH
 IF /I "%CH%" == "3" GOTO :VENDOR_WIZARD
-IF /I "%CH%" == "Q" GOTO :AUTOSAVE
+IF /I "%CH%" == "E" GOTO :AUTOSAVE
 
 :VENDOR_ALCHEMIST
 TITLE (Rockwinn Plaza) - Alchemist ^| %player.name% the %player.race% %player.class%
@@ -38,12 +38,12 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| HEALTH TONIC: %vendor.alchemist.health_tonic_price% LUNIS
 ECHO ^| MAGICKA TONIC: %vendor.alchemist.magicka_tonic_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO + [1 / HEALING TONIC ] ^| [2 / MAGICKA TONIC ] ^| [Q / GO BACK ]                                     +
+ECHO + [1 / HEALING TONIC ] ^| [2 / MAGICKA TONIC ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :ALCHEMIST_BUY_HEALING_TONIC
 IF /I "%CH%" == "2" GOTO :ALCHEMIST_BUY_MAGICKA_TONIC
-IF /I "%CH%" == "Q" GOTO :MAIN
+IF /I "%CH%" == "E" GOTO :MAIN
 GOTO :INVALID_INPUT
 
 :ALCHEMIST_BUY_HEALING_TONIC
@@ -69,12 +69,12 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +-----------------------------------------------------------------------------------------------------------+
 ECHO ^| Select a TYPE of item to view.
 ECHO +-----------------------------------------------------------------------------------------------------------+
-ECHO + [1 / WEAPONS ] ^| [2 / ARMORS ] ^| [Q / BACK ]
+ECHO + [1 / WEAPONS ] ^| [2 / ARMORS ]
 ECHO +-----------------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_TYPE_WEAPONS
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_TYPE_ARMOR
-IF /I "%CH%" == "Q" GOTO :MAIN
+IF /I "%CH%" == "E" GOTO :MAIN
 GOTO :INVALID_INPUT
 
 REM Display the "weapons" type.
@@ -91,14 +91,14 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select a CATEGORY of weapon to view.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / SWORDS ] ^| [2 / AXE ] ^| [3 / MACES ] ^| [4 / BOWS ] ^| [Q / BACK ]
+ECHO ^| [1 / SWORDS ] ^| [2 / AXE ] ^| [3 / MACES ] ^| [4 / BOWS ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_CATEGORY_SWORDS
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_CATEGORY_AXES
 IF /I "%CH%" == "3" GOTO :BLACKSMITH_CATEGORY_MACES
 IF /I "%CH%" == "4" GOTO :BLACKSMITH_CATEGORY_BOWS
-IF /I "%CH%" == "Q" GOTO :VENDOR_BLACKSMITH
+IF /I "%CH%" == "E" GOTO :VENDOR_BLACKSMITH
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_CATEGORY_SWORDS
@@ -117,12 +117,12 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| LONGSWORD: %vendor.blacksmith_long_sword_price% LUNIS.
 ECHO ^| SHORTSWORD: %vendor.blacksmith_short_sword_price% LUNIS.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / LONGSWORD ] ^| [2 / SHORTSWORD ] ^| [Q / BACK ]
+ECHO ^| [1 / LONGSWORD ] ^| [2 / SHORTSWORD ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_LONG_SWORD
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_INSPECT_SHORT_SWORD
-IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
+IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_LONG_SWORD
@@ -150,11 +150,11 @@ ECHO ^| Select an AXE to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| GREAT AXE: %vendor.blacksmith_great_axe_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / GREAT AXE ] ^| [Q / BACK ]
+ECHO ^| [1 / GREAT AXE ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_GREAT_AXE
-IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
+IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_GREAT_AXE
@@ -176,11 +176,11 @@ ECHO ^| Select a MACE to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| MACE: %vendor.blacksmith_mace_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / MACE ] ^| [Q / BACK ]
+ECHO ^| [1 / MACE ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_MACE
-IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
+IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_MACE
@@ -202,11 +202,11 @@ ECHO ^| Select a BOW to purchase.
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| WOODEN BOW: %vendor.blacksmith_wooden_bow_price% LUNIS
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / WOODEN BOW ] ^| [Q / BACK ]
+ECHO ^| [1 / WOODEN BOW ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_BOW
-IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
+IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_BOW
@@ -226,13 +226,13 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select a CATEGORY of armor to view.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / LIGHT ] ^| [2 / MEDIUM ] ^| [3 / HEAVY ] ^| [Q / BACK ]
+ECHO ^| [1 / LIGHT ] ^| [2 / MEDIUM ] ^| [3 / HEAVY ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
 IF /I "%CH%" == "3" GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
-IF /I "%CH%" == "Q" GOTO :VENDOR_BLACKSMITH
+IF /I "%CH%" == "E" GOTO :VENDOR_BLACKSMITH
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_CATEGORY_LIGHT_ARMOR
@@ -251,12 +251,12 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| CACTUS ARMOR: %vendor.blacksmith_cactus_armor_price% LUNIS.
 ECHO ^| GUARD ARMOR: %vendor.blacksmith_guard_armor_price% LUNIS.
 ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / CACTUS ARMOR ] ^| [2 / GUARD ARMOR ] ^| [Q / BACK ]
+ECHO ^| [1 / CACTUS ARMOR ] ^| [2 / GUARD ARMOR ]
 ECHO +-----------------------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_CACTUS_ARMOR
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_INSPECT_GUARD_ARMOR
-IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_ARMOR
+IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_ARMOR
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_CACTUS_ARMOR
@@ -283,12 +283,12 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| STONE: %vendor.blacksmith_stone_armor_price% LUNIS.
 ECHO ^| IRON: %vendor.blacksmith_iron_armor_price% LUNIS.
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / STONE ARMOR ] ^| [2 / IRON ARMOR ] ^| [Q / BACK ]
+ECHO ^| [1 / STONE ARMOR ] ^| [2 / IRON ARMOR ]
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_STONE_ARMOR
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_INSPECT_IRON_ARMOR
-IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_ARMOR
+IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_ARMOR
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_STONE_ARMOR
@@ -315,12 +315,12 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^| STEEL: %vendor.blacksmith_steel_armor_price% LUNIS.
 ECHO ^| SCALE: %vendor.blacksmith_scale_armor_price% LUNIS.
 ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / STEEL ARMOR ] ^| [2 / SCALE ARMOR ] ^| [Q / BACK ]
+ECHO ^| [1 / STEEL ARMOR ] ^| [2 / SCALE ARMOR ]
 ECHO +-----------------------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_STEEL_ARMOR
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_INSPECT_SCALE_ARMOR
-IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_ARMOR
+IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_ARMOR
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_STEEL_ARMOR
