@@ -1,12 +1,12 @@
 REM WINDHELM -- Global Modules for Vendors
 
 :vendor
-SET windhelm.global_item_price=%2
+SET "windhelm.global_item_price=%2"
 goto :%1
 
 :INSPECT_HEALTH_TONIC
 CLS
-SET RETURN=INSPECT_HEALTH_TONIC
+SET "RETURN=INSPECT_HEALTH_TONIC"
 MODE con: cols=103 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\health_tonic.txt"
@@ -20,7 +20,7 @@ ECHO ^| TYPE: %windhelm.item_tonic_healing_type%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO +-----------------------------------------------------------------------------------------------------+
 ECHO [E / PURCHASE ] ^| [Q / BACK ]
-SET /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "E" GOTO :PURCHASE_HEALTH_TONIC
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
@@ -29,10 +29,10 @@ GOTO :INVALID_INPUT
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.item_tonic_healing_owned=!player.item_tonic_healing_owned! +1
-        SET displayMessage=Purchased 1 Healing Tonic for %windhelm.global_item_price%.
-        GOTO :INSPECT_HEALTH_TONIC
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_tonic_healing_owned+=1"
+        SET "displayMessage=Purchased 1 Healing Tonic for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_HEALTH_TONIC
 )
 
 :INSPECT_MAGICKA_TONIC
@@ -50,7 +50,7 @@ ECHO ^| TYPE: %windhelm.item_tonic_magicka_type%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO +-----------------------------------------------------------------------------------------------------------------+
 ECHO [E / PURCHASE ] ^| [Q / BACK ]
-SET /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "E" GOTO :PURCHASE_MAGICKA_TONIC
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
@@ -59,14 +59,14 @@ GOTO :INVALID_INPUT
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.item_tonic_magicka_owned=!player.item_tonic_magicka_owned! +1
-        SET displayMessage=Purchased 1 Magicka Tonic for %windhelm.global_item_price%.
-        GOTO :INSPECT_MAGICKA_TONIC
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_tonic_magicka_owned+=1"
+        set "displayMessage=Purchased 1 Magicka Tonic for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_MAGICKA_TONIC
 )
 
 :INSPECT_LONGSWORD
-SET RETURN=INSPECT_LONGSWORD
+SET "RETURN=INSPECT_LONGSWORD"
 MODE con: cols=101 lines=24
 ECHO.
 TYPE "%winLoc%\data\assets\ui\long_sword.txt"
@@ -79,10 +79,10 @@ ECHO ^| DAMAGE TYPE: %windhelm.item_long_sword_damage_type%
 ECHO ^| OWNED: %player.item_long_sword_owned%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
+ECHO ^| [E / PURCHASE ] ^| [Q / BACK ]
 ECHO +---------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :PURCHASE_LONGSWORD
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :PURCHASE_LONGSWORD
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
 
@@ -90,15 +90,15 @@ GOTO :INVALID_INPUT
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.item_long_sword_owned=!player.item_long_sword_owned! +1
-        SET displayMessage=Purchased 1 longsword for %windhelm.global_item_price%.
-        GOTO :INSPECT_LONGSWORD
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_item_long_sword_owned+=1"
+        SET "displayMessage=Purchased 1 longsword for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_LONGSWORD
 )
 
 :INSPECT_SHORTSWORD
 CLS
-SET RETURN=INSPECT_SHORTSWORD
+SET "RETURN=INSPECT_SHORTSWORD"
 MODE con: cols=111 lines=22
 ECHO.
 TYPE "%cd%\data\assets\ui\short_sword.txt"
@@ -110,22 +110,23 @@ ECHO ^| CATEGORY: %windhelm.item_short_sword_category%
 ECHO ^| DAMAGE TYPE: %windhelm.item_short_sword_damage_type%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO +-------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
+ECHO ^| [E / PURCHASE ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :PURCHASE_SHORTSWORD
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :PURCHASE_SHORTSWORD
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
 
-:PURCHASE_LONGSWORD
+:PURCHASE_SHORTSWORD
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.item_short_sword_owned=!player.item_short_sword_owned% +1
-        SET displayMessage=Purchased 1 shortsword for %windhelm.global_item_price%.
-        GOTO :INSPECT_LONGSWORD
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_item_short_sword_owned+=1"
+        SET "displayMessage=Purchased 1 shortsword for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_SHORTSWORD
 )
+
 
 :INSPECT_GREATAXE
 CLS
@@ -142,10 +143,10 @@ ECHO ^| DAMAGE TYPE: %windhelm.item_great_axe_damage_type%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO ^| OWNED: %player.item_great_axe_owned%
 ECHO +-------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
+ECHO ^| [E / PURCHASE ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :PURCHASE_GREATAXE
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :PURCHASE_GREATAXE
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
 
@@ -153,10 +154,10 @@ GOTO :INVALID_INPUT
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.item_great_axe_owned=!player.item_great_axe_owned! +1
-        SET displayMessage=Purchased 1 Great Axe for %windhelm.global_item_price%.
-        GOTO :INSPECT_GREATAXE
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_item_great_axe_owned+=1"
+        SET "displayMessage=Purchased 1 great axe for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_GREATAXE
 )
 
 :INSPECT_MACE
@@ -174,10 +175,10 @@ ECHO ^| DAMAGE TYPE: %windhelm.item_mace_damage_type%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO ^| OWNED: %player.item_mace_owned%
 ECHO +-------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
+ECHO ^| [E / PURCHASE ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :PURCHASE_MACE
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :PURCHASE_MACE
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
 
@@ -185,10 +186,10 @@ GOTO :INVALID_INPUT
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.item_mace_owned=!player.item_mace_owned! +1
-        SET displayMessage=Purchased 1 Mace for %windhelm.global_item_price%.
-        GOTO :INSPECT_MACE
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_item_mace_owned+=1"
+        SET "displayMessage=Purchased 1 mace for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_MACE
 )
 
 :INSPECT_WOODEN_BOW
@@ -206,10 +207,10 @@ ECHO ^| DAMAGE TYPE: %windhelm.item_wooden_bow_damage_type%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO ^| OWNED: %player.item_wooden_bow_owned%
 ECHO +-------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
+ECHO ^| [E / PURCHASE ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :PURCHASE_WOODEN_BOW
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :PURCHASE_WOODEN_BOW
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
 
@@ -217,10 +218,10 @@ GOTO :INVALID_INPUT
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.item_wooden_bow_owned=!player.item_wooden_bow_owned! +1
-        SET displayMessage=Purchased 1 Wooden Bow for %windhelm.global_item_price%.
-        GOTO :INSPECT_MACE
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_item_wooden_bow_owned+=1"
+        SET "displayMessage=Purchased 1 wooden bow for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_WOODEN_BOW
 )
 
 :INSPECT_CACTUS_ARMOR
@@ -237,10 +238,10 @@ ECHO ^| CATEGORY: %windhelm.item_cactus_armor_category%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO ^| OWNED: %player.item_cactus_armor_owned%
 ECHO +------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
+ECHO ^| [E / PURCHASE ] ^| [Q / BACK ]
 ECHO +------------------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :PURCHASE_CACTUS_ARMOR
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :PURCHASE_CACTUS_ARMOR
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
 
@@ -248,10 +249,10 @@ GOTO :INVALID_INPUT
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.item_cactus_armor_owned=!player.item_cactus_armor_owned! +1
-        SET displayMessage=Purchased 1 Cactus Armor set for %windhelm.global_item_price%.
-        GOTO :INSPECT_CACTUS_ARMOR
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_item_cactus_armor_owned+=1"
+        SET "displayMessage=Purchased 1 Cactus Armor set for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_CACTUS_ARMOR
 )
 
 :INSPECT_GUARD_ARMOR
@@ -268,10 +269,10 @@ ECHO ^| CATEGORY: %windhelm.item_guard_armor_category%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO ^| OWNED: %player.item_guard_armor_owned%
 ECHO +--------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
+ECHO ^| [E / PURCHASE ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :PURCHASE_GUARD_ARMOR
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :PURCHASE_GUARD_ARMOR
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
 
@@ -279,10 +280,10 @@ GOTO :INVALID_INPUT
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.item_guard_armor_owned=!player.item_guard_armor_owned! +1
-        SET displayMessage=Purchased 1 Guard Armor set for %windhelm.global_item_price%.
-        GOTO :INSPECT_GUARD_ARMOR
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_item_guard_armor_owned+=1"
+        SET "displayMessage=Purchased 1 Guard Armor set for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_GUARD_ARMOR
 )
 
 :INSPECT_STONE_ARMOR
@@ -299,10 +300,10 @@ ECHO ^| CATEGORY: %windhelm.item_stone_armor_category%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO ^| OWNED: %player.item_stone_armor_owned%
 ECHO +--------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
+ECHO ^| [E / PURCHASE ] ^| [Q / BACK ]
 ECHO +--------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :PURCHASE_STONE_ARMOR
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :PURCHASE_STONE_ARMOR
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
 
@@ -310,12 +311,11 @@ GOTO :INVALID_INPUT
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.item_stone_armor_owned=!player.item_stone_armor_owned! +1
-        SET displayMessage=Purchased 1 Stone Armor set for %windhelm.global_item_price%.
-        GOTO :INSPECT_STONE_ARMOR
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_item_stone_armor_owned+=1"
+        SET "displayMessage=Purchased 1 Stone Armor set for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_STONE_ARMOR
 )
-
 :INSPECT_IRON_ARMOR
 CLS
 SET RETURN=INSPECT_IRON_ARMOR
@@ -330,10 +330,10 @@ ECHO ^| CATEGORY: %windhelm.item_iron_armor_category%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO ^| OWNED: %player.item_iron_armor_owned%
 ECHO +-------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
+ECHO ^| [E / PURCHASE ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :PURCHASE_IRON_ARMOR
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :PURCHASE_IRON_ARMOR
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
 
@@ -341,10 +341,10 @@ GOTO :INVALID_INPUT
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.item_iron_armor_owned=!player.item_iron_armor_owned! +1
-        SET displayMessage=Purchased 1 Iron Armor set for %windhelm.global_item_price%.
-        GOTO :INSPECT_IRON_ARMOR
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_item_iron_armor_owned+=1"
+        SET "displayMessage=Purchased 1 Iron Armor set for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_IRON_ARMOR
 )
 
 :INSPECT_STEEL_ARMOR
@@ -361,10 +361,10 @@ ECHO ^| CATEGORY: %windhelm.item_steel_armor_category%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO ^| OWNED: %player.item_steel_armor_owned%
 ECHO +-------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
+ECHO ^| [E / PURCHASE ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :PURCHASE_STEEL_ARMOR
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :PURCHASE_STEEL_ARMOR
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
 
@@ -372,10 +372,10 @@ GOTO :INVALID_INPUT
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.player.item_steel_armor_owned=!player.item_steel_armor_owned! +1
-        SET displayMessage=Purchased 1 Steel Armor set for %windhelm.global_item_price%.
-        GOTO :INSPECT_STEEL_ARMOR
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_item_steel_armor_owned+=1"
+        SET "displayMessage=Purchased 1 Steel Armor set for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_STEEL_ARMOR
 )
 
 :INSPECT_SCALE_ARMOR
@@ -392,10 +392,10 @@ ECHO ^| CATEGORY: %windhelm.item_scale_armor_category%
 ECHO ^| PRICE: %windhelm.global_item_price%
 ECHO ^| OWNED: %player.item_scale_armor_owned%
 ECHO +-------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / PURCHASE ] ^| [Q / BACK ]
+ECHO ^| [E / PURCHASE ] ^| [Q / BACK ]
 ECHO +-------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :PURCHASE_SCALE_ARMOR
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :PURCHASE_SCALE_ARMOR
 IF /I "%CH%" == "Q" GOTO :CLEANUP
 GOTO :INVALID_INPUT
 
@@ -403,18 +403,18 @@ GOTO :INVALID_INPUT
 IF %player.coins% LSS %windhelm.global_item_price% (
         GOTO :CANNOT_AFFORD_ITEM
     ) ELSE (
-        SET /A player.coins=!player.coins! -%windhelm.global_item_price%
-        SET /A player.item_scale_armor_owned=!player.item_scale_armor_owned! +1
-        SET displayMessage=Purchased 1 Scale Armor set for %windhelm.global_item_price%.
-        GOTO :INSPECT_SCALE_ARMOR
+        set /a "player.coins-=%windhelm.global_item_price%"
+        set /a "player.item_item_scale_armor_owned+=1"
+        SET "displayMessage=Purchased 1 Scale Armor set for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_GREATAXE
 )
 
 :INVALID_INPUT
-set displayMessage="%CH%" is not a valid input.
+set "displayMessage="%CH%" is not a valid input."
 GOTO :%RETURN%
 
 :CANNOT_AFFORD_ITEM
-SET displayMessage=You can't afford this item.
+SET "displayMessage=You can't afford this item."
 GOTO :%RETURN%
 
 :CLEANUP
