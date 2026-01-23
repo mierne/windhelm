@@ -1,370 +1,381 @@
 TITLE (SLoP) - Intialization
-REM A.K.A: Save, Load, order (and initialization) Program
+REM Save, Load, order (and initialization) Program
 
-REM non-changing variables
+REM Variables needed to make Windhelm work are loaded here.
 :BASE_SET
-REM Other Variables
-REM Placeholder values
-SET CE7CALL=0
-SET refunded=false
-SET refundItem=0
-SET refundPrice=0
-SET itemStored=false
-SET player.message=...
-SET windhelm.inventory_call=passive
+SET "player.message=..."
+SET "windhelm.inventory_call=passive"
 REM Other values
-SET windhelm.vn=STABLE-0.3.0_01-251204
-REM Enemy resistance information. "Favored Element" refers to an element which the enemy is resistant to.
-SET windhelm.foe_bandit_favored_element=None
-SET windhelm.foe_abyssal_guardian_favored_element=None
-REM Level up skill costs base
-SET windhelm.damage_skill_base_cost_level=2
-SET windhelm.magicka_skill_base_cost_level=2
-SET windhelm.intelligence_skill_base_cost_level=2
-REM Reflex scales with athletics, for future reference. That's why it's excluded here.
-SET windhelm.damage_athletics_base_cost_level=2
-SET windhelm.damage_speech_base_cost_level=2
-REM Weapon item data
-SET windhelm.item_long_sword_name=Long Sword
+SET "windhelm.vn=STABLE-0.4.0_00-260123"
+SET "windhelm.ut=Stargazer"
+SET windhelm.enable_stability_warning=0
+rem Enemy favored element determines which they are immune to
+SET "windhelm.foe_bandit_favored_element=None"
+SET "windhelm.foe_abyssal_guardian_favored_element=None"
+rem Player skill level up cost
+SET windhelm.skill_damage_level_cost=6
+SET windhelm.skill_speech_level_cost=9
+SET windhelm.skill_athletics_level_cost=10
+SET windhelm.skill_intelligence_level_cost=10
+SET windhelm.skill_destruction_level_cost=20
+SET windhelm.skill_restoration_level_cost=20
+rem Windhelm weapon item table
+SET "windhelm.item_long_sword_name=Longsword"
 SET windhelm.item_long_sword_damage=8
-SET windhelm.item_long_sword_type=weapon
-SET windhelm.item_long_sword_category=swords
-SET windhelm.item_long_sword_damage_type=physical
-SET windhelm.item_short_sword_name=Short Sword
-SET windhelm.item_short_sword_damage=4
-SET windhelm.item_short_sword_type=weapon
-SET windhelm.item_short_sword_category=swords
-SET windhelm.item_short_sword_damage_type=physical
-SET windhelm.item_great_axe_name=Great Axe
+SET "windhelm.item_long_sword_type=weapon"
+SET "windhelm.item_long_sword_category=swords"
+SET "windhelm.item_long_sword_damage_type=physical"
+SET "windhelm.item_short_sword_name=Shortsword"
+SET windhelm.item_short_sword_damage=7
+SET "windhelm.item_short_sword_type=weapon"
+SET "windhelm.item_short_sword_category=swords"
+SET "windhelm.item_short_sword_damage_type=physical"
+SET "windhelm.item_great_axe_name=Great Axe"
 SET windhelm.item_great_axe_damage=17
-SET windhelm.item_great_axe_type=weapon
-SET windhelm.item_great_axe_category=axes
-SET windhelm.item_great_axe_damage_type=physical
-SET windhelm.item_mace_name=mace
+SET "windhelm.item_great_axe_type=weapon"
+SET "windhelm.item_great_axe_category=axes"
+SET "windhelm.item_great_axe_damage_type=physical"
+SET "windhelm.item_hand_axe_name=Hand Axe"
+SET windhelm.item_hand_axe_damage=13
+SET "windhelm.item_hand_axe_type=weapon"
+SET "windhelm.item_hand_axe_category=axes"
+SET "windhelm.item_hand_axe_damage_type=physical"
+SET "windhelm.item_mace_name=mace"
 SET windhelm.item_mace_damage=12
-SET windhelm.item_mace_type=weapon
-SET windhelm.item_mace_category=maces
-SET windhelm.item_mace_damage_type=physical
-SET windhelm.item_wooden_bow_name=Wooden Bow
+SET "windhelm.item_mace_type=weapon"
+SET "windhelm.item_mace_category=maces"
+SET "windhelm.item_mace_damage_type=physical"
+SET "windhelm.item_wooden_bow_name=Wooden Bow"
 SET windhelm.item_wooden_bow_damage=15
-SET windhelm.item_wooden_bow_type=weapon
-SET windhelm.item_wooden_bow_category=bows
-SET windhelm.item_wooden_bow_damage_type=physical
+SET "windhelm.item_wooden_bow_type=weapon"
+SET "windhelm.item_wooden_bow_category=bows"
+SET "windhelm.item_wooden_bow_damage_type=physical"
+rem Staves item data
+set "windhelm.item_oracle_of_hjralder_name=Oracle of Hjralder"
+SET "windhelm.item_oracle_of_hjralder_type=Staff"
+SET "windhelm.item_oracle_of_hjralder_category=Staves"
+SET "windhelm.item_oracle_of_hjralder_damage_type=physical"
+set windhelm.item_oracle_of_hjralder_int_modifier=2
+set windhelm.item_oracle_of_hjralder_damage=5
+REM Special weapon item data
+REM Spell data
+SET "windhelm.spell_firebolt_name=Firebolt"
+SET windhelm.spell_firebolt_damage=12
+SET windhelm.spell_firebolt_modifier=0
+SET windhelm.spell_firebolt_mgk_cost=45
+SET "windhelm.spell_firebolt_type=spell"
+SET "windhelm.spell_firebolt_school=Destruction"
+SET "windhelm.spell_firebolt_damage_type=magical"
+SET "windhelm.spell_healing_hands_name=Healing Hands"
+SET windhelm.spell_healing_hands_damage=0
+SET "windhelm.spell_healing_hands_type=spell"
+SET "windhelm.spell_healing_hands_school=Restoration"
+SET "windhelm.spell_healing_hands_damage_type=magical"
 REM Armor item data
-SET windhelm.item_cactus_armor_name=Cactus Armor
+SET "windhelm.item_cactus_armor_name=Cactus Armor"
 SET windhelm.item_cactus_armor_prot=3
-SET windhelm.item_cactus_armor_type=armor
-SET windhelm.item_cactus_armor_category=light armor
-SET windhelm.item_cactus_armor_type_resistance=physical
-SET windhelm.item_stone_armor_name=Stone Armor
+SET "windhelm.item_cactus_armor_type=armor"
+SET "windhelm.item_cactus_armor_category=light armor"
+SET "windhelm.item_cactus_armor_type_resistance=physical"
+SET "windhelm.item_stone_armor_name=Stone Armor"
 SET windhelm.item_stone_armor_prot=5
-SET windhelm.item_stone_armor_type=armor
-SET windhelm.item_stone_armor_category=medium armor
-SET windhelm.item_stone_armor_type_resistance=physical
-SET windhelm.item_guard_armor_name=Guard Armor
+SET "windhelm.item_stone_armor_type=armor"
+SET "windhelm.item_stone_armor_category=medium armor"
+SET "windhelm.item_stone_armor_type_resistance=physical"
+SET "windhelm.item_guard_armor_name=Guard Armor"
 SET windhelm.item_guard_armor_prot=7
-SET windhelm.item_guard_armor_type=armor
-SET windhelm.item_guard_armor_category=light armor
-SET windhelm.item_guard_armor_type_resistance=physical
-SET windhelm.item_steel_armor_name=Steel Armor
+SET "windhelm.item_guard_armor_type=armor"
+SET "windhelm.item_guard_armor_category=light armor"
+SET "windhelm.item_guard_armor_type_resistance=physical"
+SET "windhelm.item_steel_armor_name=Steel Armor"
 SET windhelm.item_steel_armor_prot=9
-SET windhelm.item_steel_armor_type=armor
-SET windhelm.item_steel_armor_category=heavy armor
-SET windhelm.item_steel_armor_type_resistance=physical
-SET windhelm.item_scale_armor_name=Scale Armor
+SET "windhelm.item_steel_armor_type=armor"
+SET "windhelm.item_steel_armor_category=heavy armor"
+SET "windhelm.item_steel_armor_type_resistance=physical"
+SET "windhelm.item_scale_armor_name=Scale Armor"
 SET windhelm.item_scale_armor_prot=15
-SET windhelm.item_scale_armor_type=armor
-SET windhelm.item_scale_armor_category=heavy armor
-SET windhelm.item_scale_armor_type_resistance=physical
-SET windhelm.item_iron_armor_name=Iron Armor
+SET "windhelm.item_scale_armor_type=armor"
+SET "windhelm.item_scale_armor_category=heavy armor"
+SET "windhelm.item_scale_armor_type_resistance=physical"
+SET "windhelm.item_iron_armor_name=Iron Armor"
 SET windhelm.item_iron_armor_prot=8
-SET windhelm.item_iron_armor_type=armor
-SET windhelm.item_iron_armor_category=medium armor
-SET windhelm.item_iron_armor_type_resistance=physical
+SET "windhelm.item_iron_armor_type=armor"
+SET "windhelm.item_iron_armor_category=medium armor"
+SET "windhelm.item_iron_armor_type_resistance=physical"
 REM Tonic item data
-SET windhelm.item_tonic_healing_name=Health Tonic
+SET "windhelm.item_tonic_healing_name=Health Tonic"
 SET windhelm.item_tonic_healing_modifier=20
-SET windhelm.item_tonic_healing_type=consumable
-SET windhelm.item_tonic_healing_category=tonics
-SET windhelm.item_tonic_magicka_name=Magicka Tonic
+SET "windhelm.item_tonic_healing_type=consumable"
+SET "windhelm.item_tonic_healing_category=tonics"
+SET "windhelm.item_tonic_magicka_name=Magicka Tonic"
 SET windhelm.item_tonic_magicka_modifier=15
-SET windhelm.item_tonic_magicka_type=consumable
-SET windhelm.item_tonic_magicka_category=tonics
-SET windhelm.item_tonic_xp_name=XP Tonic
-SET windhelm.item_tonic_xp_modifier=200
-SET windhelm.item_tonic_xp_type=consumable
-SET windhelm.item_tonic_xp_category=tonics
+SET "windhelm.item_tonic_magicka_type=consumable"
+SET "windhelm.item_tonic_magicka_category=tonics"
+REM Effect data
+REM Imbue data
+REM Script paths
+SET "wait=%winLoc%\data\scripts\wait.vbs"
+set "waitani=%winLoc%\data\assets\ui\animated\ANI_travel.bat"
+REM Global Modules placeholder values
+SET windhelm.global_item_price=0
+SET windhelm.global_item_damage=0
+SET windhelm.global_item_modifier=20
+SET windhelm.global_item_prot=0
+SET "windhelm.global_item_type=none"
+SET "windhelm.global_item_category=none"
+SET "windhelm.global_item_name=none"
+SET windhelm.transition_delay=300
+rem Die values
+set dieroll=0
+
+:SETTINGS_LOADER
+(
+SET /P windhelm.theme_color=
+SET /P windhelm.transition_delay=
+)<"%winLoc%\data\settings.txt"
+GOTO :callCheck
 
 :callCheck
-IF %SLOPr% == SAVE (
+IF "%SLOPr%" == "SAVE" (
     GOTO :saveData
-) ELSE IF %SLOPr% == LOAD (
+) ELSE IF "%SLOPr%" == "LOAD" (
     GOTO :loadData
-) ELSE IF %SLOPr% == INIT (
+) ELSE IF "%SLOPr%" == "INIT" (
     GOTO :GAME_INIT
 ) ELSE (
-    SET errorType=checkTime
-    CALL "%cd%\data\functions\Error Handler.bat"
-    EXIT /B
+    echo SLoP encountered an error on line 143.
+    echo SLOPr was an unknown value.
+    pause
+    exit /b
 )
 
 :saveData
 (
-ECHO %player.name%
-ECHO %player.race%
-ECHO %player.personal_p_1%
-ECHO %player.personal_p_2%
-ECHO %player.possesive_1%
-ECHO %player.reflexive_1%
-ECHO %player.intensive_1%
-ECHO %player.health%
-ECHO %player.magicka%
-ECHO %player.damage%
-ECHO %player.damage_heavy%
-ECHO %player.armor%
-ECHO %player.class%
-ECHO %player.coins%
-ECHO %player.xp%
-ECHO %player.xp_required%
-ECHO %player.level%
-ECHO %player.magicka_max%
-ECHO %player.health_max%
-ECHO %player.weapon_type%
-ECHO %player.weapon_damage_type%
-ECHO %player.origin%
-ECHO %player.armor_prot%
-ECHO %player.skill_damage%
-ECHO %player.skill_magicka%
-ECHO %player.skill_speech%
-ECHO %player.skill_athletics%
-ECHO %player.skill_intelligence%
-ECHO %player.reputation%
-ECHO %player.magicSchool_AlterationSkill%
-ECHO %player.magicSchool_DestructionSkill%
-ECHO %player.magicSchool_RestorationSkill%
-ECHO %player.ruins_unlocked%
-ECHO %player.bandits_slain%
-ECHO %player.catalogue_unlocked%
-ECHO %player.catalogue_locked%
-ECHO %player.catalogue_bandit_encountered%
-ECHO %player.catalogue_abyss_guardian_encountered%
-ECHO %player.catalogue_wandering_trader_encountered%
-ECHO %player.catalogue_bandit%
-ECHO %player.catalogue_abyss_guardian%
-ECHO %player.catalogue_wandering_trader%
-ECHO %player.armor_equipped%
-ECHO %player.weapon_equipped%
-ECHO %player.spell_equipped%
-ECHO %player.item_cactus_armor_owned%
-ECHO %player.item_guard_armor_owned%
-ECHO %player.item_stone_armor_owned%
-ECHO %player.item_steel_armor_owned%
-ECHO %player.item_iron_armor_owned%
-ECHO %player.item_long_sword_owned%
-ECHO %player.item_scale_armor_owned%
-ECHO %player.item_short_sword_owned%
-ECHO %player.item_great_axe_owned%
-ECHO %player.item_mace_owned%
-ECHO %player.item_wooden_bow_owned%
-ECHO %player.item_tonic_healing_owned%
-ECHO %player.item_tonic_magicka_owned%
-ECHO %player.item_tonic_xp_owned%
-ECHO %player.bandits_slain%
-ECHO %player.total_deaths%
-ECHO %player.iridescent_ab_defeated%
-ECHO %vendor.blacksmith_long_sword_price%
-ECHO %vendor.blacksmith_short_sword_price%
-ECHO %vendor.blacksmith_great_axe_price%
-ECHO %vendor.blacksmith_mace_price%
-ECHO %vendor.blacksmith_wooden_bow_price%
-ECHO %vendor.blacksmith_cactus_armor_price%
-ECHO %vendor.blacksmith_guard_armor_price%
-ECHO %vendor.blacksmith_stone_armor_price%
-ECHO %vendor.blacksmith_steel_armor_price%
-ECHO %vendor.blacksmith_iron_armor_price%
-ECHO %vendor.blacksmith_scale_armor_price%
-ECHO %vendor.blacksmith_long_sword_sbp%
-ECHO %vendor.blacksmith_short_sword_sbp%
-ECHO %vendor.blacksmith_great_axe_sbp%
-ECHO %vendor.blacksmith_mace_sbp%
-ECHO %vendor.blacksmith_wooden_bow_sbp%
-ECHO %vendor.blacksmith_long_sword_stock%
-ECHO %vendor.blacksmith_short_sword_stock%
-ECHO %vendor.blacksmith_great_axe_stock%
-ECHO %vendor.blacksmith_mace_stock%
-ECHO %vendor.blacksmith_wooden_bow_stock%
-ECHO %vendor.blacksmith_cactus_armor_stock%
-ECHO %vendor.blacksmith_guard_armor_stock%
-ECHO %vendor.blacksmith_stone_armor_stock%
-ECHO %vendor.blacksmith_steel_armor_stock%
-ECHO %vendor.blacksmith_iron_armor_stock%
-ECHO %vendor.blacksmith_scale_armor_stock%
-ECHO %vendor.alchemist.health_tonic_price%
-ECHO %vendor.alchemist.magicka_tonic_price%
-ECHO %vendor.alchemist.health_tonic_stock%
-ECHO %vendor.alchemist.magicka_tonic_stock%
+echo %player.name%
+echo %player.health%
+echo %player.magicka%
+echo %player.damage%
+echo %player.damage_heavy%
+echo %player.spell_damage%
+echo %player.spell_healing%
+echo %player.spell_cost%
+echo %player.armor_class%
+echo %player.initiative%
+echo %player.class%
+echo %player.coins%
+echo %player.xp%
+echo %player.xp_required%
+echo %player.level%
+echo %player.explore_last_location%
+echo %player.current_act%
+echo %player.magicka_max%
+echo %player.health_max%
+echo %player.weapon_type%
+echo %player.weapon_damage_type%
+echo %player.origin%
+echo %player.armor_prot%
+echo %player.armor_resistance_type%
+echo %player.skill_damage%
+echo %player.skill_speech%
+echo %player.skill_athletics%
+echo %player.skill_intelligence%
+echo %player.skill_destruction%
+echo %player.skill_restoration%
+echo %player.reputation%
+echo %player.act_1_cave_unlocked%
+echo %player.act_1_next_act_unlocked%
+echo %player.bandits_slain%
+echo %player.total_deaths%
+echo %player.iridescent_ab_defeated%
+echo %player.catalogue_unlocked%
+echo %player.catalogue_locked%
+echo %player.catalogue_bandit_encountered%
+echo %player.catalogue_abyss_guardian_encountered%
+echo %player.catalogue_wandering_trader_encountered%
+echo %player.catalogue_bandit%
+echo %player.catalogue_abyss_guardian%
+echo %player.catalogue_wandering_trader%
+echo %player.iridescent_forest_level%
+echo %player.iridescent_forest_level_total%
+echo %player.iridescent_forest_level_1_enemy_remaining%
+echo %player.iridescent_forest_level_1%
+echo %player.iridescent_forest_level_1_location%
+echo %player.scene_1_examine_plants%
+echo %player.scene_1_examine_barrels%
+echo %player.scene_1_examine_wagon%
+echo %player.hazard_spotted_pod_known%
+echo %player.s1_exwag_inspect_area%
+echo %player.armor_equipped%
+echo %player.weapon_equipped%
+echo %player.spell_equipped%
+echo %player.spell_equipped_type%
+echo %player.item_cactus_armor_owned%
+echo %player.item_guard_armor_owned%
+echo %player.item_stone_armor_owned%
+echo %player.item_steel_armor_owned%
+echo %player.item_iron_armor_owned%
+echo %player.item_long_sword_owned%
+echo %player.item_scale_armor_owned%
+echo %player.item_short_sword_owned%
+echo %player.item_great_axe_owned%
+echo %player.item_mace_owned%
+echo %player.item_wooden_bow_owned%
+echo %player.item_tonic_healing_owned%
+echo %player.item_tonic_magicka_owned%
+echo %player.spell_learned_firebolt%
+echo %player.spell_learned_healing_hands%
 )>"%cd%\data\player\savedata.txt"
-GOTO :EOF
+GOTO :loadData
 
 :loadData
 (
-SET /P player.name=
-SET /P player.race=
-SET /P player.personal_p_1=
-SET /P player.personal_p_2=
-SET /P player.possesive_1=
-SET /P player.reflexive_1=
-SET /P player.intensive_1=
-SET /P player.health=
-SET /P player.magicka=
-SET /P player.damage=
-SET /P player.damage_heavy=
-SET /P player.armor=
-SET /P player.class=
-SET /P player.coins=
-SET /P player.xp=
-SET /P player.xp_required=
-SET /P player.level=
-SET /P player.magicka_max=
-SET /P player.health_max=
-SET /P player.weapon_type=
-SET /P player.weapon_damage_type=
-SET /P player.origin=
-SET /P player.armor_prot=
-SET /P player.skill_damage=
-SET /P player.skill_magicka=
-SET /P player.skill_speech=
-SET /P player.skill_athletics=
-SET /P player.skill_intelligence=
-SET /P player.reputation=
-SET /P player.magicSchool_AlterationSkill=
-SET /P player.magicSchool_DestructionSkill=
-SET /P player.magicSchool_RestorationSkill=
-SET /P player.ruins_unlocked=
-SET /P player.bandits_slain=
-SET /P player.catalogue_unlocked=
-SET /P player.catalogue_locked=
-SET /P player.catalogue_bandit_encountered=
-SET /P player.catalogue_abyss_guardian_encountered=
-SET /P player.catalogue_wandering_trader_encountered=
-SET /P player.catalogue_bandit=
-SET /P player.catalogue_abyss_guardian=
-SET /P player.catalogue_wandering_trader=
-SET /P player.armor_equipped=
-SET /P player.weapon_equipped=
-SET /P player.spell_equipped=
-SET /P player.item_cactus_armor_owned=
-SET /P player.item_guard_armor_owned=
-SET /P player.item_stone_armor_owned=
-SET /P player.item_steel_armor_owned=
-SET /P player.item_iron_armor_owned=
-SET /P player.item_long_sword_owned=
-SET /P player.item_scale_armor_owned=
-SET /P player.item_short_sword_owned=
-SET /P player.item_great_axe_owned=
-SET /P player.item_mace_owned=
-SET /P player.item_wooden_bow_owned=
-SET /P player.item_tonic_healing_owned=
-SET /P player.item_tonic_magicka_owned=
-SET /P player.item_tonic_xp_owned=
-SET /P player.bandits_slain=
-SET /P player.total_deaths=
-SET /P player.iridescent_ab_defeated=
-SET /P vendor.blacksmith_long_sword_price=
-SET /P vendor.blacksmith_short_sword_price=
-SET /P vendor.blacksmith_great_axe_price=
-SET /P vendor.blacksmith_mace_price=
-SET /P vendor.blacksmith_wooden_bow_price=
-SET /P vendor.blacksmith_cactus_armor_price=
-SET /P vendor.blacksmith_guard_armor_price=
-SET /P vendor.blacksmith_stone_armor_price=
-SET /P vendor.blacksmith_steel_armor_price=
-SET /P vendor.blacksmith_iron_armor_price=
-SET /P vendor.blacksmith_scale_armor_price=
-SET /P vendor.blacksmith_long_sword_sbp=
-SET /P vendor.blacksmith_short_sword_sbp=
-SET /P vendor.blacksmith_great_axe_sbp=
-SET /P vendor.blacksmith_mace_sbp=
-SET /P vendor.blacksmith_wooden_bow_sbp=
-SET /P vendor.blacksmith_long_sword_stock=
-SET /P vendor.blacksmith_short_sword_stock=
-SET /P vendor.blacksmith_great_axe_stock=
-SET /P vendor.blacksmith_mace_stock=
-SET /P vendor.blacksmith_wooden_bow_stock=
-SET /P vendor.blacksmith_cactus_armor_stock=
-SET /P vendor.blacksmith_guard_armor_stock=
-SET /P vendor.blacksmith_stone_armor_stock=
-SET /P vendor.blacksmith_steel_armor_stock=
-SET /P vendor.blacksmith_iron_armor_stock=
-SET /P vendor.blacksmith_scale_armor_stock=
-SET /P vendor.alchemist.health_tonic_price=
-SET /P vendor.alchemist.magicka_tonic_price=
-SET /P vendor.alchemist.health_tonic_stock=
-SET /P vendor.alchemist.magicka_tonic_stock=
+set /p player.name=
+set /p player.health=
+set /p player.magicka=
+set /p player.damage=
+set /p player.damage_heavy=
+set /p player.spell_damage=
+set /p player.spell_healing=
+set /p player.spell_cost=
+set /p player.armor_class=
+set /p player.initiative=
+set /p player.class=
+set /p player.coins=
+set /p player.xp=
+set /p player.xp_required=
+set /p player.level=
+set /p player.explore_last_location=
+set /p player.current_act=
+set /p player.magicka_max=
+set /p player.health_max=
+set /p player.weapon_type=
+set /p player.weapon_damage_type=
+set /p player.origin=
+set /p player.armor_prot=
+set /p player.armor_resistance_type=
+set /p player.skill_damage=
+set /p player.skill_speech=
+set /p player.skill_athletics=
+set /p player.skill_intelligence=
+set /p player.skill_destruction=
+set /p player.skill_restoration=
+set /p player.reputation=
+set /p player.act_1_cave_unlocked=
+set /p player.act_1_next_act_unlocked=
+set /p player.bandits_slain=
+set /p player.total_deaths=
+set /p player.iridescent_ab_defeated=
+set /p player.catalogue_unlocked=
+set /p player.catalogue_locked=
+set /p player.catalogue_bandit_encountered=
+set /p player.catalogue_abyss_guardian_encountered=
+set /p player.catalogue_wandering_trader_encountered=
+set /p player.catalogue_bandit=
+set /p player.catalogue_abyss_guardian=
+set /p player.catalogue_wandering_trader=
+set /p player.iridescent_forest_level=
+set /p player.iridescent_forest_level_total=
+set /p player.iridescent_forest_level_1_enemy_remaining=
+set /p player.iridescent_forest_level_1=
+set /p player.iridescent_forest_level_1_location=
+set /p player.scene_1_examine_plants=
+set /p player.scene_1_examine_barrels=
+set /p player.scene_1_examine_wagon=
+set /p player.hazard_spotted_pod_known=
+set /p player.s1_exwag_inspect_area=
+set /p player.armor_equipped=
+set /p player.weapon_equipped=
+set /p player.spell_equipped=
+set /p player.spell_equipped_type=
+set /p player.item_cactus_armor_owned=
+set /p player.item_guard_armor_owned=
+set /p player.item_stone_armor_owned=
+set /p player.item_steel_armor_owned=
+set /p player.item_iron_armor_owned=
+set /p player.item_long_sword_owned=
+set /p player.item_scale_armor_owned=
+set /p player.item_short_sword_owned=
+set /p player.item_great_axe_owned=
+set /p player.item_mace_owned=
+set /p player.item_wooden_bow_owned=
+set /p player.item_tonic_healing_owned=
+set /p player.item_tonic_magicka_owned=
+set /p player.spell_learned_firebolt=
+set /p player.spell_learned_healing_hands=
 )<"%cd%\data\player\savedata.txt"
 GOTO :EOF
 
 :GAME_INIT
-SET player.name=windhelm
-SET player.race=windhelm
-SET player.personal_p_1=windhelm
-SET player.personal_p_2=windhelm
-SET player.possesive_1=windhelm
-SET player.reflexive_1=windhelm
-SET player.intensive_1=windhelm
-GOTO :PLAYER_INIT_STATS
-
 :PLAYER_INIT_STATS
 SET player.health=100
 SET player.magicka=100
-SET player.damage=5
+SET player.damage=2
 SET player.damage_heavy=10
-SET player.armor=0
-SET player.class=NONE
-SET player.coins=1000
+set player.spell_damage=0
+set player.spell_healing=0
+set player.spell_cost=50
+SET player.armor_class=0
+set player.initiative=10
+SET "player.class=None"
+SET player.coins=250
 SET player.xp=0
 SET player.xp_required=5000
 SET player.level=1
+set "player.explore_last_location=explore"
+set "player.current_act=Act 1"
 SET player.magicka_max=100
 SET player.health_max=100
-SET player.weapon_type=Melee
-SET player.weapon_damage_type=physical
-SET player.origin=NONE
+SET "player.weapon_type=Melee"
+SET "player.weapon_damage_type=physical"
+SET "player.origin=None"
 REM Player armor value. Used to modify attack damages against the Player.
 SET player.armor_prot=0
-SET player.armor_resistance_type=physical
+SET "player.armor_resistance_type=physical"
 SET player.skill_damage=2
-SET player.skill_magicka=2
 SET player.skill_speech=2
 SET player.skill_athletics=2
 SET player.skill_intelligence=2
+SET player.skill_destruction=2
+SET player.skill_restoration=2
 SET player.reputation=2
-SET player.magicSchool_AlterationSkill=2
-SET player.magicSchool_DestructionSkill=2
-SET player.magicSchool_RestorationSkill=2
 REM Location unlocks
-SET player.ruins_unlocked=0
-REM STAT TRACKING
+set "player.act_1_cave_unlocked=???"
+set "player.act_1_next_act_unlocked=???"
+REM "Player statistics tracking
 SET player.bandits_slain=0
+SET player.total_deaths=0
+SET player.iridescent_ab_defeated=0
 REM Misc
-SET player.pronouns_change_req=0
 REM Player beasitary
 SET player.catalogue_unlocked=0
 SET player.catalogue_locked=3
 SET player.catalogue_bandit_encountered=0
 SET player.catalogue_abyss_guardian_encountered=0
 SET player.catalogue_wandering_trader_encountered=0
-SET player.catalogue_bandit=???
-SET player.catalogue_abyss_guardian=???
-SET player.catalogue_wandering_trader=???
+SET "player.catalogue_bandit=???"
+SET "player.catalogue_abyss_guardian=???"
+SET "player.catalogue_wandering_trader=???"
+REM Exploration data for Iridescent Forest\Level 1
+set player.iridescent_forest_level=1
+set player.iridescent_forest_level_total=5
+set player.iridescent_forest_level_1_enemy_remaining=5
+set "player.iridescent_forest_level_1=incomplete"
+set "player.iridescent_forest_level_1_location=NotStarted"
+rem Player sublevel scene data
+set "player.scene_1_examine_plants=incomplete"
+set "player.scene_1_examine_barrels=incomplete"
+set "player.scene_1_examine_wagon=incomplete"
+rem Known hazards to the player
+set player.hazard_spotted_pod_known=0
+rem Nodes completed
+set "player.s1_exwag_inspect_area=incomplete"
 GOTO :PLAYER_INIT_INVENTORY
 
-REM Equipment slots
 :PLAYER_INIT_INVENTORY
-SET player.armor_equipped=EMPTY
-SET player.weapon_equipped=EMPTY
-SET player.spell_equipped=EMPTY
-REM Default Player inventory
+SET "player.armor_equipped=None"
+SET "player.weapon_equipped=None"
+SET "player.spell_equipped=None"
+set "player.spell_equipped_type=None"
 SET player.item_cactus_armor_owned=0
 SET player.item_guard_armor_owned=0
 SET player.item_stone_armor_owned=0
@@ -378,11 +389,15 @@ SET player.item_mace_owned=0
 SET player.item_wooden_bow_owned=0
 SET player.item_tonic_healing_owned=0
 SET player.item_tonic_magicka_owned=0
-SET player.item_tonic_xp_owned=0
-REM Player statistics tracking
-SET player.bandits_slain=0
-SET player.total_deaths=0
-SET player.iridescent_ab_defeated=0
+set player.spell_learned_firebolt=0
+set player.spell_learned_healing_hands=0
+set player.item_oracle_hjralder_owned=0
+REM Pulse Engine level data
+SET "pulse.ifor_area_boss_defeated=False"
+SET pulse.ifor_level_1_ecount=1
+SET pulse.ifor_level_2_ecount=3
+SET pulse.ifor_level_3_ecount=4
+SET pulse.ifor_level_4_ecount=1
 GOTO :INIT_MERCHANTS
 
 REM Setup Merchant inventories & Prices
@@ -411,30 +426,12 @@ SET vendor.blacksmith_stone_armor_sbp=115
 SET vendor.blacksmith_steel_armor_sbp=620
 SET vendor.blacksmith_iron_armor_sbp=318
 SET vendor.blacksmith_scale_armor_sbp=1622
-REM Blacksmith Shop Stock.
-SET vendor.blacksmith_long_sword_stock=6
-SET vendor.blacksmith_short_sword_stock=4
-SET vendor.blacksmith_great_axe_stock=5
-SET vendor.blacksmith_mace_stock=5
-SET vendor.blacksmith_wooden_bow_stock=2
-SET vendor.blacksmith_cactus_armor_stock=12
-SET vendor.blacksmith_guard_armor_stock=12
-SET vendor.blacksmith_stone_armor_stock=12
-SET vendor.blacksmith_steel_armor_stock=12
-SET vendor.blacksmith_iron_armor_stock=12
-SET vendor.blacksmith_scale_armor_stock=12
 REM Alchemist Shop Base Prices.
 SET vendor.alchemist.health_tonic_price=25
 SET vendor.alchemist.magicka_tonic_price=25
-REM Alchemist Item Stock.
-SET vendor.alchemist.health_tonic_stock=50
-SET vendor.alchemist.magicka_tonic_stock=50
-REM Traveling Merchant Stock
-SET vendor.travmerch_xp_tonic_stock=6
-REM Traveling Merchant Prices
-SET vendor.travmerch_xp_tonic_price=400
-IF %SLOPr% == INIT (
-    GOTO :EOF
-) ELSE (
-    GOTO :saveData
+
+if "%SLOPr%" == "INIT" (
+    goto :eof
+) else (
+    goto :saveData
 )

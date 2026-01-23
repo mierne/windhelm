@@ -4,194 +4,196 @@ REM Return to simplicity
 :IVM
 MODE con: cols=100 lines=19
 CLS
-SET RETURN=IVM
+SET "RETURN=IVM"
 ECHO.
 TYPE "%cd%\data\assets\ui\inventory.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / WEAPONS ] ^| [2 / ARMORS ] ^| [3 / TONICS ] ^| [Q / EXIT ]
+ECHO ^| [1 / WEAPONS ] ^| [2 / ARMORS ] ^| [3 / TONICS ] ^| [4 / SPELLS ] ^| [5 / STAVES ]
 ECHO +--------------------------------------------------------------------------------------------------+
-SET /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :VIEW_TYPE_WEAPONS
 IF /I "%CH%" == "2" GOTO :VIEW_TYPE_ARMORS
 IF /I "%CH%" == "3" GOTO :VIEW_TYPE_TONICS
-IF /I "%CH%" == "Q" GOTO :AUTOSAVE
+if /i "%CH%" == "4" goto :VIEW_TYPE_SPELLS
+if /i "%CH%" == "5" goto :VIEW_TYPE_STAVES
+IF /I "%CH%" == "E" GOTO :AUTOSAVE
 GOTO :INVALID_INPUT
 
 REM Displays the categories of weapons and allows the Player to view their owned items in each.
 :VIEW_TYPE_WEAPONS
-IF %windhelm.inventory_call% == combat (
-    SET displayMessage=Switching weapons is disallowed during combat.
+IF "%windhelm.inventory_call%" == "combat" (
+    SET "displayMessage=Switching weapons is disallowed during combat."
     GOTO :IVM
 ) ELSE (
     REM Do nothing
 )
 MODE con: cols=100 lines=19
 CLS
-SET RETURN=VIEW_TYPE_WEAPONS
+SET "RETURN=VIEW_TYPE_WEAPONS"
 ECHO.
 TYPE "%cd%\data\assets\ui\weapons.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / SWORDS ] ^| [2 / AXES ] ^| [3 / MACES ] ^| [4 / BOWS ] ^| [Q / BACK ]
+ECHO ^| [1 / SWORDS ] ^| [2 / AXES ] ^| [3 / MACES ] ^| [4 / BOWS ]
 ECHO +--------------------------------------------------------------------------------------------------+
-SET /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :VIEW_CATEGORY_SWORDS
 IF /I "%CH%" == "2" GOTO :VIEW_CATEGORY_AXES
 IF /I "%CH%" == "3" GOTO :VIEW_CATEGORY_MACES
 IF /I "%CH%" == "4" GOTO :VIEW_CATEGORY_BOWS
-IF /I "%CH%" == "Q" GOTO :IVM
+IF /I "%CH%" == "E" GOTO :IVM
 GOTO :INVALID_INPUT
 
 REM Displays weapons in the "swords" category.
 :VIEW_CATEGORY_SWORDS
 MODE con: cols=100 lines=19
 CLS
-SET RETURN=VIEW_CATEGORY_SWORDS
+SET "RETURN=VIEW_CATEGORY_SWORDS"
 ECHO.
 TYPE "%cd%\data\assets\ui\swords.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / LONG SWORD (%player.item_long_sword_owned%) ] ^| [2 / SHORT SWORD (%player.item_short_sword_owned%) ] ^| [Q / BACK ]
+ECHO ^| [1 / LONGSWORD (%player.item_long_sword_owned%) ] ^| [2 / SHORTSWORD (%player.item_short_sword_owned%) ]
 ECHO +--------------------------------------------------------------------------------------------------+
-SET /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :INSPECT_LONG_SWORD
 IF /I "%CH%" == "2" GOTO :INSPECT_SHORT_SWORD
-IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_WEAPONS
+IF /I "%CH%" == "E" GOTO :VIEW_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 REM Displays detailed information of the specific weapon.
 :INSPECT_LONG_SWORD
 CLS
-SET RETURN=INSPECT_LONG_SWORD
+SET "RETURN=INSPECT_LONG_SWORD"
 MODE con: cols=101 lines=22
 ECHO.
 TYPE "%cd%\data\assets\ui\long_sword.txt"
 ECHO.
-ECHO Showing detailed information for the Long Sword. ^| %displayMessage%
+ECHO Showing detailed information for the Longsword. ^| %displayMessage%
 ECHO +---------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_long_sword_owned%
 ECHO ^| DAMAGE: %windhelm.item_long_sword_damage%, %windhelm.item_long_sword_damage_type%
 ECHO ^| CATEGORY: %windhelm.item_long_sword_category%
 ECHO ^| TYPE: %windhelm.item_long_sword_type%
 ECHO +---------------------------------------------------------------------------------------------------+
-ECHO [E / EQUIP ] ^| [U / UNEQUIP ] ^| [Q / BACK ]
-SET /P CH=">"
+ECHO [E / EQUIP ] ^| [U / UNEQUIP ]
+SET /P "CH=> "
 IF /I "%CH%" == "E" GOTO :EQUIP_LONG_SWORD
 IF /I "%CH%" == "U" GOTO :UNEQUIP_LONG_SWORD
 IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_SWORDS
 GOTO :INVALID_INPUT
 
-REM Attempts to equip the Long Sword as the Player's active weapon.
+REM Attempts to equip the Longsword as the Player's active weapon.
 :EQUIP_LONG_SWORD
 REM First check that it or some other weapon isn't already equipped.
-IF "%player.weapon_equipped%" == "EMPTY" (
+IF "%player.weapon_equipped%" == "None" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_long_sword_owned% GTR 0 (
         REM The Player owns more than zero of this item.
-        SET player.weapon_equipped=%windhelm.item_long_sword_name%
+        SET "player.weapon_equipped=%windhelm.item_long_sword_name%"
         SET player.damage=%windhelm.item_long_sword_damage%
-        SET player.weapon_damage_type=%windhelm.item_long_sword_damage_type%
-        SET displayMessage=Equipped the Long Sword^!
+        SET "player.weapon_damage_type=%windhelm.item_long_sword_damage_type%"
+        SET "displayMessage=Equipped the Longsword^!"
         GOTO :INSPECT_LONG_SWORD
     ) ELSE (
         REM The Player does not own at least one of this item.
-        SET displayMessage=You do not have any of this item to equip.
+        SET "displayMessage=You do not have any of this item to equip."
         GOTO :INSPECT_LONG_SWORD
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have a weapon equipped^!
+    SET "displayMessage=You already have a weapon equipped^!"
     GOTO :INSPECT_LONG_SWORD
 )
 
-REM Attempts to unequip the Long Sword from the Player's weapon equipment slot.
+REM Attempts to unequip the Longsword from the Player's weapon equipment slot.
 :UNEQUIP_LONG_SWORD
 REM Check if this is even the active weapon.
-IF NOT "%player.weapon_equipped%" == "Long Sword" (
+IF NOT "%player.weapon_equipped%" == "Longsword" (
     REM This isn't the active weapon.
-    SET displayMessage=You do not have the Long Sword equipped.
+    SET "displayMessage=You do not have the Longsword equipped."
     GOTO :INSPECT_LONG_SWORD
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped="EMPTY"
+    SET "player.weapon_equipped=None"
     SET player.damage=5
-    SET displayMessage=Unequipped the Long Sword.
+    SET "displayMessage=Unequipped the Longsword."
     GOTO :INSPECT_LONG_SWORD
 )
 
 REM Displays detailed information of the specific weapon.
 :INSPECT_SHORT_SWORD
 CLS
-SET RETURN=INSPECT_SHORT_SWORD
+SET "RETURN=INSPECT_SHORT_SWORD"
 MODE con: cols=111 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\short_sword.txt"
 ECHO.
-ECHO Showing detailed information for the Short Sword. ^| %displayMessage%
+ECHO Showing detailed information for the Shortsword. ^| %displayMessage%
 ECHO +-------------------------------------------------------------------------------------------------------------+
 ECHO ^| AMOUNT: %player.item_short_sword_owned%
 ECHO ^| DAMAGE: %windhelm.item_short_sword_damage%, %windhelm.item_short_sword_damage_type%
 ECHO ^| CATEGORY: %windhelm.item_short_sword_category%
 ECHO ^| TYPE: %windhelm.item_short_sword_type%
 ECHO +-------------------------------------------------------------------------------------------------------------+
-ECHO [E / EQUIP ] ^| [U / UNEQUIP ] ^| [Q / BACK ]
-SET /P CH=">"
+ECHO [E / EQUIP ] ^| [U / UNEQUIP ]
+SET /P "CH=> "
 IF /I "%CH%" == "E" GOTO :EQUIP_SHORT_SWORD
 IF /I "%CH%" == "U" GOTO :UNEQUIP_SHORT_SWORD
 IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_SWORDS
 GOTO :INVALID_INPUT
 
-REM Attempts to equip the Long Sword as the Player's active weapon.
+REM Attempts to equip the Longsword as the Player's active weapon.
 :EQUIP_SHORT_SWORD
 REM First check that it or some other weapon isn't already equipped.
-IF "%player.weapon_equipped%" == "EMPTY" (
+IF "%player.weapon_equipped%" == "None" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_short_sword_owned% GTR 0 (
         REM The Player owns more than zero of this item.
-        SET player.weapon_equipped=%windhelm.item_short_sword_name%
+        SET "player.weapon_equipped=%windhelm.item_short_sword_name%"
         SET player.damage=%windhelm.item_short_sword_damage%
-        SET player.weapon_damage_type=%windhelm.item_short_sword_damage_type%
-        SET displayMessage=Equipped the Short Sword^!
+        SET "player.weapon_damage_type=%windhelm.item_short_sword_damage_type%"
+        SET "displayMessage=Equipped the Shortsword^!"
         GOTO :INSPECT_SHORT_SWORD
     ) ELSE (
         REM The Player does not own at least one of this item.
-        SET displayMessage=You do not have any of this item to equip.
+        SET "displayMessage=You do not have any of this item to equip."
         GOTO :INSPECT_SHORT_SWORD
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have a weapon equipped^!
+    SET "displayMessage=You already have a weapon equipped^!"
     GOTO :INSPECT_SHORT_SWORD
 )
 
-REM Attempts to unequip the Short Sword from the Player's weapon equipment slot.
+REM Attempts to unequip the Shortsword from the Player's weapon equipment slot.
 :UNEQUIP_SHORT_SWORD
 REM Check if this is even the active weapon.
-IF NOT "%player.weapon_equipped%" == "Short Sword" (
+IF NOT "%player.weapon_equipped%" == "Shortsword" (
     REM This isn't the active weapon.
-    SET displayMessage=You do not have the Short Sword equipped.
+    SET "displayMessage=You do not have the Shortsword equipped."
     GOTO :INSPECT_SHORT_SWORD
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped="EMPTY"
+    SET "player.weapon_equipped=None"
     SET player.damage=5
-    SET displayMessage=Unequipped the Short Sword.
+    SET "displayMessage=Unequipped the Shortsword."
     GOTO :INSPECT_SHORT_SWORD
 )
 
@@ -199,29 +201,29 @@ REM Displays weapons in the "axes" category.
 :VIEW_CATEGORY_AXES
 MODE con: cols=100 lines=21
 CLS
-SET RETURN=VIEW_CATEGORY_AXES
+SET"RETURN=VIEW_CATEGORY_AXES"
 ECHO.
 TYPE "%cd%\data\assets\ui\axes.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select an item to inspect.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / GREAT AXE (%player.item_great_axe_owned%) ] ^| [Q / BACK ]
+ECHO ^| [1 / GREAT AXE (%player.item_great_axe_owned%) ]
 ECHO +--------------------------------------------------------------------------------------------------+
-SET /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :INSPECT_GREAT_AXE
-IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_WEAPONS
+IF /I "%CH%" == "E" GOTO :VIEW_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 REM Displays detailed information of the specific weapon.
 :INSPECT_GREAT_AXE
 CLS
-SET RETURN=INSPECT_GREAT_AXE
+SET "RETURN=INSPECT_GREAT_AXE"
 MODE con: cols=100 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\great_axe.txt"
@@ -233,8 +235,8 @@ ECHO ^| DAMAGE: %windhelm.item_great_axe_damage%, %windhelm.item_great_axe_damag
 ECHO ^| CATEGORY: %windhelm.item_great_axe_category%
 ECHO ^| TYPE: %windhelm.item_great_axe_type%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO [E / EQUIP ] ^| [U / UNEQUIP ] ^| [Q / BACK ]
-SET /P CH=">"
+ECHO [E / EQUIP ] ^| [U / UNEQUIP ]
+SET /P "CH=> "
 IF /I "%CH%" == "E" GOTO :EQUIP_GREAT_AXE
 IF /I "%CH%" == "U" GOTO :UNEQUIP_GREAT_AXE
 IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_AXES
@@ -243,23 +245,23 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Great Axe as the Player's active weapon.
 :EQUIP_GREAT_AXE
 REM First check that it or some other weapon isn't already equipped.
-IF "%player.weapon_equipped%" == "EMPTY" (
+IF "%player.weapon_equipped%" == "None" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_great_axe_owned% GTR 0 (
         REM The Player owns more than zero of this item.
-        SET player.weapon_equipped=%windhelm.item_great_axe_name%
+        SET "player.weapon_equipped=%windhelm.item_great_axe_name%"
         SET player.damage=%windhelm.item_great_axe_damage%
-        SET player.weapon_damage_type=%windhelm.item_great_axe_damage_type%
-        SET displayMessage=Equipped the Great Axe^!
+        SET "player.weapon_damage_type=%windhelm.item_great_axe_damage_type%"
+        SET "displayMessage=Equipped the Great Axe^!"
         GOTO :INSPECT_GREAT_AXE
     ) ELSE (
         REM The Player does not own at least one of this item.
-        SET displayMessage=You do not have any of this item to equip.
+        SET "displayMessage=You do not have any of this item to equip."
         GOTO :INSPECT_GREAT_AXE
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have a weapon equipped^!
+    SET "displayMessage=You already have a weapon equipped^!"
     GOTO :INSPECT_GREAT_AXE
 )
 
@@ -268,13 +270,13 @@ REM Attempts to unequip the Great Axe from the Player's weapon equipment slot.
 REM Check if this is even the active weapon.
 IF NOT "%player.weapon_equipped%" == "Great Axe" (
     REM This isn't the active weapon.
-    SET displayMessage=You do not have the Great Axe equipped.
+    SET "displayMessage=You do not have the Great Axe equipped."
     GOTO :INSPECT_GREAT_AXE
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped="EMPTY"
+    SET player.weapon_equipped=None
     SET player.damage=5
-    SET displayMessage=Unequipped the Great Axe.
+    SET "displayMessage=Unequipped the Great Axe."
     GOTO :INSPECT_GREAT_AXE
 )
 
@@ -282,29 +284,29 @@ REM Displays weapons in the "maces" category.
 :VIEW_CATEGORY_MACES
 MODE con: cols=100 lines=21
 CLS
-SET RETURN=VIEW_CATEGORY_MACES
+SET "RETURN=VIEW_CATEGORY_MACES"
 ECHO.
 TYPE "%cd%\data\assets\ui\maces.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select an item to inspect.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / MACE (%player.item_mace_owned%) ] ^| [Q / BACK ]
+ECHO ^| [1 / MACE (%player.item_mace_owned%) ]
 ECHO +--------------------------------------------------------------------------------------------------+
-SET /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :INSPECT_MACE
-IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_WEAPONS
+IF /I "%CH%" == "E" GOTO :VIEW_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 REM Displays detailed information of the specific weapon.
 :INSPECT_MACE
 CLS
-SET RETURN=INSPECT_MACE
+SET "RETURN=INSPECT_MACE"
 MODE con: cols=100 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\mace.txt"
@@ -316,8 +318,8 @@ ECHO ^| DAMAGE: %windhelm.item_mace_damage%, %windhelm.item_mace_damage_type%
 ECHO ^| CATEGORY: %windhelm.item_mace_category%
 ECHO ^| TYPE: %windhelm.item_mace_type%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO [E / EQUIP ] ^| [U / UNEQUIP ] ^| [Q / BACK ]
-SET /P CH=">"
+ECHO [E / EQUIP ] ^| [U / UNEQUIP ]
+SET /P "CH=> "
 IF /I "%CH%" == "E" GOTO :EQUIP_MACE
 IF /I "%CH%" == "U" GOTO :UNEQUIP_MACE
 IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_MACES
@@ -326,23 +328,23 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Mace as the Player's active weapon.
 :EQUIP_MACE
 REM First check that it or some other weapon isn't already equipped.
-IF "%player.weapon_equipped%" == "EMPTY" (
+IF "%player.weapon_equipped%" == "None" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_mace_owned% GTR 0 (
         REM The Player owns more than zero of this item.
-        SET player.weapon_equipped=%windhelm.item_mace_name%
+        SET "player.weapon_equipped=%windhelm.item_mace_name%"
         SET player.damage=%windhelm.item_mace_damage%
-        SET player.weapon_damage_type=%windhelm.item_mace_damage_type%
-        SET displayMessage=Equipped the Mace^!
+        SET "player.weapon_damage_type=%windhelm.item_mace_damage_type%"
+        SET "displayMessage=Equipped the Mace^!"
         GOTO :INSPECT_MACE
     ) ELSE (
         REM The Player does not own at least one of this item.
-        SET displayMessage=You do not have any of this item to equip.
+        SET "displayMessage=You do not have any of this item to equip."
         GOTO :INSPECT_MACE
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have a weapon equipped^!
+    SET "displayMessage=You already have a weapon equipped^!"
     GOTO :INSPECT_MACE
 )
 
@@ -351,13 +353,13 @@ REM Attempts to unequip the Mace from the Player's weapon equipment slot.
 REM Check if this is even the active weapon.
 IF NOT "%player.weapon_equipped%" == "Mace" (
     REM This isn't the active weapon.
-    SET displayMessage=You do not have the Mace equipped.
+    SET "displayMessage=You do not have the Mace equipped."
     GOTO :INSPECT_MACE
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped="EMPTY"
+    SET "player.weapon_equipped=None"
     SET player.damage=5
-    SET displayMessage=Unequipped the Mace.
+    SET "displayMessage=Unequipped the Mace."
     GOTO :INSPECT_MACE
 )
 
@@ -365,29 +367,29 @@ REM Displays weapons in the "bows" category.
 :VIEW_CATEGORY_BOWS
 MODE con: cols=100 lines=21
 CLS
-SET RETURN=VIEW_CATEGORY_BOWS
+SET "RETURN=VIEW_CATEGORY_BOWS"
 ECHO.
 TYPE "%cd%\data\assets\ui\bows.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| Select an item to inspect.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / WOODEN BOW (%player.item_wooden_bow_owned%) ] ^| [Q / BACK ]
+ECHO ^| [1 / WOODEN BOW (%player.item_wooden_bow_owned%) ]
 ECHO +--------------------------------------------------------------------------------------------------+
-SET /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :INSPECT_WOODEN_BOW
-IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_WEAPONS
+IF /I "%CH%" == "E" GOTO :VIEW_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 REM Displays detailed information of the specific weapon.
 :INSPECT_WOODEN_BOW
 CLS
-SET RETURN=INSPECT_WOODEN_BOW
+SET "RETURN=INSPECT_WOODEN_BOW"
 MODE con: cols=105 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\wooden_bow.txt"
@@ -399,8 +401,8 @@ ECHO ^| DAMAGE: %windhelm.item_wooden_bow_damage%, %windhelm.item_wooden_bow_dam
 ECHO ^| CATEGORY: %windhelm.item_wooden_bow_category%
 ECHO ^| TYPE: %windhelm.item_wooden_bow_type%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO [E / EQUIP ] ^| [U / UNEQUIP ] ^| [Q / BACK ]
-SET /P CH=">"
+ECHO [E / EQUIP ] ^| [U / UNEQUIP ]
+SET /P "CH=> "
 IF /I "%CH%" == "E" GOTO :EQUIP_WOODEN_BOW
 IF /I "%CH%" == "U" GOTO :UNEQUIP_WOODEN_BOW
 IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_BOWS
@@ -409,23 +411,23 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Wooden Bow as the Player's active weapon.
 :EQUIP_WOODEN_BOW
 REM First check that it or some other weapon isn't already equipped.
-IF "%player.weapon_equipped%" == "EMPTY" (
+IF "%player.weapon_equipped%" == "None" (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_wooden_bow_owned% GTR 0 (
         REM The Player owns more than zero of this item.
-        SET player.weapon_equipped=%windhelm.item_wooden_bow_name%
+        SET "player.weapon_equipped=%windhelm.item_wooden_bow_name%"
         SET player.damage=%windhelm.item_wooden_bow_damage%
-        SET player.weapon_damage_type=%windhelm.item_wooden_bow_damage_type%
-        SET displayMessage=Equipped the Wooden Bow^!
+        SET "player.weapon_damage_type=%windhelm.item_wooden_bow_damage_type%"
+        SET "displayMessage=Equipped the Wooden Bow^!"
         GOTO :INSPECT_WOODEN_BOW
     ) ELSE (
         REM The Player does not own at least one of this item.
-        SET displayMessage=You do not have any of this item to equip.
+        SET "displayMessage=You do not have any of this item to equip."
         GOTO :INSPECT_WOODEN_BOW
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have a weapon equipped^!
+    SET "displayMessage=You already have a weapon equipped^!"
     GOTO :INSPECT_WOODEN_BOW
 )
 
@@ -434,71 +436,71 @@ REM Attempts to unequip the Wooden Bow from the Player's weapon equipment slot.
 REM Check if this is even the active weapon.
 IF NOT "%player.weapon_equipped%" == "Wooden Bow" (
     REM This isn't the active weapon.
-    SET displayMessage=You do not have the Wooden Bow equipped.
+    SET "displayMessage=You do not have the Wooden Bow equipped."
     GOTO :INSPECT_WOODEN_BOW
 ) ELSE (
     REM Unequip the weapon.
-    SET player.weapon_equipped="EMPTY"
+    SET "player.weapon_equipped=None"
     SET player.damage=5
-    SET displayMessage=Unequipped the Wooden Bow.
+    SET "displayMessage=Unequipped the Wooden Bow."
     GOTO :INSPECT_WOODEN_BOW
 )
 
 REM Displays the categories of armor and allows the Player to view their owned items in each.
 :VIEW_TYPE_ARMORS
 IF %windhelm.inventory_call% == combat (
-    SET displayMessage=Switching armor is disallowed during combat.
+    SET "displayMessage=Switching armor is disallowed during combat."
     GOTO :IVM
 ) ELSE (
     REM Do nothing
 )
 MODE con: cols=103 lines=19
 CLS
-SET RETURN=VIEW_TYPE_ARMORS
+SET "RETURN=VIEW_TYPE_ARMORS"
 ECHO.
 TYPE "%cd%\data\assets\ui\armors.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +-----------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +-----------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +-----------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / LIGHT ARMOR ] ^| [2 / MEDIUM ARMOR ] ^| [3 / HEAVY ARMOR ] ^| [Q / BACK ]
+ECHO ^| [1 / LIGHT ARMOR ] ^| [2 / MEDIUM ARMOR ] ^| [3 / HEAVY ARMOR ]
 ECHO +-----------------------------------------------------------------------------------------------------+
-SET /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :VIEW_CATEGORY_LIGHT_ARMOR
 IF /I "%CH%" == "2" GOTO :VIEW_CATEGORY_MEDIUM_ARMOR
 IF /I "%CH%" == "3" GOTO :VIEW_CATEGORY_HEAVY_ARMOR
-IF /I "%CH%" == "Q" GOTO :IVM
+IF /I "%CH%" == "E" GOTO :IVM
 GOTO :INVALID_INPUT
 
 REM Displays armor in the "light armor" category.
 :VIEW_CATEGORY_LIGHT_ARMOR
 MODE con: cols=116 lines=22
 CLS
-SET RETURN=VIEW_CATEGORY_LIGHT_ARMOR
+SET "RETURN=VIEW_CATEGORY_LIGHT_ARMOR"
 ECHO.
 TYPE "%cd%\data\assets\ui\light_armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +------------------------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / CACTUS ARMOR (%player.item_cactus_armor_owned%) ] ^| [2 / GUARD ARMOR (%player.item_guard_armor_owned%) ] ^| [Q / BACK ]
+ECHO ^| [1 / CACTUS ARMOR (%player.item_cactus_armor_owned%) ] ^| [2 / GUARD ARMOR (%player.item_guard_armor_owned%) ]
 ECHO +------------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :INSPECT_CACTUS_ARMOR
 IF /I "%CH%" == "2" GOTO :INSPECT_GUARD_ARMOR
-IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_ARMORS
+IF /I "%CH%" == "E" GOTO :VIEW_TYPE_ARMORS
 GOTO :INVALID_INPUT
 
 REM Displays detailed information of the specific armor.
 :INSPECT_CACTUS_ARMOR
 CLS
-SET RETURN=INSPECT_CACTUS_ARMOR
+SET "RETURN=INSPECT_CACTUS_ARMOR"
 MODE con: cols=122 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\cactus_armor.txt"
@@ -510,8 +512,8 @@ ECHO ^| PROTECTION: %windhelm.item_cactus_armor_prot%, %windhelm.item_cactus_arm
 ECHO ^| CATEGORY: %windhelm.item_cactus_armor_category%
 ECHO ^| TYPE: %windhelm.item_cactus_armor_type%
 ECHO +------------------------------------------------------------------------------------------------------------------------+
-ECHO [E / EQUIP ] ^| [U / UNEQUIP ] ^| [Q / BACK ]
-SET /P CH=">"
+ECHO [E / EQUIP ] ^| [U / UNEQUIP ]
+SET /P "CH=> "
 IF /I "%CH%" == "E" GOTO :EQUIP_CACTUS_ARMOR
 IF /I "%CH%" == "U" GOTO :UNEQUIP_CACTUS_ARMOR
 IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_LIGHT_ARMOR
@@ -520,23 +522,23 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Cactus Armor as the Player's active armor.
 :EQUIP_CACTUS_ARMOR
 REM First check that it or some other armor isn't already equipped.
-IF "%player.armor_equipped%" == "EMPTY" (
+IF "%player.armor_equipped%" == None (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_cactus_armor_owned% GTR 0 (
         REM The Player owns more than zero of this item.
-        SET player.armor_equipped=%windhelm.item_cactus_armor_name%
-        SET player.armor=%windhelm.item_cactus_armor_prot%
-        SET player.armor_resistance_type=%windhelm.item_cactus_armor_type_resistance%
-        SET displayMessage=Equipped Cactus Armor^!
+        SET "player.armor_equipped=%windhelm.item_cactus_armor_name%"
+        SET player.armor_class=%windhelm.item_cactus_armor_prot%
+        SET "player.armor_resistance_type=%windhelm.item_cactus_armor_type_resistance%"
+        SET "displayMessage=Equipped Cactus Armor^!"
         GOTO :INSPECT_CACTUS_ARMOR
     ) ELSE (
         REM The Player does not own at least one of this item.
-        SET displayMessage=You do not have any of this item to equip.
+        SET "displayMessage=You do not have any of this item to equip."
         GOTO :INSPECT_CACTUS_ARMOR
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have the %player.armor_equipped% armor equipped^!
+    SET "displayMessage=You already have the %player.armor_equipped% armor equipped^!"
     GOTO :VIEW_CATEGORY_LIGHT_ARMOR
 )
 
@@ -545,20 +547,20 @@ REM Attempts to unequip the Cactus Armor from the Player's armor equipment slot.
 REM Check if this is even the active armor.
 IF NOT "%player.armor_equipped%" == "Cactus Armor" (
     REM This isn't the active armor.
-    SET displayMessage=You do not have Cactus Armor equipped.
+    SET "displayMessage=You do not have Cactus Armor equipped."
     GOTO :INSPECT_CACTUS_ARMOR
 ) ELSE (
     REM Unequip the armor.
-    SET player.armor_equipped=EMPTY
-    SET player.armor=0
-    SET displayMessage=Unequipped Cactus Armor.
+    SET "player.armor_equipped=None"
+    SET player.armor_class=0
+    SET "displayMessage=Unequipped Cactus Armor."
     GOTO :INSPECT_CACTUS_ARMOR
 )
 
 REM Displays detailed information of the specific armor.
 :INSPECT_GUARD_ARMOR
 CLS
-SET RETURN=INSPECT_GUARD_ARMOR
+SET "RETURN=INSPECT_GUARD_ARMOR"
 MODE con: cols=112 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\guard_armor.txt"
@@ -570,8 +572,8 @@ ECHO ^| PROTECTION: %windhelm.item_guard_armor_prot%, %windhelm.item_guard_armor
 ECHO ^| CATEGORY: %windhelm.item_guard_armor_category%
 ECHO ^| TYPE: %windhelm.item_guard_armor_type%
 ECHO +--------------------------------------------------------------------------------------------------------------+
-ECHO [E / EQUIP ] ^| [U / UNEQUIP ] ^| [Q / BACK ]
-SET /P CH=">"
+ECHO [E / EQUIP ] ^| [U / UNEQUIP ]
+SET /P "CH=> "
 IF /I "%CH%" == "E" GOTO :EQUIP_GUARD_ARMOR
 IF /I "%CH%" == "U" GOTO :UNEQUIP_GUARD_ARMOR
 IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_LIGHT_ARMOR
@@ -580,23 +582,23 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Guard Armor as the Player's active armor.
 :EQUIP_GUARD_ARMOR
 REM First check that it or some other armor isn't already equipped.
-IF "%player.armor_equipped%" == "EMPTY" (
+IF "%player.armor_equipped%" == None (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_guard_armor_owned% GTR 0 (
         REM The Player owns more than zero of this item.
-        SET player.armor_equipped=%windhelm.item_guard_armor_name%
-        SET player.armor=%windhelm.item_guard_armor_prot%
-        SET player.armor_resistance_type=%windhelm.item_guard_armor_type_resistance%
-        SET displayMessage=Equipped Guard Armor^!
+        SET "player.armor_equipped=%windhelm.item_guard_armor_name%"
+        SET player.armor_class=%windhelm.item_guard_armor_prot%
+        SET "player.armor_resistance_type=%windhelm.item_guard_armor_type_resistance%"
+        SET "displayMessage=Equipped Guard Armor^!"
         GOTO :INSPECT_GUARD_ARMOR
     ) ELSE (
         REM The Player does not own at least one of this item.
-        SET displayMessage=You do not have any of this item to equip.
+        SET "displayMessage=You do not have any of this item to equip."
         GOTO :INSPECT_GUARD_ARMOR
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have the %player.armor_equipped% armor equipped^!
+    SET "displayMessage=You already have the %player.armor_equipped% armor equipped^!"
     GOTO :VIEW_CATEGORY_LIGHT_ARMOR
 )
 
@@ -605,13 +607,13 @@ REM Attempts to unequip the Guard Armor from the Player's armor equipment slot.
 REM Check if this is even the active armor.
 IF NOT "%player.armor_equipped%" == "Guard Armor" (
     REM This isn't the active armor.
-    SET displayMessage=You do not have Guard Armor equipped.
+    SET "displayMessage=You do not have Guard Armor equipped."
     GOTO :INSPECT_GUARD_ARMOR
 ) ELSE (
     REM Unequip the armor.
-    SET player.armor_equipped=EMPTY
-    SET player.armor=0
-    SET displayMessage=Unequipped Guard Armor.
+    SET "player.armor_equipped=None"
+    SET player.armor_class=0
+    SET "displayMessage=Unequipped Guard Armor."
     GOTO :INSPECT_GUARD_ARMOR
 )
 
@@ -619,28 +621,28 @@ REM Displays armor in the "heavy armor" category.
 :VIEW_CATEGORY_MEDIUM_ARMOR
 MODE con: cols=125 lines=20
 CLS
-SET RETURN=VIEW_CATEGORY_MEDIUM_ARMOR
+SET "RETURN=VIEW_CATEGORY_MEDIUM_ARMOR"
 ECHO.
 TYPE "%cd%\data\assets\ui\medium_armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / STONE ARMOR (%player.item_stone_armor_owned%) ] ^| [2 / IRON ARMOR (%player.item_iron_armor_owned%) ] ^| [Q / BACK ]
+ECHO ^| [1 / STONE ARMOR (%player.item_stone_armor_owned%) ] ^| [2 / IRON ARMOR (%player.item_iron_armor_owned%) ]
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
-SEt /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :INSPECT_STONE_ARMOR
 IF /I "%CH%" == "2" GOTO :INSPECT_IRON_ARMOR
-IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_ARMORS
+IF /I "%CH%" == "E" GOTO :VIEW_TYPE_ARMORS
 GOTO :INVALID_INPUT
 
 REM Displays detailed information of the specific armor.
 :INSPECT_IRON_ARMOR
 CLS
-SET RETURN=INSPECT_IRON_ARMOR
+SET "RETURN=INSPECT_IRON_ARMOR"
 MODE con: cols=100 lines=20
 ECHO.
 TYPE "%cd%\data\assets\ui\iron_armor.txt"
@@ -652,33 +654,33 @@ ECHO ^| PROTECTION: %windhelm.item_iron_armor_prot%, %windhelm.item_iron_armor_t
 ECHO ^| CATEGORY: %windhelm.item_iron_armor_category%
 ECHO ^| TYPE: %windhelm.item_iron_armor_type%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO [E / EQUIP ] ^| [U / UNEQUIP ] ^| [Q / BACK ]
-SET /P CH=">"
-IF /I "%CH%" == "1" GOTO :EQUIP_IRON_ARMOR
-IF /I "%CH%" == "2" GOTO :UNEQUIP_IRON_ARMOR
+ECHO [E / EQUIP ] ^| [U / UNEQUIP ]
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :EQUIP_IRON_ARMOR
+IF /I "%CH%" == "U" GOTO :UNEQUIP_IRON_ARMOR
 IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_MEDIUM_ARMOR
 GOTO :INVALID_INPUT
 
 REM Attempts to equip the Iron Armor as the Player's active armor.
 :EQUIP_IRON_ARMOR
 REM First check that it or some other armor isn't already equipped.
-IF "%player.armor_equipped%" == "EMPTY" (
+IF "%player.armor_equipped%" == None (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_iron_armor_owned% GTR 0 (
         REM The Player owns more than zero of this item.
-        SET player.armor_equipped=%windhelm.item_iron_armor_name%
-        SET player.armor=%windhelm.item_iron_armor_prot%
-        SET player.armor_resistance_type=%windhelm.item_iron_armor_type_resistance%
-        SET displayMessage=Equipped Iron Armor^!
+        SET "player.armor_equipped=%windhelm.item_iron_armor_name%"
+        SET player.armor_class=%windhelm.item_iron_armor_prot%
+        SET "player.armor_resistance_type=%windhelm.item_iron_armor_type_resistance%"
+        SET "displayMessage=Equipped Iron Armor^!"
         GOTO :INSPECT_IRON_ARMOR
     ) ELSE (
         REM The Player does not own at least one of this item.
-        SET displayMessage=You do not have any of this item to equip.
+        SET "displayMessage=You do not have any of this item to equip."
         GOTO :INSPECT_IRON_ARMOR
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have the %player.armor_equipped% armor equipped^!
+    SET "displayMessage=You already have the %player.armor_equipped% armor equipped^!"
     GOTO :VIEW_CATEGORY_MEDIUM_ARMOR
 )
 
@@ -687,20 +689,20 @@ REM Attempts to unequip the Iron Armor from the Player's armor equipment slot.
 REM Check if this is even the active armor.
 IF NOT "%player.armor_equipped%" == "Iron Armor" (
     REM This isn't the active armor.
-    SET displayMessage=You do not have Iron Armor equipped.
+    SET "displayMessage=You do not have Iron Armor equipped."
     GOTO :INSPECT_IRON_ARMOR
 ) ELSE (
     REM Unequip the armor.
-    SET player.armor_equipped=EMPTY
-    SET player.armor=0
-    SET displayMessage=Unequipped Iron Armor.
+    SET "player.armor_equipped=None"
+    SET player.armor_class=0
+    SET "displayMessage=Unequipped Iron Armor."
     GOTO :INSPECT_IRON_ARMOR
 )
 
 REM Displays detailed information of the specific armor.
 :INSPECT_STONE_ARMOR
 CLS
-SET RETURN=INSPECT_STONE_ARMOR
+SET "RETURN=INSPECT_STONE_ARMOR"
 MODE con: cols=112 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\stone_armor.txt"
@@ -712,8 +714,8 @@ ECHO ^| PROTECTION: %windhelm.item_stone_armor_prot%, %windhelm.item_stone_armor
 ECHO ^| CATEGORY: %windhelm.item_stone_armor_category%
 ECHO ^| TYPE: %windhelm.item_stone_armor_type%
 ECHO +--------------------------------------------------------------------------------------------------------------+
-ECHO [E / EQUIP ] ^| [U / UNEQUIP ] ^| [Q / BACK ]
-SET /P CH=">"
+ECHO [E / EQUIP ] ^| [U / UNEQUIP ]
+SET /P "CH=> "
 IF /I "%CH%" == "E" GOTO :EQUIP_STONE_ARMOR
 IF /I "%CH%" == "U" GOTO :UNEQUIP_STONE_ARMOR
 IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_MEDIUM_ARMOR
@@ -721,23 +723,23 @@ GOTO :INVALID_INPUT
 
 :EQUIP_STONE_ARMOR
 REM First check that it or some other armor isn't already equipped.
-IF "%player.armor_equipped%" == "EMPTY" (
+IF "%player.armor_equipped%" == None (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_stone_armor_owned% GTR 0 (
         REM The Player owns more than zero of this item.
-        SET player.armor_equipped=%windhelm.item_stone_armor_name%
-        SET player.armor=%windhelm.item_stone_armor_prot%
-        SET player.armor_resistance_type=%windhelm.item_stone_armor_type_resistance%
-        SET displayMessage=Equipped Stone Armor^!
+        SET "player.armor_equipped=%windhelm.item_stone_armor_name%"
+        SET player.armor_class=%windhelm.item_stone_armor_prot%
+        SET "player.armor_resistance_type=%windhelm.item_stone_armor_type_resistance%"
+        SET "displayMessage=Equipped Stone Armor^!"
         GOTO :INSPECT_STONE_ARMOR
     ) ELSE (
         REM The Player does not own at least one of this item.
-        SET displayMessage=You do not have any of this item to equip.
+        SET "displayMessage=You do not have any of this item to equip."
         GOTO :INSPECT_STONE_ARMOR
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have the %player.armor_equipped% armor equipped^!
+    SET "displayMessage=You already have the %player.armor_equipped% armor equipped^!"
     GOTO :VIEW_CATEGORY_MEDIUM_ARMOR
 )
 
@@ -746,13 +748,13 @@ REM Attempts to unequip the Stone Armor from the Player's armor equipment slot.
 REM Check if this is even the active armor.
 IF NOT "%player.armor_equipped%" == "Stone Armor" (
     REM This isn't the active armor.
-    SET displayMessage=You do not have Stone Armor equipped.
+    SET "displayMessage=You do not have Stone Armor equipped."
     GOTO :INSPECT_STONE_ARMOR
 ) ELSE (
     REM Unequip the armor.
-    SET player.armor_equipped=EMPTY
-    SET player.armor=0
-    SET displayMessage=Unequipped Stone Armor.
+    SET "player.armor_equipped=None"
+    SET player.armor_class=0
+    SET "displayMessage=Unequipped Stone Armor."
     GOTO :INSPECT_STONE_ARMOR
 )
 
@@ -760,28 +762,28 @@ REM Displays armor in the "great armor" category.
 :VIEW_CATEGORY_HEAVY_ARMOR
 MODE con: cols=116 lines=22
 CLS
-SET RETURN=VIEW_CATEGORY_HEAVY_ARMOR
+SET "RETURN=VIEW_CATEGORY_HEAVY_ARMOR"
 ECHO.
 TYPE "%cd%\data\assets\ui\heavy_armor.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +------------------------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +------------------------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +------------------------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / STEEL ARMOR (%player.item_steel_armor_owned%)] [2 / SCALE ARMOR (%player.item_scale_armor_owned%) ] ^| [Q / BACK ]
+ECHO ^| [1 / STEEL ARMOR (%player.item_steel_armor_owned%)] [2 / SCALE ARMOR (%player.item_scale_armor_owned%) ]
 ECHO +------------------------------------------------------------------------------------------------------------------+
-SET /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :INSPECT_STEEL_ARMOR
 IF /I "%CH%" == "2" GOTO :INSPECT_SCALE_ARMOR
-IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_ARMORS
+IF /I "%CH%" == "E" GOTO :VIEW_TYPE_ARMORS
 GOTO :INVALID_INPUT
 
 REM Displays detailed information of the specific armor.
 :INSPECT_STEEL_ARMOR
 CLS
-SET RETURN=INSPECT_STEEL_ARMOR
+SET "RETURN=INSPECT_STEEL_ARMOR"
 MODE con: cols=108 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\steel_armor.txt"
@@ -793,8 +795,8 @@ ECHO ^| PROTECTION: %windhelm.item_steel_armor_prot%, %windhelm.item_steel_armor
 ECHO ^| CATEGORY: %windhelm.item_steel_armor_category%
 ECHO ^| TYPE: %windhelm.item_steel_armor_type%
 ECHO +--------------------------------------------------------------------------------------------------------+
-ECHO [E / EQUIP ] ^| [U / UNEQUIP ] ^| [Q / BACK ]
-SET /P CH=">"
+ECHO [E / EQUIP ] ^| [U / UNEQUIP ]
+SET /P "CH=> "
 IF /I "%CH%" == "E" GOTO :EQUIP_STEEL_ARMOR
 IF /I "%CH%" == "U" GOTO :UNEQUIP_STEEL_ARMOR
 IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_HEAVY_ARMOR
@@ -803,23 +805,23 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Steel Armor as the Player's active armor.
 :EQUIP_STEEL_ARMOR
 REM First check that it or some other armor isn't already equipped.
-IF "%player.armor_equipped%" == "EMPTY" (
+IF "%player.armor_equipped%" == None (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_steel_armor_owned% GTR 0 (
         REM The Player owns more than zero of this item.
-        SET player.armor_equipped=%windhelm.item_steel_armor_name%
-        SET player.armor=%windhelm.item_steel_armor_prot%
-        SET player.armor_resistance_type=%windhelm.item_steel_armor_type_resistance%
-        SET displayMessage=Equipped Steel Armor^!
+        SET "player.armor_equipped=%windhelm.item_steel_armor_name%"
+        SET player.armor_class=%windhelm.item_steel_armor_prot%
+        SET "player.armor_resistance_type=%windhelm.item_steel_armor_type_resistance%"
+        SET "displayMessage=Equipped Steel Armor^!"
         GOTO :INSPECT_STEEL_ARMOR
     ) ELSE (
         REM The Player does not own at least one of this item.
-        SET displayMessage=You do not have any of this item to equip.
+        SET "displayMessage=You do not have any of this item to equip."
         GOTO :INSPECT_STEEL_ARMOR
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have the %player.armor_equipped% armor equipped^!
+    SET "displayMessage=You already have the %player.armor_equipped% armor equipped^!"
     GOTO :VIEW_CATEGORY_HEAVY_ARMOR
 )
 
@@ -828,20 +830,20 @@ REM Attempts to unequip the Steel Armor from the Player's armor equipment slot.
 REM Check if this is even the active armor.
 IF NOT "%player.armor_equipped%" == "Steel Armor" (
     REM This isn't the active armor.
-    SET displayMessage=You do not have Steel Armor equipped.
+    SET "displayMessage=You do not have Steel Armor equipped."
     GOTO :INSPECT_STEEL_ARMOR
 ) ELSE (
     REM Unequip the armor.
-    SET player.armor_equipped=EMPTY
-    SET player.armor=0
-    SET displayMessage=Unequipped Steel Armor.
+    SET "player.armor_equipped=None"
+    SET player.armor_class=0
+    SET "displayMessage=Unequipped Steel Armor."
     GOTO :INSPECT_STEEL_ARMOR
 )
 
 REM Displays detailed information of the specific armor.
 :INSPECT_SCALE_ARMOR
 CLS
-SET RETURN=INSPECT_SCALE_ARMOR
+SET "RETURN=INSPECT_SCALE_ARMOR"
 MODE con: cols=107 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\scale_armor.txt"
@@ -853,8 +855,8 @@ ECHO ^| PROTECTION: %windhelm.item_scale_armor_prot%, %windhelm.item_scale_armor
 ECHO ^| CATEGORY: %windhelm.item_scale_armor_category%
 ECHO ^| TYPE: %windhelm.item_scale_armor_type%
 ECHO +-------------------------------------------------------------------------------------------------------+
-ECHO [E / EQUIP ] ^| [U / UNEQUIP ] ^| [Q / BACK ]
-SET /P CH=">"
+ECHO [E / EQUIP ] ^| [U / UNEQUIP ]
+SET /P "CH=> "
 IF /I "%CH%" == "E" GOTO :EQUIP_SCALE_ARMOR
 IF /I "%CH%" == "U" GOTO :UNEQUIP_SCALE_ARMOR
 IF /I "%CH%" == "Q" GOTO :VIEW_CATEGORY_HEAVY_ARMOR
@@ -863,23 +865,23 @@ GOTO :INVALID_INPUT
 REM Attempts to equip the Scale Armor as the Player's active armor.
 :EQUIP_SCALE_ARMOR
 REM First check that it or some other armor isn't already equipped.
-IF "%player.armor_equipped%" == "EMPTY" (
+IF "%player.armor_equipped%" == None (
     REM There's nothing equipped in this slot, now make sure the Player owns at least one of this item.
     IF %player.item_scale_armor_owned% GTR 0 (
         REM The Player owns more than zero of this item.
-        SET player.armor_equipped=%windhelm.item_scale_armor_name%
-        SET player.armor=%windhelm.item_scale_armor_prot%
-        SET player.armor_resistance_type=%windhelm.item_scale_armor_type_resistance%
-        SET displayMessage=Equipped Scale Armor^!
+        SET "player.armor_equipped=%windhelm.item_scale_armor_name%"
+        SET player.armor_class=%windhelm.item_scale_armor_prot%
+        SET "player.armor_resistance_type=%windhelm.item_scale_armor_type_resistance%"
+        SET "displayMessage=Equipped Scale Armor^!"
         GOTO :INSPECT_SCALE_ARMOR
     ) ELSE (
         REM The Player does not own at least one of this item.
-        SET displayMessage=You do not have any of this item to equip.
+        SET "displayMessage=You do not have any of this item to equip."
         GOTO :INSPECT_SCALE_ARMOR
     )
 ) ELSE (
     REM There's already something in this equipment slot.
-    SET displayMessage=You already have the %player.armor_equipped% armor equipped^!
+    SET "displayMessage=You already have the %player.armor_equipped% armor equipped^!"
     GOTO :VIEW_CATEGORY_HEAVY_ARMOR
 )
 
@@ -888,13 +890,13 @@ REM Attempts to unequip the Scale Armor from the Player's armor equipment slot.
 REM Check if this is even the active armor.
 IF NOT "%player.armor_equipped%" == "Scale Armor" (
     REM This isn't the active armor.
-    SET displayMessage=You do not have Scale Armor equipped.
+    SET "displayMessage=You do not have Scale Armor equipped."
     GOTO :INSPECT_SCALE_ARMOR
 ) ELSE (
     REM Unequip the armor.
-    SET player.armor_equipped=EMPTY
-    SET player.armor=0
-    SET displayMessage=Unequipped Scale Armor.
+    SET "player.armor_equipped=None"
+    SET player.armor_class=0
+    SET "displayMessage=Unequipped Scale Armor."
     GOTO :INSPECT_SCALE_ARMOR
 )
 
@@ -907,23 +909,22 @@ TYPE "%cd%\data\assets\ui\tonics.txt"
 ECHO.
 ECHO %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| AT: %player.damage% ^| AM: %player.armor% ^| MG: %player.magicka%
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / HEALTH TONIC (%player.item_tonic_healing_owned%) ] ^| [2 / MAGICKA TONIC (%player.item_tonic_magicka_owned%) ] ^| [3 / XP TONIC (%player.item_tonic_xp_owned%) ] ^| [Q / BACK ]
+ECHO ^| [1 / HEALTH TONIC (%player.item_tonic_healing_owned%) ] ^| [2 / MAGICKA TONIC (%player.item_tonic_magicka_owned%) ]
 ECHO +--------------------------------------------------------------------------------------------------+
-SET /P CH=">"
+SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :INSPECT_TONIC_HEALING
 IF /I "%CH%" == "2" GOTO :INSPECT_TONIC_MAGICKA
-IF /I "%CH%" == "3" GOTO :INSPECT_TONIC_XP
-IF /I "%CH%" == "Q" GOTO :IVM
+IF /I "%CH%" == "E" GOTO :IVM
 GOTO :INVALID_INPUT
 
 REM Displays detailed information of the specific tonic.
 :INSPECT_TONIC_HEALING
 CLS
-SET RETURN=INSPECT_TONIC_HEALING
+SET "RETURN=INSPECT_TONIC_HEALING"
 MODE con: cols=103 lines=19
 ECHO.
 TYPE "%cd%\data\assets\ui\health_tonic.txt"
@@ -935,34 +936,34 @@ ECHO ^| MODIFIER: %windhelm.item_tonic_healing_modifier%
 ECHO ^| CATEGORY: %windhelm.item_tonic_healing_category%
 ECHO ^| TYPE: %windhelm.item_tonic_healing_type%
 ECHO +-----------------------------------------------------------------------------------------------------+
-ECHO [E / CONSUME ] ^| [U / DISCARD ] ^| [Q / BACK ]
-SET /P CH=">"
-IF /I "%CH%" == "E" GOTO :CONSUME_TONIC_HEALING
+ECHO [C / CONSUME ] ^| [U / DISCARD ]
+SET /P "CH=> "
+IF /I "%CH%" == "C" GOTO :CONSUME_TONIC_HEALING
 IF /I "%CH%" == "U" GOTO :DISCARD_TONIC_HEALING
-IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_TONICS
+IF /I "%CH%" == "E" GOTO :VIEW_TYPE_TONICS
 GOTO :INVALID_INPUT
 
 :CONSUME_TONIC_HEALING
 REM Check if the Player owns any of this item.
 IF %player.item_tonic_healing_owned% LEQ 0 (
     REM The Player doesn't have any of this Tonic.
-    SET displayMessage=You do not have any of this Tonic to consume.
+    SET "displayMessage=You do not have any of this Tonic to consume."
     GOTO :INSPECT_TONIC_HEALING
 ) ELSE (
     REM Now check if the Player actually needs to consume the Tonic.
     IF %player.health% EQU %player.health_max% (
         REM Player is at max health.
-        SET displayMessage=Your health is already full.
+        SET "displayMessage=Your health is already full."
         GOTO :INSPECT_TONIC_HEALING
     ) ELSE (
         REM Heal the Player for the value provided by the Tonics modifier.
-        SET /A player.health=!player.health! +%windhelm.item_tonic_healing_modifier%
-        SET /A player.item_tonic_healing_owned=!player.item_tonic_healing_owned! -1
+        set /a player.health+=windhelm.item_tonic_healing_modifier
+        set /a player.item_tonic_healing_owned-=1
         REM Ensure the Player's health does not exceed their cap.
         IF %player.health% GTR %player.health_max% (
             REM Player health is above their cap.
             SET player.health=%player.health_max%
-            SET displayMessage=Healed for %windhelm.item_tonic_healing_modifier% HP.
+            SET "displayMessage=Healed for %windhelm.item_tonic_healing_modifier% HP."
             GOTO :INSPECT_TONIC_HEALING
         )
     )
@@ -972,18 +973,18 @@ IF %player.item_tonic_healing_owned% LEQ 0 (
 REM Check if the Player has the item to discard.
 IF %player.item_tonic_healing_owned% LEQ 0 (
     REM Player does not have any of this tonic to discard.
-    SET displayMessage=You do not have this item.
+    SET "displayMessage=You do not have this item."
     GOTO :INSPECT_TONIC_HEALING
 ) ELSE (
-    SET /A player.item_tonic_healing_owned=!player.item_tonic_healing_owned! -1
-    SET displayMessage=Discarded 1 Healing Tonic.
+    set /a player.item_tonic_healing_owned-=1
+    SET "displayMessage=Discarded 1 Healing Tonic."
     GOTO :INSPECT_TONIC_HEALING
 )
 
 REM Displays detailed information of the specific tonic.
 :INSPECT_TONIC_MAGICKA
 CLS
-SET RETURN=INSPECT_TONIC_MAGICKA
+SET "RETURN=INSPECT_TONIC_MAGICKA"
 MODE con: cols=115 lines=22
 ECHO.
 TYPE "%cd%\data\assets\ui\magicka_tonic.txt"
@@ -995,86 +996,226 @@ ECHO ^| MODIFIER: %windhelm.item_tonic_magicka_modifier%
 ECHO ^| CATEGORY: %windhelm.item_tonic_magicka_category%
 ECHO ^| TYPE: %windhelm.item_tonic_magicka_type%
 ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO [E / CONSUME ] ^| [U / DISCARD ] ^| [Q / BACK ]
-SET /P CH=">"
-IF /I "%CH%" == "E" GOTO :CONSUME_TONIC_MAGICKA
+ECHO [C / CONSUME ] ^| [U / DISCARD ]
+SET /P "CH=> "
+IF /I "%CH%" == "C" GOTO :CONSUME_TONIC_MAGICKA
 IF /I "%CH%" == "U" GOTO :DISCARD_TONIC_MAGICKA
-IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_TONICS
+IF /I "%CH%" == "E" GOTO :VIEW_TYPE_TONICS
 GOTO :INVALID_INPUT
 
 :DISCARD_TONIC_MAGICKA
 REM Check if the Player has the item to discard.
 IF %player.item_tonic_magicka_owned% LEQ 0 (
     REM Player does not have any of this tonic to discard.
-    SET displayMessage=You do not have this item.
+    SET "displayMessage=You do not have this item."
     GOTO :INSPECT_TONIC_MAGICKA
 ) ELSE (
-    SET /A player.item_tonic_magicka_owned=!player.item_tonic_magicka_owned! -1
-    SET displayMessage=Discarded 1 Magicka Tonic.
+    set /a player.item_tonic_magicka_owned-=1
+    SET "displayMessage=Discarded 1 Magicka Tonic."
     GOTO :INSPECT_TONIC_MAGICKA
 )
 
 :CONSUME_TONIC_MAGICKA
 IF %player.item_tonic_magicka_owned% LEQ 0 (
-    SET displayMessage=You do not have any of this Tonic to consume.
-    GOTO :VIEW_TYPE_TONICS
+    SET "displayMessage=You do not have any of this Tonic to consume."
+    GOTO :INSPECT_TONIC_MAGICKA
 ) ELSE (
     IF %player.magicka% EQU %player.magicka_max% (
-        SET displayMessage=Your health is already full.
-        GOTO :VIEW_TYPE_TONICS
+        SET "displayMessage=Your magicka is already full."
+        GOTO :INSPECT_TONIC_MAGICKA
     ) ELSE (
-        SET /A player.magicka=!player.magicka! +%windhelm.item_tonic_magicka_modifier%
-        SET /A player.item_tonic_magicka_owned=!player.item_tonic_magicka_owned! -1
+        set /a player.magicka+=windhelm.item_tonic_magicka_modifier
+        set /a player.item_tonic_magicka_owned-=1
         IF %player.magicka% GTR %player.magicka_max% (
             SET player.magicka=%player.magicka_max%
-            SET displayMessage=Replenished %windhelm.item_tonic_magicka_modifier% magicka.
-            GOTO :VIEW_TYPE_TONICS
+            SET "displayMessage=Replenished %windhelm.item_tonic_magicka_modifier% magicka."
+            GOTO :INSPECT_TONIC_MAGICKA
         )
     )
 )
 
-:INSPECT_TONIC_XP
+:VIEW_TYPE_SPELLS
+MODE con: cols=100 lines=19
 CLS
-SET RETURN=INSPECT_TONIC_XP
-MODE con: cols=115 lines=22
 ECHO.
-TYPE "%cd%\data\assets\ui\xp_tonic.txt"
+TYPE "%cd%\data\assets\ui\spells.txt"
 ECHO.
-ECHO Showing detailed information for the XP Tonic. ^| %displayMessage%
-ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO ^| AMOUNT: %player.item_tonic_xp_owned%
-ECHO ^| MODIFIER: %windhelm.item_tonic_xp_modifier%
-ECHO ^| CATEGORY: %windhelm.item_tonic_xp_category%
-ECHO ^| TYPE: %windhelm.item_tonic_xp_type%
-ECHO +-----------------------------------------------------------------------------------------------------------------+
-ECHO [E / CONSUME ] ^| [U / DISCARD ] ^| [Q / BACK ]
-SET /P CH=">"
-IF /I "%CH%" == "E" GOTO :CONSUME_TONIC_XP
-IF /I "%CH%" == "U" GOTO :DISCARD_TONIC_XP
-IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_TONICS
+ECHO %displayMessage%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / Firebolt (%windhelm.spell_firebolt_damage% ATK / %windhelm.spell_firebolt_mgk_cost% MGK ) ] ^| [2 / Healing Hands (7 HP / 30 MGK ) ]
+ECHO +--------------------------------------------------------------------------------------------------+
+SET /P "CH=> "
+IF /I "%CH%" == "1" GOTO :INSPECT_SPELL_FIREBOLT
+IF /I "%CH%" == "2" GOTO :INSPECT_SPELL_HEALINGHANDS
+IF /I "%CH%" == "E" GOTO :IVM
 GOTO :INVALID_INPUT
 
-:DISCARD_TONIC_XP
-REM Check if the Player has the item to discard.
-IF %player.item_tonic_xp_owned% LEQ 0 (
-    REM Player does not have any of this tonic to discard.
-    SET displayMessage=You do not have this item.
-    GOTO :INSPECT_TONIC_XP
-) ELSE (
-    SET /A player.item_tonic_xp_owned=!player.item_tonic_xp_owned! -1
-    SET displayMessage=Discarded 1 xp Tonic.
-    GOTO :INSPECT_TONIC_XP
+:INSPECT_SPELL_FIREBOLT
+CLS
+SET "RETURN=INSPECT_SPELL_FIREBOLT"
+MODE con: cols=115 lines=22
+ECHO.
+TYPE "%cd%\data\assets\ui\magicka_tonic.txt"
+ECHO.
+ECHO Showing detailed information for the Firebolt spell. ^| %displayMessage%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO ^| KNOWN: Yes
+ECHO ^| DAMAGE: %windhelm.spell_firebolt_damage%
+ECHO ^| COST PER CAST: %windhelm.spell_firebolt_mgk_cost%
+ECHO ^| CATEGORY: Spells/Damage
+ECHO ^| TYPE: Spell
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO [E / EQUIP ] ^| [U / DISCARD ]
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :EQUIP_SPELL_FIREBOLT
+IF /I "%CH%" == "U" GOTO :UNEQUIP_SPELL_FIREBOLT
+IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_SPELLS
+GOTO :INVALID_INPUT
+
+:EQUIP_SPELL_FIREBOLT
+if not "%player.spell_equipped%" == "None" (
+    set "displayMessage=You already have a spell equipped."
+    goto :INSPECT_SPELL_FIREBOLT
+) else (
+    set player.spell_damage=%windhelm.spell_firebolt_damage%
+    set player.spell_cost=%windhelm.spell_firebolt_mgk_cost%
+    set "player.spell_equipped=Firebolt"
+    set "player.spell_equipped_type=damage"
+    set "displayMessage=Equipped the Firebolt spell."
+    goto :INSPECT_SPELL_FIREBOLT
 )
 
-:CONSUME_TONIC_XP
-IF %player.item_tonic_xp_owned% LEQ 0 (
-    SET displayMessage=You do not have any of this Tonic to consume.
-    GOTO :VIEW_TYPE_TONICS
-) ELSE (
-    SET /A player.xp=!player.xp! +%windhelm.item_tonic_xp_modifier%
-    SET /A player.item_tonic_xp_owned=!player.item_tonic_xp_owned! -1
-    SET displayMessage=Consumed 1 XP Tonic for +%windhelm.item_tonic_xp_modifier% XP.
-    GOTO :VIEW_TYPE_TONICS
+:UNEQUIP_SPELL_FIREBOLT
+if not "%player.spell_equipped%" == "None" (
+    set "displayMessage=You do not have a spell equipped."
+    goto :INSPECT_SPELL_FIREBOLT
+) else (
+    set player.spell_damage=0
+    set player.spell_cost=0
+    set "player.spell_equipped=None"
+    set "player.spell_equipped_type=None"
+    set "displayMessage=Unequipped the Firebolt spell."
+    goto :INSPECT_SPELL_FIREBOLT
+)
+
+:INSPECT_SPELL_HEALINGHANDS
+CLS
+SET "RETURN=INSPECT_SPELL_HEALINGHANDS"
+MODE con: cols=115 lines=22
+ECHO.
+TYPE "%cd%\data\assets\ui\magicka_tonic.txt"
+ECHO.
+ECHO Showing detailed information for the Firebolt spell. ^| %displayMessage%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO ^| KNOWN: Yes
+ECHO ^| DAMAGE: 6
+ECHO ^| CATEGORY: Spells/Damage
+ECHO ^| TYPE: Spell
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO [E / EQUIP ] ^| [U / DISCARD ]
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :EQUIP_SPELL_FIREBOLT
+IF /I "%CH%" == "U" GOTO :UNEQUIP_SPELL_FIREBOLT
+IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_SPELLS
+GOTO :INVALID_INPUT
+
+:EQUIP_SPELL_FIREBOLT
+if not "%player.spell_equipped%" == "None" (
+    set "displayMessage=You already have a spell equipped."
+    goto :INSPECT_SPELL_HEALINGHANDS
+) else (
+    set player.spell_damage=0
+    set player.spell_healing=8
+    set player.spell_cost=30
+    set "player.spell_equipped=Healing Hands"
+    set "player.spell_equipped_type=restoration"
+    set "displayMessage=Equipped the Healing Hands spell."
+    goto :INSPECT_SPELL_HEALINGHANDS
+)
+
+:UNEQUIP_SPELL_FIREBOLT
+if not "%player.spell_equipped%" == "None" (
+    set "displayMessage=You do not have a spell equipped."
+    goto :INSPECT_SPELL_HEALINGHANDS
+) else (
+    set player.spell_damage=0
+    set player.spell_healing=0
+    set player.spell_cost=0
+    set "player.spell_equipped=None"
+    set "player.spell_equipped_type=None"
+    set "displayMessage=Unequipped the Healing Hands spell."
+    goto :INSPECT_SPELL_HEALINGHANDS
+)
+
+:VIEW_TYPE_STAVES
+MODE con: cols=100 lines=19
+CLS
+ECHO.
+TYPE "%cd%\data\assets\ui\staves.txt"
+ECHO.
+ECHO %displayMessage%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / Oracle of Hjralder %player.item_oracle_hjralder_owned% ]
+ECHO +--------------------------------------------------------------------------------------------------+
+SET /P "CH=> "
+IF /I "%CH%" == "1" GOTO :INSPECT_STAFF_HJRADLER
+IF /I "%CH%" == "E" GOTO :IVM
+GOTO :INVALID_INPUT
+
+:INSPECT_STAFF_HJRADLER
+CLS
+SET "RETURN=INSPECT_STAFF_HJRADLER"
+MODE con: cols=115 lines=22
+ECHO.
+TYPE "%cd%\data\assets\ui\hjralder.txt"
+ECHO.
+ECHO Showing detailed information for the Oracle of Hjralder. ^| %displayMessage%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO ^| Damage: %windhelm.item_oracle_of_hjralder_damage%
+ECHO ^| Damage Type: %windhelm.item_oracle_of_hjralder_damage_type%
+ECHO ^| INT Modifier: +%windhelm.item_oracle_of_hjralder_int_modifier%
+ECHO ^| Type: %windhelm.item_oracle_hjralder_type%
+ECHO ^| Category: %windhelm.item_oracle_of_hjralder_category%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO [E / EQUIP ] ^| [U / DISCARD ]
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :EQUIP_STAFF_HJRALDER
+IF /I "%CH%" == "U" GOTO :UNEQUIP_STAFF_HJRALDER
+IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_STAVES
+GOTO :INVALID_INPUT
+
+:EQUIP_STAFF_HJRALDER
+if not "%player.weapon_equipped" == "None" (
+    set "displayMessage=You already have a weapon equipped."
+    goto :INSPECT_STAFF_HJRADLER
+) else if %player.item_oracle_hjralder_owned% LSS 1 (
+    set "displayMessage=You do not own this item."
+    goto :INSPECT_STAFF_HJRADLER
+) else (
+    set "player.weapon_equipped=%windhelm.item_oracle_of_hjralder_name%"
+    set player.damage=%windhelm.item_oracle_of_hjralder_damage%
+    set player.skill_intelligence+=windhelm.item_oracle_of_hjralder_int_modifier
+    set "displayMessage=Equipped the Oracle of Hjralder."
+    goto :INSPECT_STAFF_HJRADLER
+)
+
+:UNEQUIP_STAFF_HJRALDER
+if not "%player.weapon_equipped" == "Oracle of Hjralder" (
+    set "displayMessage=You do not have this item equipped."
+) else (
+    set "player.weapon_equipped=None"
+    set player.damage=2
+    set player.skill_intelligence-=windhelm.item_oracle_of_hjralder_int_modifier
+    set "displayMessage=Unequipped the Oracle of Hjralder."
+    goto :INSPECT_STAFF_HJRADLER
 )
 
 :INVALID_INPUT
@@ -1083,6 +1224,6 @@ PAUSE
 GOTO :%RETURN%
 
 :AUTOSAVE
-SET SLOPr=SAVE
+SET "SLOPr=SAVE"
 CALL "%winLoc%\data\functions\SLOP.bat"
 GOTO :EOF
