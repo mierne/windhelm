@@ -4,6 +4,9 @@
   ##### Originally created by Mierne
 </div>
 
+# Notice
+This branch is no longer in use and will remain for posterity sake. For up to date versions of Windhelm, please use the Main branch or the Releases tab.
+
 # About
 Windhelm is a text-based role-playing game built with the Windows Batch Script language. You are tasked with recovering your memories and pieces of your soul—shards.\
 Create your desired character with the in-depth character creation tool, each choice you make contributes to the story and your character's abilities.\
