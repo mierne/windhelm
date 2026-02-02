@@ -13,13 +13,16 @@ More information about mechanics or enemies can learned through gameplay.
 
 ## Playing and requirements
 You may play Windhelm by either cloning this repository or choosing a release from the releases page.
+It is recommended to download and play the packaged release as this repository is in active development.
 
-Windhelm has been tested and confirmed to work properly on command line version 10.0.1.\
+Windhelm has been tested and confirmed to work properly on command line version 10.0.1.
 **Recommended Command Prompt settings:**
 + Recommended font: Consolas
 + Recommended font size for proper scaling: 16
 
 Windhelm also requires VBScript for several tasks, inclduing the animated level transitions but will function without it.
 
+Windhelm does not function as intended under WINE on Linux, but it hasn't been tested thoroughly and the issues encountered may be resolved through configuration changes.
+
 ## Contributions and suggestions
-Contributions are welcome, just be sure that you have read the license. Suggestions may be sent to my email, <ahoy@mierne.net>.
+Contributions are welcome, be civil when discussing issues and suggestions and be sure to read the license. Suggestions that are not relevant to Windhelm may be sent to my email: <ahoy@mierne.net>.
