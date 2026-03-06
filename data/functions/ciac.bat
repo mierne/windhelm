@@ -217,6 +217,7 @@ set player.skill_restoration=4
 SET "player.class=Druid"
 SET "player.class_ability=precognition"
 SET player.item_wooden_bow_owned=1
+SET "player.proficiency=ranged"
 GOTO :APPLY_RACE_BONUSES
 
 :WARRIOR_CHOSEN
@@ -233,6 +234,7 @@ set player.skill_restoration=2
 SET "player.class=Warrior"
 SET "player.class_ability=rage"
 SET player.item_short_sword_owned=1
+SET "player.proficiency=blade"
 GOTO :APPLY_RACE_BONUSES
 
 :SORCERER_CHOSEN
@@ -249,6 +251,7 @@ set player.skill_restoration=5
 SET "player.class=Sorcerer"
 SET "player.class_ability=sapping"
 SET player.item_short_sword_owned=1
+SET "player.proficiency=staff"
 GOTO :APPLY_RACE_BONUSES
 
 REM Applies health and other skill bonuses.
