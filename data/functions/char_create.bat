@@ -151,7 +151,7 @@ ECHO ^| Starting stats: HEALTH: 70 ^| MAGICKA: 200
 ECHO ^| Starting skills: DAMAGE: 2 ^| SPEECH: 2 ^| ATHLETICS: 2 ^| INTELLIGENCE: 7
 ECHO ^| Starting magic skills: ALTERATION: 4 ^| DESTRUCTION: 4 ^| RESTORATION: 4
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
-ECHO [1 / CHOOSE ] ^| [Q / BACK]
+ECHO [1 / CHOOSE ] ^| [E / BACK]
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :DRUID_CHOSEN
 IF /I "%CH%" == "E" GOTO :CHOOSE_CLASS
@@ -174,7 +174,7 @@ ECHO ^| Starting stats: HEALTH: 160 ^| MAGICKA: 30
 ECHO ^| Starting skills: DAMAGE: 6 ^| SPEECH: 2 ^| ATHLETICS: 4 ^| INTELLIGENCE: 2
 ECHO ^| Starting magic skills: ALTERATION: 2 ^| DESTRUCTION: 2 ^| RESTORATION: 2
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO [1 / CHOOSE ] ^| [Q / BACK]
+ECHO [1 / CHOOSE ] ^| [E / BACK]
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :WARRIOR_CHOSEN
 IF /I "%CH%" == "E" GOTO :CHOOSE_CLASS
@@ -197,7 +197,7 @@ ECHO ^| Starting stats: HEALTH: 100 ^| MAGICKA: 200
 ECHO ^| Starting skills: DAMAGE: 2 ^| SPEECH: 5 ^| ATHLETICS: 2  ^| INTELLIGENCE: 5
 ECHO ^| Starting magica skills: ALTERATION: 5 ^| DESTRUCTION: 5 ^| RESTORATION: 5
 ECHO +-------------------------------------------------------------------------------------------------------------------------+
-ECHO [1 / CHOOSE ] ^| [Q / BACK]
+ECHO [1 / CHOOSE ] ^| [E / BACK]
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :SORCERER_CHOSEN
 IF /I "%CH%" == "E" GOTO :CHOOSE_CLASS
@@ -323,7 +323,7 @@ ECHO ^| memories are fading, and quick. You grab onto one before it slips away. 
 ECHO ^|
 ECHO ^| The 'Forest Origin' provides the Player with +2 to INTELLIGENCE.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO [1 / PROCEED TO WINDHELM... ] ^| [Q / BACK]
+ECHO [1 / PROCEED TO WINDHELM... ] ^| [E / BACK]
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :FOREST_ORIGIN_SELECTED
 IF /I "%CH%" == "E" GOTO :CHOOSE_ORIGIN
@@ -347,7 +347,7 @@ ECHO ^| Your name. Your name is %player.name%.
 ECHO ^|
 ECHO ^| The 'Cabin Origin' provides the Player with +2 to DAMAGE.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO [1 / PROCEED TO WINDHELM... ] ^| [Q / BACK]
+ECHO [1 / PROCEED TO WINDHELM... ] ^| [E / BACK]
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :CABIN_ORIGIN_SELECTED
 IF /I "%CH%" == "E" GOTO :CHOOSE_ORIGIN
@@ -371,7 +371,7 @@ ECHO ^| are. The only thing that remains is.. Your name. Your name is %player.na
 ECHO ^|
 ECHO ^| The 'Inn Origin' provides the Player with +2 to SPEECH.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO [1 / PROCEED TO WINDHELM... ] ^| [Q / BACK]
+ECHO [1 / PROCEED TO WINDHELM... ] ^| [E / BACK]
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :INN_ORIGIN_SELECTED
 IF /I "%CH%" == "E" GOTO :CHOOSE_ORIGIN
