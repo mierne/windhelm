@@ -52,10 +52,10 @@ IF %player.catalogue_bandit_encountered% EQU 0 (
     SET "player.catalogue_bandit=Bandit"
     set /a player.catalogue_unlocked+=1
     SET "displayMessage=..."
-    GOTO :player_setup
+    GOTO :combat_engine
 ) ELSE (
     SET "displayMessage=..."
-    GOTO :player_setup
+    GOTO :combat_engine
 )
 
 :AbyssalGuardian
@@ -74,10 +74,10 @@ IF %player.catalogue_abyss_guardian_encountered% EQU 0 (
     SET "player.catalogue_abyss_guardian=Abyss Guardian"
     set /a player.catalogue_unlocked+=1
     SET "displayMessage=..."
-    GOTO :player_setup
+    GOTO :combat_engine
 ) ELSE (
     SET "displayMessage=..."
-    GOTO :player_setup
+    GOTO :combat_engine
 )
 
 :combat_engine
@@ -416,6 +416,8 @@ set "player.iridescent_forest_level_1_location=NotStarted"
 SET enLooted=0
 SET enemy.damage=%enemy.damage_base%
 GOTO :AUTOSAVE
+
+rem Experimental combat modules go here.
 
 :AUTOSAVE
 SET "SLOPr=SAVE"
