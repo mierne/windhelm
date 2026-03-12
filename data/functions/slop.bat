@@ -6,7 +6,7 @@ REM Variables needed to make Windhelm work are loaded here.
 SET "player.message=..."
 SET "windhelm.inventory_call=passive"
 REM Other values
-SET "windhelm.vn=STABLE-0.4.1_00-260305"
+SET "windhelm.vn=UNSTABLE-0.4.1_00-260312"
 SET "windhelm.ut=Taking notes..."
 SET windhelm.enable_stability_warning=0
 rem Enemy favored element determines which they are immune to
@@ -160,6 +160,7 @@ IF "%SLOPr%" == "SAVE" (
 (
 echo %player.name%
 echo %player.health%
+echo %player.race%
 echo %player.magicka%
 echo %player.damage%
 echo %player.damage_heavy%
@@ -180,6 +181,8 @@ echo %player.magicka_max%
 echo %player.health_max%
 echo %player.weapon_type%
 echo %player.weapon_damage_type%
+echo %player.weapon_proficiency%
+echo %player.can_crit%
 echo %player.origin%
 echo %player.armor_prot%
 echo %player.armor_resistance_type%
@@ -239,6 +242,7 @@ GOTO :loadData
 (
 set /p player.name=
 set /p player.health=
+set /p player.race=
 set /p player.magicka=
 set /p player.damage=
 set /p player.damage_heavy=
@@ -259,6 +263,8 @@ set /p player.magicka_max=
 set /p player.health_max=
 set /p player.weapon_type=
 set /p player.weapon_damage_type=
+set /p player.weapon_proficiency=
+set /p player.can_crit=
 set /p player.origin=
 set /p player.armor_prot=
 set /p player.armor_resistance_type=
@@ -317,26 +323,29 @@ GOTO :EOF
 :GAME_INIT
 :PLAYER_INIT_STATS
 SET player.health=100
+SET player.race=Windhelm
 SET player.magicka=100
 SET player.damage=2
 SET player.damage_heavy=10
-set player.spell_damage=0
-set player.spell_healing=0
-set player.spell_cost=50
+SET player.spell_damage=0
+SET player.spell_healing=0
+SET player.spell_cost=50
 SET player.armor_class=0
-set player.initiative=10
-set "player.proficiency=None"
+SET player.initiative=10
+SET "player.proficiency=None"
 SET "player.class=None"
 SET player.coins=250
 SET player.xp=0
 SET player.xp_required=5000
 SET player.level=1
-set "player.explore_last_location=explore"
-set "player.current_act=Act 1"
+SET "player.explore_last_location=explore"
+SET "player.current_act=Act 1"
 SET player.magicka_max=100
 SET player.health_max=100
 SET "player.weapon_type=Melee"
 SET "player.weapon_damage_type=physical"
+SET "player.weapon_proficiency=None"
+SET "player.can_crit=True"
 SET "player.origin=None"
 REM Player armor value. Used to modify attack damages against the Player.
 SET player.armor_prot=0
