@@ -109,6 +109,8 @@ IF "%player.weapon_equipped%" == "None" (
         SET "player.weapon_equipped=%windhelm.item_long_sword_name%"
         SET player.damage=%windhelm.item_long_sword_damage%
         SET "player.weapon_damage_type=%windhelm.item_long_sword_damage_type%"
+        SET "player.weapon_proficiency=blade"
+        call :PROFICIENCY_ADJUST
         SET "displayMessage=Equipped the Longsword^!"
         GOTO :INSPECT_LONG_SWORD
     ) ELSE (
@@ -170,6 +172,8 @@ IF "%player.weapon_equipped%" == "None" (
         SET "player.weapon_equipped=%windhelm.item_short_sword_name%"
         SET player.damage=%windhelm.item_short_sword_damage%
         SET "player.weapon_damage_type=%windhelm.item_short_sword_damage_type%"
+        SET "player.weapon_proficiency=blade"
+        call :PROFICIENCY_ADJUST
         SET "displayMessage=Equipped the Shortsword^!"
         GOTO :INSPECT_SHORT_SWORD
     ) ELSE (
@@ -254,6 +258,7 @@ IF "%player.weapon_equipped%" == "None" (
         SET "player.weapon_equipped=%windhelm.item_great_axe_name%"
         SET player.damage=%windhelm.item_great_axe_damage%
         SET "player.weapon_damage_type=%windhelm.item_great_axe_damage_type%"
+        call :PROFICIENCY_ADJUST
         SET "displayMessage=Equipped the Great Axe^!"
         GOTO :INSPECT_GREAT_AXE
     ) ELSE (
@@ -338,6 +343,7 @@ IF "%player.weapon_equipped%" == "None" (
         SET "player.weapon_equipped=%windhelm.item_mace_name%"
         SET player.damage=%windhelm.item_mace_damage%
         SET "player.weapon_damage_type=%windhelm.item_mace_damage_type%"
+        call :PROFICIENCY_ADJUST
         SET "displayMessage=Equipped the Mace^!"
         GOTO :INSPECT_MACE
     ) ELSE (
@@ -422,6 +428,7 @@ IF "%player.weapon_equipped%" == "None" (
         SET "player.weapon_equipped=%windhelm.item_wooden_bow_name%"
         SET player.damage=%windhelm.item_wooden_bow_damage%
         SET "player.weapon_damage_type=%windhelm.item_wooden_bow_damage_type%"
+        call :PROFICIENCY_ADJUST
         SET "displayMessage=Equipped the Wooden Bow^!"
         GOTO :INSPECT_WOODEN_BOW
     ) ELSE (
@@ -1220,6 +1227,15 @@ if not "%player.weapon_equipped" == "Oracle of Hjralder" (
     set player.skill_intelligence-=windhelm.item_oracle_of_hjralder_int_modifier
     set "displayMessage=Unequipped the Oracle of Hjralder."
     goto :INSPECT_STAFF_HJRADLER
+)
+
+:PROFICIENCY_ADJUST
+if not "%player.proficiency%" == "%player.weapon_proficiency%" (
+    set /a player.damage-=5
+    goto :eof
+) else (
+    rem do nothing
+    goto :eof
 )
 
 :INVALID_INPUT
