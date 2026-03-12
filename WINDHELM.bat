@@ -32,7 +32,7 @@ ECHO.
 TYPE "%winLoc%\data\assets\ui\Windhelm.txt"
 ECHO.
 ECHO.
-ECHO Pre-Alpha Version %windhelm.vn% %windhelm.ut%
+ECHO Pre-Alpha Version %windhelm.vn% ^| %windhelm.ut%
 ECHO ======================================================================================================
 ECHO            [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [E / QUIT ]
 ECHO.
@@ -180,7 +180,7 @@ GOTO :%RETURN%
 :NEW_GAME
 SET "SLOPr=INIT"
 call "%winLoc%\data\functions\SLOP.bat"
-CALL "%winLoc%\data\functions\ciac.bat"
+CALL "%winLoc%\data\functions\char_create.bat"
 IF %OSQ% EQU 1 (
     GOTO :START
 ) ELSE (
@@ -240,7 +240,7 @@ SET "displayMessage=Your game was saved."
 GOTO :dashboard
 
 :view_inventory
-CALL "%winLoc%\data\functions\Inventory Viewer.bat"
+CALL "%winLoc%\data\functions\inventory_viewer.bat"
 GOTO :dashboard
 
 :character_view
@@ -255,7 +255,8 @@ echo +--------------------------------------------------------------------------
 echo ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
 echo ^| NAME: %player.name% ^| RACE: %player.race% ^| CLASS: %player.class% ^| ORIGIN: %player.origin%
 echo +---------------------------------------------------------------------------------------------------------------+
-echo ^| WEAPON: %player.weapon_equipped% ^| DAMAGE: %player.skill_damage% ^| MAGICKA: %player.skill_magicka% ^| ATHLETICS: %player.skill_athletics% ^| SPEECH: %player.skill_speech% ^| INTELLIGENCE: %player.skill_intelligence%
+echo ^| WEAPON: %player.weapon_equipped% ^| DAMAGE: %player.skill_damage% ^| ATHLETICS: %player.skill_athletics% ^| SPEECH: %player.skill_speech% ^| INTELLIGENCE: %player.skill_intelligence%
+echo ^| WEAPON PROFICIENCY: %player.proficiency% ^| EQUIPPED WEAPON PROFICIENCY: %player.weapon_proficiency%
 echo +---------------------------------------------------------------------------------------------------------------+
 echo ^| BANDITS SLAIN: %player.bandits_slain%
 echo ^| TOTAL DEATHS: %player.total_deaths%
