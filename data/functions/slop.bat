@@ -6,9 +6,9 @@ REM Variables needed to make Windhelm work are loaded here.
 SET "player.message=..."
 SET "windhelm.inventory_call=passive"
 REM Other values
-SET "windhelm.vn=UNSTABLE-0.4.1_00-260312"
-SET "windhelm.ut=Taking notes..."
-SET windhelm.enable_stability_warning=0
+SET "windhelm.vn=UNSTABLE-0.4.1_00-260320"
+SET "windhelm.ut=A Mighty Gale"
+SET windhelm.enable_stability_warning=1
 rem Enemy favored element determines which they are immune to
 SET "windhelm.foe_bandit_favored_element=None"
 SET "windhelm.foe_abyssal_guardian_favored_element=None"
@@ -61,9 +61,29 @@ set "windhelm.item_oracle_of_hjralder_name=Oracle of Hjralder"
 SET "windhelm.item_oracle_of_hjralder_type=Staff"
 SET "windhelm.item_oracle_of_hjralder_category=Staves"
 SET "windhelm.item_oracle_of_hjralder_damage_type=physical"
-set windhelm.item_oracle_of_hjralder_int_modifier=2
+set windhelm.item_oracle_of_hjralder_int_modifier=8
 set windhelm.item_oracle_of_hjralder_damage=5
 SET "windhelm.item_oracle_of_hjralder_class=staff"
+set "windhelm.item_wooden_staff_name=Wooden Staff"
+set "windhelm.item_wooden_staff_type=Staff"
+set "windhelm.item_wooden_staff_category=Staves"
+set "windhelm.item_wooden_staff_damage_type=physical"
+set "windhelm.item_wooden_staff_int_modifier=2"
+set "windhelm.item_wooden_staff_damage=2"
+set "windhelm.item_wooden_staff_class=staff"
+set "windhelm.item_ornate_wooden_staff_name=Ornate Wooden Staff"
+set "windhelm.item_ornate_wooden_staff_type=Staff"
+set "windhelm.item_ornate_wooden_staff_category=Staves"
+set "windhelm.item_ornate_wooden_staff_damage_type=physical"
+set "windhelm.item_ornate_wooden_staff_int_modifier=4"
+set "windhelm.item_ornate_wooden_staff_damage=2"
+set "windhelm.item_ornate_wooden_staff_class=staff"
+set "windhelm.item_imbued_alnfei_staff_name=Imued Alnfei Staff"
+set "windhelm.item_imbued_alnfei_staff_type=Staff"
+set "windhelm.item_imbued_alnfei_staff_category=Staves"
+set "windhelm.item_imbued_alnfei_staff_damage_type=physical"
+set "windhelm.item_imbued_alnfei_staff_int_modifier=6"
+set "windhelm.item_imbued_alnfei_staff_damage=2"
 REM Special weapon item data
 REM Spell data
 SET "windhelm.spell_firebolt_name=Firebolt"
@@ -231,6 +251,10 @@ echo %player.item_short_sword_owned%
 echo %player.item_great_axe_owned%
 echo %player.item_mace_owned%
 echo %player.item_wooden_bow_owned%
+echo %player.item_oracle_hjralder_owned%
+echo %player.item_wooden_staff_owned%
+echo %player.item_orante_wooden_staff_owned%
+echo %player.item_imbued_alnfei_staff_owned%
 echo %player.item_tonic_healing_owned%
 echo %player.item_tonic_magicka_owned%
 echo %player.spell_learned_firebolt%
@@ -313,6 +337,10 @@ set /p player.item_short_sword_owned=
 set /p player.item_great_axe_owned=
 set /p player.item_mace_owned=
 set /p player.item_wooden_bow_owned=
+set /p player.item_oracle_hjralder_owned=
+set /p player.item_wooden_staff_owned=
+set /p player.item_orante_wooden_staff_owned=
+set /p player.item_imbued_alnfei_staff_owned=
 set /p player.item_tonic_healing_owned=
 set /p player.item_tonic_magicka_owned=
 set /p player.spell_learned_firebolt=
@@ -411,6 +439,9 @@ SET player.item_tonic_magicka_owned=0
 set player.spell_learned_firebolt=0
 set player.spell_learned_healing_hands=0
 set player.item_oracle_hjralder_owned=0
+set player.item_wooden_staff_owned=0
+set player.item_orante_wooden_staff_owned=0
+set player.item_imbued_alnfei_staff_owned=0
 REM Pulse Engine level data
 SET "pulse.ifor_area_boss_defeated=False"
 SET pulse.ifor_level_1_ecount=1
@@ -448,6 +479,8 @@ SET vendor.blacksmith_scale_armor_sbp=1622
 REM Alchemist Shop Base Prices.
 SET vendor.alchemist.health_tonic_price=25
 SET vendor.alchemist.magicka_tonic_price=25
+REM Wizard shop base prices.
+SET vendor.wizard_ornate_wooden_staff_price=1200
 
 if "%SLOPr%" == "INIT" (
     goto :eof
