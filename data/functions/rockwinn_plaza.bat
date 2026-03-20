@@ -20,7 +20,7 @@ SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :VENDOR_ALCHEMIST
 IF /I "%CH%" == "2" GOTO :VENDOR_BLACKSMITH
 IF /I "%CH%" == "3" GOTO :VENDOR_WIZARD
-IF /I "%CH%" == "E" GOTO :AUTOSAVE
+IF /I "%CH%" == "Q" GOTO :AUTOSAVE
 
 :VENDOR_ALCHEMIST
 TITLE (Rockwinn Plaza) - Alchemist ^| %player.name% the %player.race% %player.class%
@@ -43,7 +43,7 @@ ECHO +--------------------------------------------------------------------------
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :ALCHEMIST_BUY_HEALING_TONIC
 IF /I "%CH%" == "2" GOTO :ALCHEMIST_BUY_MAGICKA_TONIC
-IF /I "%CH%" == "E" GOTO :MAIN
+IF /I "%CH%" == "Q" GOTO :MAIN
 GOTO :INVALID_INPUT
 
 :ALCHEMIST_BUY_HEALING_TONIC
@@ -74,7 +74,7 @@ ECHO +--------------------------------------------------------------------------
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_TYPE_WEAPONS
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_TYPE_ARMOR
-IF /I "%CH%" == "E" GOTO :MAIN
+IF /I "%CH%" == "Q" GOTO :MAIN
 GOTO :INVALID_INPUT
 
 REM Display the "weapons" type.
@@ -98,7 +98,7 @@ IF /I "%CH%" == "1" GOTO :BLACKSMITH_CATEGORY_SWORDS
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_CATEGORY_AXES
 IF /I "%CH%" == "3" GOTO :BLACKSMITH_CATEGORY_MACES
 IF /I "%CH%" == "4" GOTO :BLACKSMITH_CATEGORY_BOWS
-IF /I "%CH%" == "E" GOTO :VENDOR_BLACKSMITH
+IF /I "%CH%" == "Q" GOTO :VENDOR_BLACKSMITH
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_CATEGORY_SWORDS
@@ -122,7 +122,7 @@ ECHO +--------------------------------------------------------------------------
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_LONG_SWORD
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_INSPECT_SHORT_SWORD
-IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_WEAPONS
+IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_LONG_SWORD
@@ -154,7 +154,7 @@ ECHO ^| [1 / GREAT AXE ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_GREAT_AXE
-IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_WEAPONS
+IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_GREAT_AXE
@@ -180,7 +180,7 @@ ECHO ^| [1 / MACE ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_MACE
-IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_WEAPONS
+IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_MACE
@@ -206,7 +206,7 @@ ECHO ^| [1 / WOODEN BOW ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_BOW
-IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_WEAPONS
+IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_WEAPONS
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_BOW
@@ -232,7 +232,7 @@ SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_CATEGORY_LIGHT_ARMOR
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_CATEGORY_MEDIUM_ARMOR
 IF /I "%CH%" == "3" GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
-IF /I "%CH%" == "E" GOTO :VENDOR_BLACKSMITH
+IF /I "%CH%" == "Q" GOTO :VENDOR_BLACKSMITH
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_CATEGORY_LIGHT_ARMOR
@@ -256,7 +256,7 @@ ECHO +--------------------------------------------------------------------------
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_CACTUS_ARMOR
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_INSPECT_GUARD_ARMOR
-IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_ARMOR
+IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_ARMOR
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_CACTUS_ARMOR
@@ -288,7 +288,7 @@ ECHO +--------------------------------------------------------------------------
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_STONE_ARMOR
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_INSPECT_IRON_ARMOR
-IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_ARMOR
+IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_ARMOR
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_STONE_ARMOR
@@ -320,7 +320,7 @@ ECHO +--------------------------------------------------------------------------
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :BLACKSMITH_INSPECT_STEEL_ARMOR
 IF /I "%CH%" == "2" GOTO :BLACKSMITH_INSPECT_SCALE_ARMOR
-IF /I "%CH%" == "E" GOTO :BLACKSMITH_TYPE_ARMOR
+IF /I "%CH%" == "Q" GOTO :BLACKSMITH_TYPE_ARMOR
 GOTO :INVALID_INPUT
 
 :BLACKSMITH_INSPECT_STEEL_ARMOR
@@ -332,9 +332,51 @@ CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_SCALE_ARMOR %vendor.bl
 GOTO :BLACKSMITH_CATEGORY_HEAVY_ARMOR
 
 :VENDOR_WIZARD
-ECHO NOT IMPLEMENTED
-PAUSE
-GOTO :%RETURN%
+rem Clarke Blackwell!
+TITLE (Rockwinn Plaza) - Wizard ^| %player.name% the %player.race% %player.class%
+CLS
+SET "RETURN=VENDOR_WIZARD"
+MODE con: cols=109 lines=19
+ECHO.
+TYPE "%cd%\data\assets\npcs\wizard.txt"
+ECHO.
+ECHO %displayMessage%
+ECHO +-----------------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
+ECHO +-----------------------------------------------------------------------------------------------------------+
+ECHO ^| Select a TYPE of item to view.
+ECHO +-----------------------------------------------------------------------------------------------------------+
+ECHO + [1 / STAVES ]
+ECHO +-----------------------------------------------------------------------------------------------------------+
+SET /P "CH=> "
+IF /I "%CH%" == "1" GOTO :WIZARD_TYPE_STAVES
+IF /I "%CH%" == "Q" GOTO :MAIN
+GOTO :INVALID_INPUT
+
+:WIZARD_TYPE_STAVES
+MODE con: cols=100 lines=19
+CLS
+SET "RETURN=WIZARD_TYPE_STAVES"
+ECHO.
+TYPE "%cd%\data\assets\ui\staves.txt"
+ECHO.
+ECHO %displayMessage%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_required% ^| LUNIS: %player.coins% ^| ATK: %player.damage% ^| AC: %player.armor_class% ^| MG: %player.magicka%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| Select a STAFF to purchase.
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| [1 / ORNATE WOODEN STAFF ]
+ECHO +--------------------------------------------------------------------------------------------------+
+SET /P "CH=> "
+IF /I "%CH%" == "1" GOTO :WIZARD_INSPECT_ORANTE_WOODEN_STAFF
+IF /I "%CH%" == "Q" GOTO :VENDOR_WIZARD
+GOTO :INVALID_INPUT
+
+:WIZARD_INSPECT_ORANTE_WOODEN_STAFF
+CALL "%winLoc%\data\functions\global_modules.bat" INSPECT_ORNATE_WOODEN_STAFF %vendor.wizard_ornate_wooden_staff_price%
+GOTO :WIZARD_TYPE_STAVES
 
 :INVALID_INPUT
 ECHO %CH% is not a valid choice.
