@@ -1,4 +1,5 @@
-REM WINDHELM -- Global Modules for Vendors
+REM WINDHELM -- Global Modules
+rem Accepts two variables passed when using call. %1 is the label to go to, %2 is the item price.
 
 :vendor
 SET windhelm.global_item_price=%2
@@ -407,6 +408,37 @@ IF %player.coins% LSS %windhelm.global_item_price% (
         set /a player.item_scale_armor_owned+=1
         SET "displayMessage=Purchased 1 Scale Armor set for %windhelm.global_item_price% Lunis."
         goto :INSPECT_GREATAXE
+)
+
+:INSPECT_ORNATE_WOODEN_STAFF
+CLS
+SET RETURN=INSPECT_ORNATE_WOODEN_STAFF
+MODE con: cols=111 lines=20
+ECHO.
+TYPE "%cd%\data\assets\ui\ow_staff.txt"
+ECHO.
+ECHO Showing detailed information for the Ornate Wooden Staff. ^| %displayMessage% 
+ECHO +-------------------------------------------------------------------------------------------------------------+
+ECHO ^| MODIFIER: +%windhelm.item_ornate_wooden_staff_int_modifier% INT
+ECHO ^| CATEGORY: %windhelm.item_ornate_wooden_staff_category%
+ECHO ^| PRICE: %vendor.wizard_ornate_wooden_staff_price%
+ECHO ^| OWNED %player.item_ornate_wooden_staff_owned%
+ECHO +-------------------------------------------------------------------------------------------------------------+
+ECHO ^| [P / PURCHASE ] ^| [Q / BACK ]
+ECHO +-------------------------------------------------------------------------------------------------------------+
+SET /P "CH=> "
+IF /I "%CH%" == "P" GOTO :PURCHASE_ORNATE_WOODEN_STAFF
+IF /I "%CH%" == "Q" GOTO :CLEANUP
+GOTO :INVALID_INPUT
+
+:PURCHASE_ORNATE_WOODEN_STAFF
+IF %player.coins% LSS %windhelm.global_item_price% (
+        GOTO :CANNOT_AFFORD_ITEM
+    ) ELSE (
+        set /a player.coins-=windhelm.global_item_price
+        set /a player.item_ornate_wooden_staff_owned+=1
+        SET "displayMessage=Purchased 1 Scale Armor set for %windhelm.global_item_price% Lunis."
+        goto :INSPECT_ORNATE_WOODEN_STAFF
 )
 
 :INVALID_INPUT
