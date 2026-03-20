@@ -135,6 +135,7 @@ IF NOT "%player.weapon_equipped%" == "Longsword" (
     REM Unequip the weapon.
     SET "player.weapon_equipped=None"
     SET player.damage=5
+    set "player.weapon_proficiency=None"
     SET "displayMessage=Unequipped the Longsword."
     GOTO :INSPECT_LONG_SWORD
 )
@@ -198,6 +199,7 @@ IF NOT "%player.weapon_equipped%" == "Shortsword" (
     REM Unequip the weapon.
     SET "player.weapon_equipped=None"
     SET player.damage=5
+    set "player.weapon_proficiency=None"
     SET "displayMessage=Unequipped the Shortsword."
     GOTO :INSPECT_SHORT_SWORD
 )
@@ -283,6 +285,7 @@ IF NOT "%player.weapon_equipped%" == "Great Axe" (
     REM Unequip the weapon.
     SET player.weapon_equipped=None
     SET player.damage=5
+    set "player.weapon_proficiency=None"
     SET "displayMessage=Unequipped the Great Axe."
     GOTO :INSPECT_GREAT_AXE
 )
@@ -368,6 +371,7 @@ IF NOT "%player.weapon_equipped%" == "Mace" (
     REM Unequip the weapon.
     SET "player.weapon_equipped=None"
     SET player.damage=5
+    set "player.weapon_proficiency=None"
     SET "displayMessage=Unequipped the Mace."
     GOTO :INSPECT_MACE
 )
@@ -453,6 +457,7 @@ IF NOT "%player.weapon_equipped%" == "Wooden Bow" (
     REM Unequip the weapon.
     SET "player.weapon_equipped=None"
     SET player.damage=5
+    set "player.weapon_proficiency=None"
     SET "displayMessage=Unequipped the Wooden Bow."
     GOTO :INSPECT_WOODEN_BOW
 )
@@ -1174,11 +1179,14 @@ ECHO ^| HP: %player.health%/%player.health_max% ^| XP: %player.xp%/%player.xp_re
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| ARMOR: %player.armor_equipped% ^| WEAPON: %player.weapon_equipped%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [1 / Oracle of Hjralder %player.item_oracle_hjralder_owned% ]
+ECHO ^| [1 / Wooden Staff %player.item_wooden_staff_owned% ] ^| [2 / Ornate Wooden Staff %player.item_ornate_wooden_staff_owned% ] ^| [3 / Imbued Alnfei Staff %player.item_imbued_alnfei_staff_owned% ] ^| [4 / Oracle of Hjralder %player.item_oracle_hjralder_owned% ]
 ECHO +--------------------------------------------------------------------------------------------------+
 SET /P "CH=> "
-IF /I "%CH%" == "1" GOTO :INSPECT_STAFF_HJRADLER
-IF /I "%CH%" == "E" GOTO :IVM
+IF /I "%CH%" == "1" GOTO :INSPECT_WOODEN_STAFF
+IF /I "%CH%" == "2" GOTO :INSPECT_OW_STAFF
+IF /I "%CH%" == "3" GOTO :INSPECT_IA_STAFF
+IF /I "%CH%" == "4" GOTO :INSPECT_STAFF_HJRADLER
+IF /I "%CH%" == "Q" GOTO :IVM
 GOTO :INVALID_INPUT
 
 :INSPECT_STAFF_HJRADLER
@@ -1227,6 +1235,147 @@ if not "%player.weapon_equipped" == "Oracle of Hjralder" (
     set player.skill_intelligence-=windhelm.item_oracle_of_hjralder_int_modifier
     set "displayMessage=Unequipped the Oracle of Hjralder."
     goto :INSPECT_STAFF_HJRADLER
+)
+
+:INSPECT_WOODEN_STAFF
+CLS
+SET "RETURN=INSPECT_STAFF_HJRADLER"
+MODE con: cols=115 lines=22
+ECHO.
+TYPE "%cd%\data\assets\ui\wooden_staff.txt"
+ECHO.
+ECHO Showing detailed information for the Wooden Staff. ^| %displayMessage%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO ^| Damage: %windhelm.item_wooden_staff_damage%
+ECHO ^| Damage Type: %windhelm.item_wooden_staff_damage_type%
+ECHO ^| INT Modifier: +%windhelm.item_wooden_staff_int_modifier%
+ECHO ^| Category: %windhelm.item_wooden_staff_category%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO [E / EQUIP ] ^| [U / DISCARD ]
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :EQUIP_WOODEN_STAFF
+IF /I "%CH%" == "U" GOTO :UNEQUIP_WOODEN_STAFF
+IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_STAVES
+GOTO :INVALID_INPUT
+
+:EQUIP_WOODEN_STAFF
+if not "%player.weapon_equipped" == "None" (
+    set "displayMessage=You already have a weapon equipped."
+    goto :INSPECT_WOODEN_STAFF
+) else if %player.item_wooden_staff_owned% LSS 1 (
+    set "displayMessage=You do not own this item."
+    goto :INSPECT_WOODEN_STAFF
+) else (
+    set "player.weapon_equipped=%windhelm.item_wooden_staff_name%"
+    set player.damage=%windhelm.item_wooden_staff_damage%
+    set player.skill_intelligence+=windhelm.item_wooden_staff_int_modifier
+    set "displayMessage=Equipped the Wooden Staff"
+    goto :INSPECT_WOODEN_STAFF
+)
+
+:UNEQUIP_WOODEN_STAFF
+if not "%player.weapon_equipped" == "Wooden Staff" (
+    set "displayMessage=You do not have this item equipped."
+) else (
+    set "player.weapon_equipped=None"
+    set player.damage=2
+    set player.skill_intelligence-=windhelm.item_wooden_staff_int_modifier
+    set "displayMessage=Unequipped the Wooden Staff."
+    goto :INSPECT_WOODEN_STAFF
+)
+
+:INSPECT_OW_STAFF
+CLS
+SET "RETURN=INSPECT_STAFF_HJRADLER"
+MODE con: cols=115 lines=22
+ECHO.
+TYPE "%cd%\data\assets\ui\ow_wooden_staff.txt"
+ECHO.
+ECHO Showing detailed information for the Ornate Wooden Staff. ^| %displayMessage%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO ^| Damage: %windhelm.item_ornate_wooden_staff_damage%
+ECHO ^| Damage Type: %windhelm.item_ornate_wooden_staff_damage_type%
+ECHO ^| INT Modifier: +%windhelm.item_ornate_wooden_staff_int_modifier%
+ECHO ^| Category: %windhelm.item_ornate_wooden_staff_category%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO [E / EQUIP ] ^| [U / DISCARD ]
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :EQUIP_ORNATE_WOODEN_STAFF
+IF /I "%CH%" == "U" GOTO :UNEQUIP_ORNATE_WOODEN_STAFF
+IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_STAVES
+GOTO :INVALID_INPUT
+
+:EQUIP_ORNATE_WOODEN_STAFF
+if not "%player.weapon_equipped" == "None" (
+    set "displayMessage=You already have a weapon equipped."
+    goto :INSPECT_ORNATE_WOODEN_STAFF
+) else if %player.item_ornate_wooden_staff_owned% LSS 1 (
+    set "displayMessage=You do not own this item."
+    goto :INSPECT_ORNATE_WOODEN_STAFF
+) else (
+    set "player.weapon_equipped=%windhelm.item_ornate_wooden_staff_name%"
+    set player.damage=%windhelm.item_ornate_wooden_staff_damage%
+    set player.skill_intelligence+=windhelm.item_ornate_wooden_staff_int_modifier
+    set "displayMessage=Equipped the Ornate Wooden Staff"
+    goto :INSPECT_ORNATE_WOODEN_STAFF
+)
+
+:UNEQUIP_ORNATE_WOODEN_STAFF
+if not "%player.weapon_equipped" == "Ornate Wooden Staff" (
+    set "displayMessage=You do not have this item equipped."
+) else (
+    set "player.weapon_equipped=None"
+    set player.damage=2
+    set player.skill_intelligence-=windhelm.item_ornate_wooden_staff_int_modifier
+    set "displayMessage=Unequipped the Ornate Wooden Staff."
+    goto :INSPECT_ORNATE_WOODEN_STAFF
+)
+
+:INSPECT_IA_STAFF
+CLS
+SET "RETURN=INSPECT_STAFF_HJRADLER"
+MODE con: cols=115 lines=22
+ECHO.
+TYPE "%cd%\data\assets\ui\ow_wooden_staff.txt"
+ECHO.
+ECHO Showing detailed information for the Imued Alnfei Staff. ^| %displayMessage%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO ^| Damage: %windhelm.item_imued_alnfei_staff_damage%
+ECHO ^| Damage Type: %windhelm.item_imued_alnfei_staff_damage_type%
+ECHO ^| INT Modifier: +%windhelm.item_imued_alnfei_staff_int_modifier%
+ECHO ^| Category: %windhelm.item_imued_alnfei_staff_category%
+ECHO +-----------------------------------------------------------------------------------------------------------------+
+ECHO [E / EQUIP ] ^| [U / DISCARD ]
+SET /P "CH=> "
+IF /I "%CH%" == "E" GOTO :EQUIP_IA_STAFF
+IF /I "%CH%" == "U" GOTO :UNEQUIP_IA_STAFF
+IF /I "%CH%" == "Q" GOTO :VIEW_TYPE_STAVES
+GOTO :INVALID_INPUT
+
+:EQUIP_IA_STAFF
+if not "%player.weapon_equipped" == "None" (
+    set "displayMessage=You already have a weapon equipped."
+    goto :INSPECT_IA_STAFF
+) else if %player.item_imued_alnfei_staff_owned% LSS 1 (
+    set "displayMessage=You do not own this item."
+    goto :INSPECT_IA_STAFF
+) else (
+    set "player.weapon_equipped=%windhelm.item_imued_alnfei_staff_name%"
+    set player.damage=%windhelm.item_imued_alnfei_staff_damage%
+    set player.skill_intelligence+=windhelm.item_imued_alnfei_staff_int_modifier
+    set "displayMessage=Equipped the Imued Alnfei Staff"
+    goto :INSPECT_IA_STAFF
+)
+
+:UNEQUIP_IA_STAFF
+if not "%player.weapon_equipped" == "Imued Alnfei Staff" (
+    set "displayMessage=You do not have this item equipped."
+) else (
+    set "player.weapon_equipped=None"
+    set player.damage=2
+    set player.skill_intelligence-=windhelm.item_imued_alnfei_staff_int_modifier
+    set "displayMessage=Unequipped the Imued Alnfei Staff."
+    goto :IA_STAFF
 )
 
 :PROFICIENCY_ADJUST
