@@ -34,14 +34,14 @@ ECHO.
 ECHO.
 ECHO Pre-Alpha Version %windhelm.vn% ^| %windhelm.ut%
 ECHO ======================================================================================================
-ECHO            [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [E / QUIT ]
+ECHO            [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [4 / ABOUT ] ^| [Q / QUIT ]
 ECHO.
 SET /P CH="> "
 IF /I "%CH%" == "1" GOTO :LOAD_SAVE
 IF /I "%CH%" == "2" GOTO :NEW_GAME
 IF /I "%CH%" == "3" GOTO :SETTINGS
 IF /I "%CH%" == "4" GOTO :ABOUT
-IF /I "%CH%" == "E" GOTO :EOF
+IF /I "%CH%" == "Q" GOTO :EOF
 GOTO :INVALID_INPUT
 
 :ABOUT
@@ -64,7 +64,7 @@ ECHO.
 ECHO Copyright (C) 2021-2026 Mierne ^<ahoy@mierne.net^> licensed under GNU GPLv3
 SET /P CH="> "
 IF /I "%CH%" == "1" START https://www.github.com/mierne/windhelm && GOTO :ABOUT
-IF /I "%CH%" == "E" GOTO :START
+IF /I "%CH%" == "Q" GOTO :START
 GOTO :INVALID_INPUT
 
 :SETTINGS
