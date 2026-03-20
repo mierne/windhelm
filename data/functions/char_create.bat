@@ -62,7 +62,7 @@ IF /I "%CH%" == "2" GOTO :MORE_ALNFEI
 GOTO :INVALID_INPUT
 
 :MORE_HUMAN
-MODE con: cols=120 lines=20
+MODE con: cols=120 lines=21
 SET "RETURN=MORE_HUMAN"
 CLS
 ECHO.
@@ -81,7 +81,7 @@ ECHO +--------------------------------------------------------------------------
 ECHO [1 / CHOOSE ] ^| [Q / BACK ]
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :SELECT_HUMAN_RACE
-IF /I "%CH%" == "E" GOTO :CHOOSE_RACE
+IF /I "%CH%" == "Q" GOTO :CHOOSE_RACE
 GOTO :INVALID_INPUT
 
 :SELECT_HUMAN_RACE
@@ -89,13 +89,13 @@ SET "player.race=Human"
 GOTO :CHOOSE_CLASS
 
 :MORE_ALNFEI
-MODE con: cols=120 lines=18
+MODE con: cols=120 lines=21
 SET "RETURN=MORE_ALNFEI"
 CLS
 ECHO.
-TYPE "%cd%\data\assets\ui\frawen.txt"
+TYPE "%cd%\data\assets\ui\alnfei.txt"
 ECHO.
-ECHO Choose the FRAWEN race?
+ECHO Choose the ALNFEI race?
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| The Alnfei are the ancient natives of the Fulkwinn forests. How long they've been there is unknown.
 ECHO ^| They're shorter on average compared with humans, have slightly pointed ears and vastly superior night vision.
@@ -109,7 +109,7 @@ ECHO +--------------------------------------------------------------------------
 ECHO [1 / CHOOSE ] ^| [Q / BACK ]
 SET /P "CH=> "
 IF /I "%CH%" == "1" GOTO :SELECT_ALNFEI_RACE
-IF /I "%CH%" == "E" GOTO :CHOOSE_RACE
+IF /I "%CH%" == "Q" GOTO :CHOOSE_RACE
 GOTO :INVALID_INPUT
 
 :SELECT_ALNFEI_RACE
@@ -136,7 +136,7 @@ IF /I "%CH%" == "3" GOTO :DRUID_CHOSEN_PREVIEW
 GOTO :INVALID_INPUT
 
 :DRUID_CHOSEN_PREVIEW
-MODE con: cols=125 lines=20
+MODE con: cols=125 lines=21
 SET "RETURN=DRUID_CHOSEN_PREVIEW"
 CLS
 ECHO.
@@ -146,7 +146,7 @@ ECHO.
 ECHO Choose the DRUID class?
 ECHO +---------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Druids are powerful mages who devote their life to nature. Due to their strong relationship with the Goddess of Nature,
-ECHO ^| Druids are granted +100 MAGICKA, however the devotion costs them -30 HEALTH.
+ECHO ^| Druids are granted +100 MAGICKA, however the devotion costs them -30 HEALTH. Proficient with ranged.
 ECHO ^| Starting stats: HEALTH: 70 ^| MAGICKA: 200
 ECHO ^| Starting skills: DAMAGE: 2 ^| SPEECH: 2 ^| ATHLETICS: 2 ^| INTELLIGENCE: 7
 ECHO ^| Starting magic skills: ALTERATION: 4 ^| DESTRUCTION: 4 ^| RESTORATION: 4
@@ -158,7 +158,7 @@ IF /I "%CH%" == "E" GOTO :CHOOSE_CLASS
 GOTO :INVALID_INPUT
 
 :WARRIOR_CHOSEN_PREVIEW
-MODE con: cols=120 lines=21
+MODE con: cols=120 lines=22
 SET "RETURN=WARRIOR_CHOSEN_PREVIEW"
 CLS
 ECHO.
@@ -169,7 +169,7 @@ ECHO Choose the WARRIOR class?
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Warriors have spent most of their lives training for combat and as a result start with increased HEALTH and DAMAGE.
 ECHO ^| Warriors are granted +60 HEALTH. Warriors also start with a higher DAMAGE skill stat.
-ECHO ^| Their strong devotion to their Gods lowers their MAGICKA by 70.
+ECHO ^| Their strong devotion to their Gods lowers their MAGICKA by 70. Proficient with blades.
 ECHO ^| Starting stats: HEALTH: 160 ^| MAGICKA: 30
 ECHO ^| Starting skills: DAMAGE: 6 ^| SPEECH: 2 ^| ATHLETICS: 4 ^| INTELLIGENCE: 2
 ECHO ^| Starting magic skills: ALTERATION: 2 ^| DESTRUCTION: 2 ^| RESTORATION: 2
@@ -181,7 +181,7 @@ IF /I "%CH%" == "E" GOTO :CHOOSE_CLASS
 GOTO :INVALID_INPUT
 
 :SORCERER_CHOSEN_PREVIEW
-MODE con: cols=123 lines=21
+MODE con: cols=123 lines=22
 SET "RETURN=SORCERER_CHOSEN_PREVIEW"
 CLS
 ECHO.
@@ -192,7 +192,7 @@ ECHO Choose the SORCERER class?
 ECHO +-------------------------------------------------------------------------------------------------------------------------+
 ECHO ^| Sorcerers are born with a strong connection to the magical world and as a result start with increased MAGICKA.
 ECHO ^| Sorcerers are granted +100 MAGICKA. Their devotion has cost them 25 HEALTH. Sorcerer's start with slightly above average
-ECHO ^| magicka.
+ECHO ^| magicka. Proficient with staves.
 ECHO ^| Starting stats: HEALTH: 100 ^| MAGICKA: 200
 ECHO ^| Starting skills: DAMAGE: 2 ^| SPEECH: 5 ^| ATHLETICS: 2  ^| INTELLIGENCE: 5
 ECHO ^| Starting magica skills: ALTERATION: 5 ^| DESTRUCTION: 5 ^| RESTORATION: 5
@@ -218,6 +218,9 @@ SET "player.class=Druid"
 SET "player.class_ability=precognition"
 SET player.item_wooden_bow_owned=1
 SET "player.proficiency=ranged"
+SET "player.weapon_equipped=%windhelm.item_wooden_bow_name%"
+SET player.damage=%windhelm.item_wooden_bow_damage%
+SET "player.weapon_damage_type=%windhelm.item_wooden_bow_damage_type%"
 GOTO :APPLY_RACE_BONUSES
 
 :WARRIOR_CHOSEN
@@ -235,6 +238,9 @@ SET "player.class=Warrior"
 SET "player.class_ability=rage"
 SET player.item_short_sword_owned=1
 SET "player.proficiency=blade"
+SET "player.weapon_equipped=%windhelm.item_short_sword_name%"
+SET player.damage=%windhelm.item_short_sword_damage%
+SET "player.weapon_damage_type=%windhelm.item_short_sword_damage_type%"
 GOTO :APPLY_RACE_BONUSES
 
 :SORCERER_CHOSEN
@@ -250,8 +256,14 @@ set player.skill_destruction=5
 set player.skill_restoration=5
 SET "player.class=Sorcerer"
 SET "player.class_ability=sapping"
-SET player.item_short_sword_owned=1
+SET player.item_wooden_staff_owned=1
 SET "player.proficiency=staff"
+set player.item_ornate_wooden_staff_owned=1
+set "player.spell_equipped=Firebolt"
+set "player.spell_equipped_type=damage"
+set "player.weapon_equipped=%windhelm.item_wooden_staff_name%"
+set player.damage=%windhelm.item_wooden_staff_damage%
+set player.skill_intelligence+=windhelm.item_wooden_staff_int_modifier
 GOTO :APPLY_RACE_BONUSES
 
 REM Applies health and other skill bonuses.
